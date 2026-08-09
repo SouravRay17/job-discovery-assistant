@@ -48,7 +48,10 @@ def send_email_digest(top_n: int = 10):
         cursor = conn.execute("""
             SELECT source, id, company, title, score, location, url, tailored_summary
             FROM jobs
-            WHERE score >= ? AND status != 'rejected'
+            WHERE score >= ? 
+              AND status != 'rejected'
+              AND description_raw IS NOT NULL 
+              AND LENGTH(TRIM(description_raw)) > 0
             ORDER BY score DESC
             LIMIT ?
         """, (threshold, top_n))
