@@ -118,8 +118,8 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
                 conn.close()
 
     if not description:
-        print("  [!] Job description is empty or unavailable. Cannot tailor.")
-        return False
+        print("  [!] Description empty. Using synthesized metadata description for tailoring.")
+        description = f"Role: {title} at {company} located in {location}. Remote preference: {remote}."
 
     print(f"  * Tailoring for: {title} at {company}...")
 
