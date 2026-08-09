@@ -9,11 +9,15 @@ on:
 jobs:
   job-discovery:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     timeout-minutes: 30
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -51,5 +55,9 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           git add jobs.db exports/ || true
-          git diff-index --quiet HEAD || git commit -m "Auto Update: Daily Jobs & Tailored Resumes [$(date +'%Y-%m-%d')]"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto Update: Daily Jobs & Tailored Resumes [$(date +'%Y-%m-%d')]"
+            git push origin main
+          fi
