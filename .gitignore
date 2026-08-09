@@ -1,0 +1,8 @@
+# Environment & Temporary files
+__pycache__/
+*.pyc
+*.html
+*.log
+PyWhatKit_DB.txt
+tectonic.exe
+.DS_Store

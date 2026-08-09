@@ -1,0 +1,435 @@
+# Company → ATS Platform Mapping
+# Each entry maps a company to its ATS platform and the required connection details.
+# 
+# Supported ATS types: greenhouse, lever, workday, naukri, linkedin, custom
+# 
+# For 'greenhouse': provide greenhouse_board (the board slug)
+# For 'lever': provide lever_slug (the company slug)
+# For 'workday': provide workday_url (the full CXS API endpoint)
+# For 'custom': provide career_url (the direct careers page URL) — scraped via Naukri/LinkedIn fallback
+#
+# Companies without a scrapable public API are marked as 'custom' and will be
+# covered by Naukri/LinkedIn search aggregation.
+
+companies:
+
+  # =====================================================================
+  # GREENHOUSE BOARDS (~25 companies)
+  # API: GET https://boards-api.greenhouse.io/v1/boards/{slug}/jobs?content=true
+  # =====================================================================
+  - name: Stripe
+    ats: greenhouse
+    greenhouse_board: stripe
+
+  - name: Cloudflare
+    ats: greenhouse
+    greenhouse_board: cloudflare
+
+  - name: Airbnb
+    ats: greenhouse
+    greenhouse_board: airbnb
+
+  - name: Coinbase
+    ats: greenhouse
+    greenhouse_board: coinbase
+
+  - name: Databricks
+    ats: greenhouse
+    greenhouse_board: databricks
+
+  - name: Snowflake
+    ats: greenhouse
+    greenhouse_board: snowflake
+
+  - name: Scale AI
+    ats: greenhouse
+    greenhouse_board: scaleai
+
+  - name: Anthropic
+    ats: greenhouse
+    greenhouse_board: anthropic
+
+  - name: OpenAI
+    ats: greenhouse
+    greenhouse_board: openai
+
+  - name: Plaid
+    ats: greenhouse
+    greenhouse_board: plaid
+
+  - name: Affirm
+    ats: greenhouse
+    greenhouse_board: affirm
+
+  - name: Robinhood
+    ats: greenhouse
+    greenhouse_board: robinhood
+
+  - name: Chime
+    ats: greenhouse
+    greenhouse_board: chime
+
+  - name: MongoDB
+    ats: greenhouse
+    greenhouse_board: mongodb
+
+  - name: Confluent
+    ats: greenhouse
+    greenhouse_board: confluent
+
+  - name: Elastic
+    ats: greenhouse
+    greenhouse_board: elastic
+
+  - name: Datadog
+    ats: greenhouse
+    greenhouse_board: datadog
+
+  - name: Twilio
+    ats: greenhouse
+    greenhouse_board: twilio
+
+  - name: HashiCorp
+    ats: greenhouse
+    greenhouse_board: hashicorp
+
+  - name: Netflix
+    ats: greenhouse
+    greenhouse_board: netflix
+
+  - name: Palantir
+    ats: greenhouse
+    greenhouse_board: palantir
+
+  - name: Razorpay
+    ats: greenhouse
+    greenhouse_board: razorpay
+
+  - name: Postman
+    ats: greenhouse
+    greenhouse_board: postman
+
+  - name: Ripple
+    ats: greenhouse
+    greenhouse_board: ripple
+
+  - name: CRED
+    ats: greenhouse
+    greenhouse_board: cred
+
+  # =====================================================================
+  # LEVER BOARDS (~10 companies)
+  # API: GET https://api.lever.co/v0/postings/{slug}?mode=json
+  # =====================================================================
+  - name: Spotify
+    ats: lever
+    lever_slug: spotify
+
+  - name: Cohere
+    ats: lever
+    lever_slug: cohere
+
+  - name: Perplexity AI
+    ats: lever
+    lever_slug: perplexityai
+
+  - name: Together AI
+    ats: lever
+    lever_slug: togetherai
+
+  - name: Hugging Face
+    ats: lever
+    lever_slug: huggingface
+
+  - name: Character.AI
+    ats: lever
+    lever_slug: character
+
+  - name: Mistral AI
+    ats: lever
+    lever_slug: mistral
+
+  - name: Anduril
+    ats: lever
+    lever_slug: anduril
+
+  # =====================================================================
+  # WORKDAY BOARDS (verified working endpoints only)
+  # API: POST {workday_url} with JSON body
+  # =====================================================================
+  - name: Mastercard
+    ats: workday
+    workday_url: https://mastercard.wd1.myworkdayjobs.com/wday/cxs/mastercard/CorporateCareers/jobs
+
+  - name: Visa
+    ats: workday
+    workday_url: https://visa.wd5.myworkdayjobs.com/wday/cxs/visa/Visa/jobs
+
+  - name: Adobe
+    ats: workday
+    workday_url: https://adobe.wd5.myworkdayjobs.com/wday/cxs/adobe/external_experienced/jobs
+
+  - name: NVIDIA
+    ats: workday
+    workday_url: https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs
+
+  - name: Target
+    ats: workday
+    workday_url: https://target.wd5.myworkdayjobs.com/wday/cxs/target/targetcareers/jobs
+
+  # =====================================================================
+  # CUSTOM / PROPRIETARY ATS (covered by Naukri + LinkedIn search)
+  # These don't have scrapable public APIs — we rely on Naukri/LinkedIn
+  # job aggregation to find their postings.
+  # =====================================================================
+  - name: Google
+    ats: custom
+    career_url: https://www.google.com/about/careers/
+
+  - name: Meta
+    ats: custom
+    career_url: https://www.metacareers.com/
+
+  - name: Amazon
+    ats: custom
+    career_url: https://www.amazon.jobs/
+
+  - name: Microsoft
+    ats: custom
+    career_url: https://careers.microsoft.com/
+
+  - name: Apple
+    ats: custom
+    career_url: https://jobs.apple.com/
+
+  - name: JPMorgan Chase
+    ats: custom
+    career_url: https://www.jpmorganchase.com/careers
+
+  - name: Citadel
+    ats: custom
+    career_url: https://www.citadel.com/careers/
+
+  - name: Two Sigma
+    ats: custom
+    career_url: https://www.twosigma.com/careers/
+
+  - name: Jane Street
+    ats: custom
+    career_url: https://www.janestreet.com/join-jane-street/
+
+  - name: DE Shaw
+    ats: custom
+    career_url: https://www.deshaw.com/careers
+
+  - name: Flipkart
+    ats: custom
+    career_url: https://www.flipkartcareers.com/
+
+  - name: Swiggy
+    ats: custom
+    career_url: https://careers.swiggy.com/
+
+  - name: Zomato
+    ats: custom
+    career_url: https://www.zomato.com/careers
+
+  - name: PhonePe
+    ats: custom
+    career_url: https://www.phonepe.com/careers/
+
+  - name: Freshworks
+    ats: custom
+    career_url: https://www.freshworks.com/company/careers/
+
+  - name: Zoho
+    ats: custom
+    career_url: https://www.zoho.com/careers/
+
+  - name: InMobi
+    ats: custom
+    career_url: https://www.inmobi.com/company/careers
+
+  - name: Meesho
+    ats: custom
+    career_url: https://meesho.io/careers
+
+  - name: Groww
+    ats: custom
+    career_url: https://groww.in/careers
+
+  - name: Citi
+    ats: custom
+    career_url: https://jobs.citi.com/
+
+  - name: Deutsche Bank
+    ats: custom
+    career_url: https://careers.db.com/
+
+  - name: UBS
+    ats: custom
+    career_url: https://www.ubs.com/global/en/careers.html
+
+  - name: HSBC
+    ats: custom
+    career_url: https://www.hsbc.com/careers
+
+  - name: Wells Fargo
+    ats: custom
+    career_url: https://www.wellsfargojobs.com/
+
+  - name: BNP Paribas
+    ats: custom
+    career_url: https://group.bnpparibas/en/careers
+
+  - name: Bank of America
+    ats: custom
+    career_url: https://careers.bankofamerica.com/
+
+  - name: PayPal
+    ats: custom
+    career_url: https://careers.pypl.com/
+
+  - name: Block (Square)
+    ats: custom
+    career_url: https://block.xyz/careers
+
+  - name: Revolut
+    ats: custom
+    career_url: https://www.revolut.com/careers/
+
+  - name: Klarna
+    ats: custom
+    career_url: https://www.klarna.com/careers/
+
+  - name: Wise
+    ats: custom
+    career_url: https://www.wise.jobs/
+
+  - name: Adyen
+    ats: custom
+    career_url: https://careers.adyen.com/
+
+  - name: Tesla
+    ats: custom
+    career_url: https://www.tesla.com/careers
+
+  - name: SpaceX
+    ats: custom
+    career_url: https://www.spacex.com/careers/
+
+  - name: xAI
+    ats: custom
+    career_url: https://x.ai/careers
+
+  - name: DeepMind
+    ats: custom
+    career_url: https://deepmind.google/careers/
+
+  - name: Stability AI
+    ats: custom
+    career_url: https://stability.ai/careers
+
+  - name: Renaissance Technologies
+    ats: custom
+    career_url: https://www.rentec.com/Careers.action
+
+  - name: Jump Trading
+    ats: custom
+    career_url: https://www.jumptrading.com/careers/
+
+  - name: Optiver
+    ats: custom
+    career_url: https://optiver.com/working-at-optiver/career-opportunities/
+
+  - name: Hudson River Trading
+    ats: custom
+    career_url: https://www.hudsonrivertrading.com/careers/
+
+  - name: Point72
+    ats: custom
+    career_url: https://point72.com/careers/
+
+  - name: Millennium
+    ats: custom
+    career_url: https://www.mlp.com/careers/
+
+  - name: Susquehanna (SIG)
+    ats: custom
+    career_url: https://careers.sig.com/
+
+  - name: AQR Capital
+    ats: custom
+    career_url: https://careers.aqr.com/
+
+  - name: Man Group
+    ats: custom
+    career_url: https://www.man.com/careers
+
+  - name: McKinsey (QuantumBlack)
+    ats: custom
+    career_url: https://www.mckinsey.com/careers
+
+  - name: BCG (Gamma)
+    ats: custom
+    career_url: https://careers.bcg.com/
+
+  - name: Bain
+    ats: custom
+    career_url: https://www.bain.com/careers/
+
+  - name: Deloitte
+    ats: custom
+    career_url: https://www2.deloitte.com/us/en/careers.html
+
+  - name: Accenture
+    ats: custom
+    career_url: https://www.accenture.com/us-en/careers
+
+  - name: AMD
+    ats: custom
+    career_url: https://www.amd.com/en/corporate/careers.html
+
+  - name: Intel
+    ats: custom
+    career_url: https://www.intel.com/content/www/us/en/jobs/jobs-at-intel.html
+
+  - name: Qualcomm
+    ats: custom
+    career_url: https://www.qualcomm.com/company/careers
+
+  - name: Broadcom
+    ats: custom
+    career_url: https://www.broadcom.com/company/careers
+
+  - name: ARM
+    ats: custom
+    career_url: https://careers.arm.com/
+
+  - name: Cerebras
+    ats: custom
+    career_url: https://www.cerebras.net/careers
+
+  - name: Disney
+    ats: custom
+    career_url: https://jobs.disneycareers.com/
+
+  - name: Ford
+    ats: custom
+    career_url: https://corporate.ford.com/careers.html
+
+  - name: Rivian
+    ats: custom
+    career_url: https://rivian.com/careers
+
+  - name: Lockheed Martin
+    ats: custom
+    career_url: https://www.lockheedmartinjobs.com/
+
+  - name: Cloudera
+    ats: custom
+    career_url: https://www.cloudera.com/careers.html
+
+  - name: Citadel Securities
+    ats: custom
+    career_url: https://www.citadelsecurities.com/careers/

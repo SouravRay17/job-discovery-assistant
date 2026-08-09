@@ -1,0 +1,52 @@
+name: Daily Job Discovery & Auto-Tailoring
+
+on:
+  schedule:
+    # Run daily at 3:30 AM UTC (9:00 AM IST sharp)
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  job-discovery:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Job Scraper
+        run: python scraper.py
+
+      - name: Run Job Fit Scorer (Ollama)
+        run: python scorer.py
+
+      - name: Batch Tailor Resume & Compile LaTeX PDFs
+        run: python batch_tailor.py
+
+      - name: Send Daily WhatsApp Notification
+        env:
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
+        run: python whatsapp_notifier.py
+
+      - name: Commit and Push Updated DB and Resumes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add jobs.db exports/
+          git diff-index --quiet HEAD || git commit -m "Auto Update: Daily Jobs & Tailored Resumes [$(date +'%Y-%m-%d')]"
+          git push

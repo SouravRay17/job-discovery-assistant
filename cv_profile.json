@@ -1,0 +1,77 @@
+{
+  "name": "Sourav Ray",
+  "contact": {
+    "email": "sroy.dgp2014@gmail.com",
+    "phone": "+91-7872567781",
+    "linkedin": "linkedin.com/in/souravray17",
+    "github": "github.com/SouravRay17"
+  },
+  "years_of_experience": 3,
+  "skills": [
+    "Cloud & Data Platforms: AWS (S3, Lambda, Kinesis, Firehose, DMS), Snowflake (Snowpark, Snowpipe), GCP (Vertex AI, BigQuery)",
+    "Data Engineering: DBT, Apache Airflow, Coalesce, SQL, PySpark, Kafka, ETL/ELT, Data Contracts, Data Mesh",
+    "AI / ML & GenAI: OpenAI, Gemini, LangChain, RAG, ChromaDB, NLP, TensorFlow, Time-Series Forecasting, Genetic Algorithms, Multi-Agent Orchestration, Model Context Protocol (MCP)",
+    "Programming: Python, SQL, Shell Scripting",
+    "Tools: Docker, Kubernetes, Git, GitHub Actions, Sigma"
+  ],
+  "work_history": [
+    {
+      "company": "Factspan Analytics",
+      "title": "Data & AI Engineer",
+      "start_date": "Sep 2023",
+      "end_date": "Present",
+      "bullets": [
+        "Architected a containerized Python Data Contract framework supporting RDBMS, flat-file, and streaming ecosystems, improving enterprise data accessibility by 60%.",
+        "Engineered metadata-driven automation generating Silver and Gold DBT artifacts (.sql, .yml, .md), reducing development effort by 80%.",
+        "Designed ingestion frameworks using AWS DMS, Kinesis, Firehose, S3, and Snowpipe for near real-time onboarding.",
+        "Built multi-stage reconciliation pipelines using row-count validation and MD5-based record verification to ensure data fidelity.",
+        "Developed automated RCA tooling identifying column-level discrepancies and format anomalies.",
+        "Validated SAP BusinessObjects reports against Snowflake models ensuring reporting consistency across legacy and modern platforms.",
+        "Governed finance datasets including GL, revenue, and transactional domains through audit-ready validation controls."
+      ]
+    },
+    {
+      "company": "",
+      "title": "AI-Powered Network Incident Orchestrator",
+      "start_date": null,
+      "end_date": null,
+      "bullets": [
+        "Built a multi-agent orchestrator that coordinates specialized AI agents to accelerate network incident investigation and root cause analysis (RCA) across ServiceNow, Infoblox, NetBox, SevOne, Datadog, Splunk, and LogicMonitor.",
+        "Designed per-platform agents, each backed by its own Model Context Protocol (MCP) server, providing a consistent abstraction layer over heterogeneous observability tools and device-management APIs, including secure SSH-based access to Cisco and non-Cisco network devices.",
+        "Implemented dynamic agent selection and parallel invocation logic that correlates multi-source data - incidents, logs, metrics, topology, device health, and configuration - into a single consolidated RCA report.",
+        "Improved performance and scalability through in-memory caching and per-agent concurrency controls (capped at 3 concurrent users), reducing Mean Time to Detect (MTTD) and Mean Time to Resolve (MTTR)."
+      ]
+    },
+    {
+      "company": "",
+      "title": "GenAI Schema Validator & Automated Mapping Platform",
+      "start_date": null,
+      "end_date": null,
+      "bullets": [
+        "Developing an enterprise-scale schema and report matching platform using Python, Vector Search, and LLMs, implementing Exact Match, Semantic Match, and LLM-based inference layers for automated column mapping.",
+        "Built governance controls to identify and exclude masked PII attributes, and leveraged LLMs to auto-generate metadata descriptions for undocumented fields.",
+        "Leading UAT and validation across complex enterprise datasets and reporting structures."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "NIT Durgapur",
+      "degree": "M.Tech, Operations Research",
+      "field": "Operations Research",
+      "year": "2021-2023"
+    },
+    {
+      "institution": "GCETTB",
+      "degree": "B.Tech, Textile Technology",
+      "field": "Textile Technology",
+      "year": "2015-2019"
+    }
+  ],
+  "certifications": [
+    "Snowflake SnowPro Advanced Architect",
+    "Snowflake SnowPro Advanced Data Scientist",
+    "AWS Certified Machine Learning - Specialty",
+    "AWS Certified Solutions Architect - Associate"
+  ]
+}
