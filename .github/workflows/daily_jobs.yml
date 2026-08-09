@@ -9,6 +9,7 @@ on:
 jobs:
   job-discovery:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout Code
@@ -25,15 +26,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Job Scraper
-        run: python scraper.py
+      # Scraper is run locally to prevent cloud IP blocking. 
+      # GitHub Actions starts directly with scoring, tailoring, and email alerts.
 
       - name: Run Job Fit Scorer (Gemini AI)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scorer.py
 
-      - name: Batch Tailor Resume & Compile LaTeX PDFs
+      - name: Batch Tailor Resume (Gemini AI — skip PDF compilation on Linux)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python batch_tailor.py
@@ -45,19 +46,10 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python email_notifier.py
 
-      - name: Send Daily WhatsApp Notification
-        env:
-          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
-          WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
-        run: python whatsapp_notifier.py
-
       - name: Commit and Push Updated DB and Resumes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
-          git add jobs.db exports/
+          git add jobs.db exports/ || true
           git diff-index --quiet HEAD || git commit -m "Auto Update: Daily Jobs & Tailored Resumes [$(date +'%Y-%m-%d')]"
           git push
