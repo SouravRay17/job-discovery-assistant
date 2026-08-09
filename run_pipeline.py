@@ -27,9 +27,9 @@ def run_pipeline():
     print("\n--- STEP 2: SCORING NEW JOBS ---")
     score_jobs()
 
-    # 4. Run Batch Tailoring & Resume Generation
+    # 4. Run Batch Tailoring & Resume Generation (only for the top 10 matched jobs)
     print("\n--- STEP 3: BATCH TAILORING & LATEX RESUME COMPILATION ---")
-    run_batch_tailoring()
+    run_batch_tailoring(top_n=10)
 
     # 5. Send Notifications (Email Digest & WhatsApp)
     print("\n--- STEP 4: SENDING DAILY EMAIL DIGEST & NOTIFICATIONS ---")

@@ -21,10 +21,24 @@ def load_config() -> dict:
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-def run_batch_tailoring(top_n: int | None = None):
+def run_batch_tailoring(top_n: int | None = 10):
     config = load_config()
     threshold = config.get("scoring", {}).get("threshold", 60)
     
+    # Clean up old files in exports directory to ensure we only have fresh resumes
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    exports_dir = os.path.join(base_dir, "exports")
+    if os.path.exists(exports_dir):
+        import glob
+        for old_file in glob.glob(os.path.join(exports_dir, "*")):
+            try:
+                if os.path.isfile(old_file):
+                    os.remove(old_file)
+            except Exception as e:
+                print(f"  [!] Error cleaning up old file {old_file}: {e}")
+    else:
+        os.makedirs(exports_dir, exist_ok=True)
+
     conn = get_connection()
     try:
         query = """
