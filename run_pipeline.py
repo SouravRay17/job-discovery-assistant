@@ -31,8 +31,14 @@ def run_pipeline():
     print("\n--- STEP 3: BATCH TAILORING & LATEX RESUME COMPILATION ---")
     run_batch_tailoring()
 
-    # 5. Send WhatsApp Notification
-    print("\n--- STEP 4: SENDING WHATSAPP NOTIFICATION ---")
+    # 5. Send Notifications (Email Digest & WhatsApp)
+    print("\n--- STEP 4: SENDING DAILY EMAIL DIGEST & NOTIFICATIONS ---")
+    try:
+        from email_notifier import send_email_digest
+        send_email_digest(top_n=10)
+    except Exception as e:
+        print(f"  [!] Email notification error: {e}")
+
     try:
         from whatsapp_notifier import notify_top_jobs_whatsapp
         notify_top_jobs_whatsapp()

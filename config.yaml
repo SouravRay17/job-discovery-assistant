@@ -43,9 +43,12 @@ remoteok:
     - "backend"
     - "data"
 
-# WhatsApp Notifications Configuration
-whatsapp:
-  provider: "callmebot"  # "callmebot" or "twilio"
-  phone: "+917872567781"
-  callmebot_api_key: ""  # Get free key by sending "I allow callmebot to send me messages" on WhatsApp to +34 644 64 64 91
+# Email Notifications Configuration (Gmail SMTP)
+email:
+  sender_email: "sroy.dgp2014@gmail.com"
+  recipient_email: "sroy.dgp2014@gmail.com"
+  gmail_app_password: ""  # Generate a 16-character App Password at https://myaccount.google.com/apppasswords
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+
 

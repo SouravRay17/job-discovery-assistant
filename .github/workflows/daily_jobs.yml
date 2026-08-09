@@ -34,6 +34,13 @@ jobs:
       - name: Batch Tailor Resume & Compile LaTeX PDFs
         run: python batch_tailor.py
 
+      - name: Send Daily Email Digest with PDF Attachments
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python email_notifier.py
+
       - name: Send Daily WhatsApp Notification
         env:
           CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
