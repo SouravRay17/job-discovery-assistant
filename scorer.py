@@ -1,5 +1,5 @@
 """
-scorer.py — Score jobs against CV using a local Ollama model.
+scorer.py — Score jobs against CV using LLM (Ollama local or Google Gemini cloud).
 
 Evaluates fit based on: required experience, skills, seniority, and location.
 Automatically fetches lazy Greenhouse descriptions on demand.
@@ -78,33 +78,23 @@ def validate_environment() -> tuple[dict, dict]:
 
 
 # ---------------------------------------------------------------------------
-# Ollama Integration
+# LLM Integration (Ollama or Gemini)
 # ---------------------------------------------------------------------------
 
-def query_ollama(prompt: str, config: dict) -> dict | None:
-    """Send evaluation prompt to Ollama, parse response, and validate JSON."""
-    host = config.get("ollama", {}).get("host", "http://localhost:11434")
-    model = config.get("ollama", {}).get("model", "llama3.2:3b")
-    url = f"{host}/api/generate"
+def query_scoring_llm(prompt: str, config: dict) -> dict | None:
+    """Send evaluation prompt to LLM (Ollama or Gemini), parse and validate JSON."""
+    from llm_client import query_llm
 
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "stream": False,
-        "options": {
-            "temperature": 0.1,  # Low temperature for factual evaluation
-            "num_predict": 1024,
-        },
-    }
-
-    try:
-        resp = requests.post(url, json=payload, timeout=90)
-        resp.raise_for_status()
-        response_text = resp.json().get("response", "")
-        return parse_and_validate_json(response_text)
-    except Exception as e:
-        print(f"    [!] Ollama API call failed: {e}")
+    response_text = query_llm(
+        prompt=prompt,
+        config=config,
+        temperature=0.1,
+        max_tokens=1024,
+        json_mode=False  # We parse JSON ourselves for robustness
+    )
+    if not response_text:
         return None
+    return parse_and_validate_json(response_text)
 
 
 def parse_and_validate_json(text: str) -> dict | None:
@@ -243,7 +233,7 @@ Description:
                 print(f"  .. Retrying in {RETRY_DELAY}s (attempt {attempt}/{MAX_RETRIES})...")
                 time.sleep(RETRY_DELAY)
 
-            eval_result = query_ollama(prompt, config)
+            eval_result = query_scoring_llm(prompt, config)
             if eval_result is not None:
                 break
 

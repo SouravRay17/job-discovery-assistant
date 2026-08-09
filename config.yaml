@@ -4,6 +4,13 @@ ollama:
   host: "http://localhost:11434"
   model: "llama3.2:3b"  # Change to qwen2.5:14b once pulled
 
+# Google Gemini API (cloud LLM for GitHub Actions)
+# Get free API key at: https://aistudio.google.com/apikey
+gemini:
+  api_key: ""  # Or set GEMINI_API_KEY env var / GitHub Secret
+  model: "gemini-2.0-flash"  # Free tier, fast, high quality
+
+
 scoring:
   threshold: 70  # Jobs below this score (>70% match) are auto-rejected
 

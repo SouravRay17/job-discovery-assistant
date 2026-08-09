@@ -1,6 +1,6 @@
 """
 tailor.py — Generate tailored application materials (resume summary & cover letter)
-using a local Ollama model without fabricating qualifications.
+using LLM (Ollama local or Google Gemini cloud) without fabricating qualifications.
 """
 
 import json
@@ -32,69 +32,49 @@ HARD CONSTRAINTS:
 }"""
 
 
-def query_tailor_ollama(prompt: str, config: dict) -> dict | None:
-    """Send tailoring prompt to local Ollama and return JSON output."""
-    host = config.get("ollama", {}).get("host", "http://localhost:11434")
-    model = config.get("ollama", {}).get("model", "llama3.2:3b")
-    url = f"{host}/api/generate"
+def query_tailor_llm(prompt: str, config: dict) -> dict | None:
+    """Send tailoring prompt to LLM (Ollama or Gemini) and return parsed JSON output."""
+    from llm_client import query_llm
 
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "format": "json",
-        "stream": False,
-        "options": {
-            "temperature": 0.5,  # Slightly higher temperature for writing flow
-            "num_predict": 1500,
-        },
-    }
-
-    try:
-        resp = requests.post(url, json=payload, timeout=120)
-        resp.raise_for_status()
-        response_text = resp.json().get("response", "")
-
-        # Try strict JSON load first
-        match = re.search(r"(\{.*\})", response_text, re.DOTALL)
-        if match:
-            json_str = match.group(1)
-            try:
-                data = json.loads(json_str, strict=False)
-                if "tailored_summary" in data and "cover_letter_draft" in data:
-                    return data
-            except json.JSONDecodeError:
-                # If strict parse fails, fall back to robust regex extraction
-                pass
-
-        # Robust regex extraction for "tailored_summary" and "cover_letter_draft"
-        # Matches the keys and extracts anything inside double quotes lazily, across lines
-        summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"\s*,\s*"cover_letter_draft"', response_text, re.DOTALL)
-        if not summary_match:
-            summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"(?=\s*,\s*"|(?:\s*,\s*\n?\s*\}))', response_text, re.DOTALL)
-
-        cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"\s*\}', response_text, re.DOTALL)
-        if not cover_match:
-            cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"(?=\s*,\s*"|(?:\s*,\s*\n?\s*\}))', response_text, re.DOTALL)
-
-        if summary_match and cover_match:
-            summary = summary_match.group(1).strip()
-            cover = cover_match.group(1).strip()
-            
-            # Unescape newlines / escaped characters if any
-            summary = summary.replace('\\n', '\n').replace('\\"', '"')
-            cover = cover.replace('\\n', '\n').replace('\\"', '"')
-
-            return {
-                "tailored_summary": summary,
-                "cover_letter_draft": cover
-            }
-
-        print("  [!] Failed to parse or extract tailored summary and cover letter from LLM response.")
-        print(f"      Response was:\n{response_text[:300]}...")
+    response_text = query_llm(
+        prompt=prompt,
+        config=config,
+        temperature=0.5,
+        max_tokens=1500,
+        json_mode=True
+    )
+    if not response_text:
+        print("  [!] LLM returned empty response.")
         return None
-    except Exception as e:
-        print(f"  [!] Ollama query failed: {e}")
-        return None
+
+    # Try strict JSON load first
+    match = re.search(r"(\{.*\})", response_text, re.DOTALL)
+    if match:
+        json_str = match.group(1)
+        try:
+            data = json.loads(json_str, strict=False)
+            if "tailored_summary" in data and "cover_letter_draft" in data:
+                return data
+        except json.JSONDecodeError:
+            pass
+
+    # Robust regex extraction fallback
+    summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"\s*,\s*"cover_letter_draft"', response_text, re.DOTALL)
+    if not summary_match:
+        summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"(?=\s*,\s*"|(?:\s*,\s*\n?\s*\}))', response_text, re.DOTALL)
+
+    cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"\s*\}', response_text, re.DOTALL)
+    if not cover_match:
+        cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"(?=\s*,\s*"|(?:\s*,\s*\n?\s*\}))', response_text, re.DOTALL)
+
+    if summary_match and cover_match:
+        summary = summary_match.group(1).strip().replace('\\n', '\n').replace('\\"', '"')
+        cover = cover_match.group(1).strip().replace('\\n', '\n').replace('\\"', '"')
+        return {"tailored_summary": summary, "cover_letter_draft": cover}
+
+    print("  [!] Failed to parse tailored summary and cover letter from LLM response.")
+    print(f"      Response was:\n{response_text[:300]}...")
+    return None
 
 
 def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> bool:
@@ -157,7 +137,7 @@ Description:
 {description}
 """
 
-    result = query_tailor_ollama(prompt, config)
+    result = query_tailor_llm(prompt, config)
     if not result:
         return False
 

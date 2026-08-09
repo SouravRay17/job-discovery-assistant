@@ -8,7 +8,7 @@ on:
 
 jobs:
   job-discovery:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -28,10 +28,14 @@ jobs:
       - name: Run Job Scraper
         run: python scraper.py
 
-      - name: Run Job Fit Scorer (Ollama)
+      - name: Run Job Fit Scorer (Gemini AI)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scorer.py
 
       - name: Batch Tailor Resume & Compile LaTeX PDFs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python batch_tailor.py
 
       - name: Send Daily Email Digest with PDF Attachments
