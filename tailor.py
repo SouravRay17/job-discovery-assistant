@@ -223,16 +223,23 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
     config, cv_profile = validate_environment()
     base_dir = os.path.dirname(os.path.abspath(__file__))
     master_tex_path = os.path.join(base_dir, "Sourav_Ray_Resume_Master.tex")
-    tectonic_bin = os.path.join(base_dir, "tectonic.exe")
+    # Resolve Tectonic compiler binary cross-platform
+    import shutil
+    tectonic_bin = shutil.which("tectonic")
+    if not tectonic_bin:
+        # Fallback to local tectonic.exe (Windows) or tectonic (Linux) in workspace
+        local_exe = os.path.join(base_dir, "tectonic.exe")
+        local_bin = os.path.join(base_dir, "tectonic")
+        if os.path.exists(local_exe):
+            tectonic_bin = local_exe
+        elif os.path.exists(local_bin):
+            tectonic_bin = local_bin
+
     exports_dir = os.path.join(base_dir, "exports")
     os.makedirs(exports_dir, exist_ok=True)
 
-    if not os.path.exists(master_tex_path):
-        print(f"  [!] Master LaTeX template not found at {master_tex_path}")
-        return None
-
-    if not os.path.exists(tectonic_bin):
-        print(f"  [!] Tectonic LaTeX compiler not found at {tectonic_bin}")
+    if not tectonic_bin:
+        print("  [!] Tectonic LaTeX compiler not found in PATH or workspace. Skipping PDF compilation.")
         return None
 
     # 1. Fetch tailored summary from DB

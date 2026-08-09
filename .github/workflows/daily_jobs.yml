@@ -19,6 +19,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Tectonic
+        uses: wtfjoke/setup-tectonic@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -38,7 +43,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scorer.py
 
-      - name: Batch Tailor Resume (Gemini AI — skip PDF compilation on Linux)
+      - name: Batch Tailor Resume & Compile PDFs (Gemini AI + Tectonic)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python batch_tailor.py
