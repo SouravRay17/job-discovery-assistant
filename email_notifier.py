@@ -42,14 +42,14 @@ def send_email_digest(top_n: int = 10):
 
     threshold = config.get("scoring", {}).get("threshold", 70)
 
-    # 1. Fetch top >=70% matches from DB
+    # 1. Fetch top >=70% unnotified matches from DB
     conn = get_connection()
     try:
         cursor = conn.execute("""
             SELECT source, id, company, title, score, location, url, tailored_summary
             FROM jobs
             WHERE score >= ? 
-              AND status != 'rejected'
+              AND status = 'to_review'
               AND description_raw IS NOT NULL 
               AND LENGTH(TRIM(description_raw)) > 0
             ORDER BY score DESC
@@ -60,7 +60,7 @@ def send_email_digest(top_n: int = 10):
         conn.close()
 
     if not rows:
-        print("[*] No >=70% job matches found to send via Email.")
+        print("[*] No new unnotified >=70% job matches found to send via Email.")
         return
 
     print(f"\n{'='*60}")
@@ -156,6 +156,20 @@ def send_email_digest(top_n: int = 10):
         server.send_message(msg)
         server.quit()
         print(f"  [OK] Email successfully sent to {recipient_email} with {attached_files} attached PDF resumes!")
+
+        # Update database status to 'notified' for these jobs so they aren't resent tomorrow
+        conn = get_connection()
+        try:
+            for (src, jid, _, _, _, _, _, _) in rows:
+                conn.execute(
+                    "UPDATE jobs SET status = 'notified' WHERE source = ? AND id = ?",
+                    (src, jid)
+                )
+            conn.commit()
+            print(f"  [OK] Marked {len(rows)} jobs as 'notified' in jobs.db!")
+        finally:
+            conn.close()
+
     except Exception as e:
         print(f"  [ERR] Failed to send email: {e}")
 

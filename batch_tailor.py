@@ -45,7 +45,7 @@ def run_batch_tailoring(top_n: int | None = 10):
             SELECT source, id, company, title, score, location, remote, url, tailored_summary
             FROM jobs 
             WHERE score >= ? 
-              AND status != 'rejected'
+              AND status = 'to_review'
               AND description_raw IS NOT NULL 
               AND LENGTH(TRIM(description_raw)) > 0
             ORDER BY score DESC
