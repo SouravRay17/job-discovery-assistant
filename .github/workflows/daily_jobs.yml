@@ -35,8 +35,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Scraper is run locally to prevent cloud IP blocking. 
-      # GitHub Actions starts directly with scoring, tailoring, and email alerts.
+      # Scrape new jobs. If some sources block GHA runners, they will log errors but NOT fail the pipeline.
+      - name: Run Job Scraper
+        run: python scraper.py
 
       - name: Run Job Fit Scorer (Gemini AI)
         env:

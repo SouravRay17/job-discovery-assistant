@@ -79,16 +79,20 @@ def notify_top_jobs_whatsapp():
     import re
     github_repo = os.getenv("GITHUB_REPOSITORY") or "SouravRay17/job-discovery-assistant"
 
-    # Fetch top >=70% matches from DB
+    threshold = config.get("scoring", {}).get("threshold", 70)
+
+    # Fetch top matches from DB that haven't been notified on WhatsApp yet
     conn = get_connection()
     try:
         cursor = conn.execute("""
             SELECT source, id, company, title, score, location, url 
             FROM jobs 
-            WHERE score >= 70 AND status != 'rejected'
+            WHERE score >= ? 
+              AND status = 'to_review'
+              AND notified_whatsapp = 0
             ORDER BY score DESC 
             LIMIT 10
-        """)
+        """, (threshold,))
         rows = cursor.fetchall()
     finally:
         conn.close()
@@ -129,16 +133,31 @@ def notify_top_jobs_whatsapp():
         print(message_text.encode("utf-8", errors="ignore").decode("ascii", errors="ignore"))
     print("="*60)
 
+    success = False
     if provider == "callmebot":
         if not api_key:
             print("  [!] CALLMEBOT_API_KEY missing in config.yaml or Environment. Skipping send.")
             return
-        send_whatsapp_callmebot(phone, api_key, message_text)
+        success = send_whatsapp_callmebot(phone, api_key, message_text)
     elif provider == "twilio":
         if not twilio_sid or not twilio_token:
             print("  [!] Twilio credentials missing in config.yaml or Environment. Skipping send.")
             return
-        send_whatsapp_twilio(twilio_sid, twilio_token, twilio_from, phone, message_text)
+        success = send_whatsapp_twilio(twilio_sid, twilio_token, twilio_from, phone, message_text)
+
+    if success:
+        # Update database notified_whatsapp flag so they aren't resent tomorrow
+        conn = get_connection()
+        try:
+            for (src, jid, _, _, _, _, _) in rows:
+                conn.execute(
+                    "UPDATE jobs SET notified_whatsapp = 1 WHERE source = ? AND id = ?",
+                    (src, jid)
+                )
+            conn.commit()
+            print(f"  [OK] Marked {len(rows)} jobs as notified on WhatsApp in jobs.db!")
+        finally:
+            conn.close()
 
 if __name__ == "__main__":
     notify_top_jobs_whatsapp()

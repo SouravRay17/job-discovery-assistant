@@ -28,7 +28,7 @@ def load_config() -> dict:
             return yaml.safe_load(f)
     return {}
 
-def send_pywhatkit_whatsapp(phone: str, message: str):
+def send_pywhatkit_whatsapp(phone: str, message: str) -> bool:
     """Send message instantly using pywhatkit."""
     try:
         import pywhatkit
@@ -41,21 +41,25 @@ def send_pywhatkit_whatsapp(phone: str, message: str):
             close_time=3
         )
         print("  [OK] WhatsApp message dispatched via PyWhatKit!")
+        return True
     except Exception as e:
         print(f"  [!] PyWhatKit dispatch error: {e}")
+        return False
 
 def send_pywhatkit_digest(top_n: int = 10):
     config = load_config()
     phone = config.get("whatsapp", {}).get("phone", "+917872567781")
     threshold = config.get("scoring", {}).get("threshold", 70)
 
-    # 1. Query top matches from DB
+    # 1. Query top matches from DB that haven't been notified on WhatsApp yet
     conn = get_connection()
     try:
         cursor = conn.execute("""
             SELECT source, id, company, title, score, location, url, tailored_summary
             FROM jobs
-            WHERE score >= ? AND status != 'rejected'
+            WHERE score >= ? 
+              AND status = 'to_review'
+              AND notified_whatsapp = 0
             ORDER BY score DESC
             LIMIT ?
         """, (threshold, top_n))
@@ -110,7 +114,19 @@ def send_pywhatkit_digest(top_n: int = 10):
     print("-" * 50 + "\n")
 
     # Dispatch via PyWhatKit
-    send_pywhatkit_whatsapp(phone, full_message)
+    success = send_pywhatkit_whatsapp(phone, full_message)
+    if success:
+        conn = get_connection()
+        try:
+            for (src, jid, _, _, _, _, _, _) in rows:
+                conn.execute(
+                    "UPDATE jobs SET notified_whatsapp = 1 WHERE source = ? AND id = ?",
+                    (src, jid)
+                )
+            conn.commit()
+            print(f"  [OK] Marked {len(rows)} jobs as notified on WhatsApp (pywhatkit) in jobs.db!")
+        finally:
+            conn.close()
 
 if __name__ == "__main__":
     send_pywhatkit_digest(top_n=10)

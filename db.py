@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS jobs (
     tailored_summary TEXT,
     cover_letter_draft TEXT,
     status TEXT DEFAULT 'new',
+    notified_email INTEGER DEFAULT 0,
+    notified_whatsapp INTEGER DEFAULT 0,
     PRIMARY KEY (source, id)
 );
 """
@@ -49,7 +51,24 @@ def init_db() -> None:
     try:
         conn.executescript(SCHEMA)
         conn.commit()
-        print(f"Database initialized at {DB_PATH}")
+        
+        # Migrations to add new columns dynamically for existing databases
+        import sqlite3
+        try:
+            conn.execute("ALTER TABLE jobs ADD COLUMN notified_email INTEGER DEFAULT 0;")
+            conn.commit()
+            print("Migration: Added notified_email column to jobs table.")
+        except sqlite3.OperationalError:
+            pass  # Already exists
+
+        try:
+            conn.execute("ALTER TABLE jobs ADD COLUMN notified_whatsapp INTEGER DEFAULT 0;")
+            conn.commit()
+            print("Migration: Added notified_whatsapp column to jobs table.")
+        except sqlite3.OperationalError:
+            pass  # Already exists
+
+        print(f"Database initialized and migrated at {DB_PATH}")
     finally:
         conn.close()
 

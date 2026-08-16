@@ -50,6 +50,7 @@ def send_email_digest(top_n: int = 10):
             FROM jobs
             WHERE score >= ? 
               AND status = 'to_review'
+              AND notified_email = 0
               AND description_raw IS NOT NULL 
               AND LENGTH(TRIM(description_raw)) > 0
             ORDER BY score DESC
@@ -157,16 +158,16 @@ def send_email_digest(top_n: int = 10):
         server.quit()
         print(f"  [OK] Email successfully sent to {recipient_email} with {attached_files} attached PDF resumes!")
 
-        # Update database status to 'notified' for these jobs so they aren't resent tomorrow
+        # Update database notified_email flag so they aren't resent tomorrow
         conn = get_connection()
         try:
             for (src, jid, _, _, _, _, _, _) in rows:
                 conn.execute(
-                    "UPDATE jobs SET status = 'notified' WHERE source = ? AND id = ?",
+                    "UPDATE jobs SET notified_email = 1 WHERE source = ? AND id = ?",
                     (src, jid)
                 )
             conn.commit()
-            print(f"  [OK] Marked {len(rows)} jobs as 'notified' in jobs.db!")
+            print(f"  [OK] Marked {len(rows)} jobs as notified via Email in jobs.db!")
         finally:
             conn.close()
 
