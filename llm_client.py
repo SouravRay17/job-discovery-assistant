@@ -108,11 +108,7 @@ def _query_ollama(prompt: str, config: dict, temperature: float,
 
 def _query_gemini(prompt: str, config: dict, temperature: float,
                   max_tokens: int, json_mode: bool) -> str | None:
-    """Query Google Gemini API (free tier).
-    
-    Uses the v1beta generateContent endpoint.
-    Model: gemini-2.0-flash (free, fast, high quality).
-    """
+    """Query Google Gemini API (free tier) with automatic retry and backoff."""
     api_key = os.getenv("GEMINI_API_KEY") or config.get("gemini", {}).get("api_key", "")
     if not api_key:
         print("    [!] GEMINI_API_KEY not set. Cannot use Gemini provider.")
@@ -139,36 +135,56 @@ def _query_gemini(prompt: str, config: dict, temperature: float,
     if json_mode:
         payload["generationConfig"]["responseMimeType"] = "application/json"
 
-    try:
-        resp = requests.post(url, json=payload, timeout=120)
-        resp.raise_for_status()
-        data = resp.json()
+    import time
+    max_api_retries = 5
+    backoff_time = 10
 
-        # Extract text from response
-        candidates = data.get("candidates", [])
-        if not candidates:
-            print("    [!] Gemini returned no candidates.")
-            # Check for prompt blocking
-            block_reason = data.get("promptFeedback", {}).get("blockReason")
-            if block_reason:
-                print(f"    [!] Prompt blocked: {block_reason}")
-            return None
-
-        parts = candidates[0].get("content", {}).get("parts", [])
-        if not parts:
-            print("    [!] Gemini returned empty content.")
-            return None
-
-        return parts[0].get("text", "")
-
-    except requests.HTTPError as e:
-        error_body = ""
+    for attempt in range(1, max_api_retries + 1):
         try:
-            error_body = e.response.json().get("error", {}).get("message", "")
-        except Exception:
-            pass
-        print(f"    [!] Gemini API error ({e.response.status_code}): {error_body or e}")
-        return None
-    except Exception as e:
-        print(f"    [!] Gemini API call failed: {e}")
-        return None
+            resp = requests.post(url, json=payload, timeout=120)
+            if resp.status_code == 429:
+                print(f"    [!] Gemini rate limit hit (429). Retrying in {backoff_time}s (attempt {attempt}/{max_api_retries})...")
+                time.sleep(backoff_time)
+                backoff_time *= 2  # Exponential backoff
+                continue
+                
+            resp.raise_for_status()
+            data = resp.json()
+
+            # Extract text from response
+            candidates = data.get("candidates", [])
+            if not candidates:
+                print("    [!] Gemini returned no candidates.")
+                # Check for prompt blocking
+                block_reason = data.get("promptFeedback", {}).get("blockReason")
+                if block_reason:
+                    print(f"    [!] Prompt blocked: {block_reason}")
+                return None
+
+            parts = candidates[0].get("content", {}).get("parts", [])
+            if not parts:
+                print("    [!] Gemini returned empty content.")
+                return None
+
+            return parts[0].get("text", "")
+
+        except requests.HTTPError as e:
+            error_body = ""
+            try:
+                error_body = e.response.json().get("error", {}).get("message", "")
+            except Exception:
+                pass
+            print(f"    [!] Gemini API error ({e.response.status_code}): {error_body or e}")
+            
+            # If server error (5xx), wait and retry
+            if e.response.status_code >= 500:
+                print(f"    [!] Gemini Server error. Retrying in {backoff_time}s...")
+                time.sleep(backoff_time)
+                backoff_time *= 2
+                continue
+            return None
+        except Exception as e:
+            print(f"    [!] Gemini API call failed: {e}")
+            return None
+            
+    return None
