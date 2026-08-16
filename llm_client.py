@@ -118,7 +118,7 @@ def _query_gemini(prompt: str, config: dict, temperature: float,
         print("    [!] GEMINI_API_KEY not set. Cannot use Gemini provider.")
         return None
 
-    model = config.get("gemini", {}).get("model", "gemini-2.0-flash")
+    model = config.get("gemini", {}).get("model", "gemini-3.5-flash")
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
 
     # Build request payload

@@ -8,7 +8,7 @@ ollama:
 # Get free API key at: https://aistudio.google.com/apikey
 gemini:
   api_key: ""  # Or set GEMINI_API_KEY env var / GitHub Secret
-  model: "gemini-2.0-flash"  # Free tier, fast, high quality
+  model: "gemini-3.5-flash"  # Free tier, fast, high quality
 
 
 scoring:

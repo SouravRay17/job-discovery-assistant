@@ -171,6 +171,7 @@ def score_jobs():
 
     scored_count = 0
     failed_count = 0
+    consecutive_failures = 0
 
     for i, job in enumerate(unscored_jobs, 1):
         job_source = job["source"]
@@ -240,8 +241,13 @@ Description:
         if eval_result is None:
             print("  [ERR] Failed to evaluate job after all retries.")
             failed_count += 1
+            consecutive_failures += 1
+            if consecutive_failures >= 5:
+                print("\n[CRITICAL] Too many consecutive LLM failures (5). Exiting pipeline to prevent timeout/abuse.")
+                sys.exit(1)
             continue
 
+        consecutive_failures = 0
         score = eval_result["score"]
         reasoning = eval_result["reasoning"]
         missing_reqs = json.dumps(eval_result["missing_requirements"])
