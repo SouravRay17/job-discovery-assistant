@@ -20,7 +20,7 @@ import re
 from datetime import datetime, timezone
 import numpy as np
 
-from config import load_config, CV_PATH
+from config import load_config, CV_PATH, load_candidate_profile
 from db import get_connection, init_db
 from indexer import (
     compute_embeddings, tokenize_for_bm25,
@@ -30,14 +30,6 @@ from indexer import (
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
-
-
-def load_candidate_profile() -> dict:
-    """Load candidate profile from cv_profile.json."""
-    if not os.path.exists(CV_PATH):
-        raise FileNotFoundError(f"Candidate profile not found at {CV_PATH}")
-    with open(CV_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
 
 
 def build_candidate_search_text(profile: dict) -> str:
