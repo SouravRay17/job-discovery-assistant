@@ -84,12 +84,21 @@ CREATE TABLE IF NOT EXISTS candidate_job_scores (
 """
 
 
+_db_initialized = False
+
 def get_connection() -> sqlite3.Connection:
     """Return a connection to the SQLite database with WAL and foreign keys."""
+    global _db_initialized
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL;")
     conn.execute("PRAGMA foreign_keys=ON;")
+    if not _db_initialized:
+        conn.executescript(SCHEMA_JOBS)
+        conn.executescript(SCHEMA_SCORES)
+        _migrate_db(conn)
+        conn.commit()
+        _db_initialized = True
     return conn
 
 

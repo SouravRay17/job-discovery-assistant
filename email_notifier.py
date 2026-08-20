@@ -88,8 +88,11 @@ def send_email_digest(top_n: int = 10):
                     part = MIMEApplication(f.read(), Name=pdf_name)
                     part['Content-Disposition'] = f'attachment; filename="{pdf_name}"'
                     msg.attach(part)
-            except Exception:
-                pass
+                    print(f"  [+] Attached PDF resume: {pdf_name} ({os.path.getsize(pdf_path)} bytes)")
+            except Exception as e:
+                print(f"  [!] Failed to attach {pdf_name}: {e}")
+        else:
+            print(f"  [!] PDF resume not found for attachment: {pdf_name}")
 
         badge_color = "#22c55e" if rec == "APPLY" else "#eab308"
         strengths_html = "".join(f"<span style='background:#334155;color:#38bdf8;padding:2px 6px;margin-right:4px;border-radius:3px;font-size:11px;'>{s}</span>" for s in strengths[:4])

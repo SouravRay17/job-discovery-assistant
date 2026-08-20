@@ -174,19 +174,27 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
     conn = get_connection()
     try:
         row = conn.execute(
-            """SELECT j.company, c.tailored_summary
-               FROM candidate_job_scores c
-               JOIN jobs j ON c.source = j.source AND c.job_id = j.id
-               WHERE c.source = ? AND c.job_id = ?""",
+            """SELECT j.company, c.tailored_summary, j.title
+               FROM jobs j
+               LEFT JOIN candidate_job_scores c ON c.source = j.source AND c.job_id = j.id
+               WHERE j.source = ? AND j.id = ?""",
             (job_source, job_id)
         ).fetchone()
     finally:
         conn.close()
 
-    if not row or not row[1]:
-        return None
+    company = row[0] if row and row[0] else "Company"
+    summary_text = row[1] if row and row[1] else None
+    title = row[2] if row and len(row) > 2 and row[2] else "Data & AI Engineer"
 
-    company, summary_text = row
+    # Default fallback summary if LLM tailoring hasn't run yet
+    if not summary_text:
+        summary_text = (
+            f"Results-driven Data & AI Engineer with 3+ years of enterprise experience building production "
+            f"data platforms, high-throughput ETL/ELT pipelines, and Generative AI systems. Proven expertise in "
+            f"Snowflake, AWS, PySpark, dbt, Apache Airflow, and Multi-Agent Orchestration (MCP). Targeting the {title} role at {company}."
+        )
+
     company_clean = re.sub(r'[^a-zA-Z0-9]', '_', company)
     temp_tex_path = os.path.join(exports_dir, f"temp_cv_{company_clean}_{job_id}.tex")
     temp_pdf_path = os.path.join(exports_dir, f"temp_cv_{company_clean}_{job_id}.pdf")
@@ -200,7 +208,9 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
         return None
 
     summary_latex = f"\\section*{{Professional Summary}}\n\n{escape_latex(summary_text)}\n\n"
-    if "\\section*{Highlights}" in tex_content:
+    if "\\section*{Technical Skills}" in tex_content:
+        tex_content = tex_content.replace("\\section*{Technical Skills}", summary_latex + "\\section*{Technical Skills}")
+    elif "\\section*{Highlights}" in tex_content:
         tex_content = tex_content.replace("\\section*{Highlights}", summary_latex + "\\section*{Highlights}")
     else:
         tex_content = tex_content.replace("\\begin{document}", f"\\begin{{document}}\n\n{summary_latex}")
@@ -208,22 +218,27 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
     try:
         with open(temp_tex_path, "w", encoding="utf-8") as f:
             f.write(tex_content)
-        subprocess.run([tectonic_bin, temp_tex_path, "--outdir", exports_dir], capture_output=True, check=True)
+        result = subprocess.run([tectonic_bin, temp_tex_path, "--outdir", exports_dir], capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"  [!] Tectonic compilation returned {result.returncode}: {result.stderr or result.stdout}")
 
         if os.path.exists(temp_pdf_path):
             if os.path.exists(output_pdf_path):
                 os.remove(output_pdf_path)
             os.rename(temp_pdf_path, output_pdf_path)
-        else:
+        elif not os.path.exists(output_pdf_path):
             return None
     except Exception as e:
-        print(f"  [!] Tectonic compilation error: {e}")
+        print(f"  [!] Tectonic execution error: {e}")
         return None
     finally:
         if os.path.exists(temp_tex_path):
-            os.remove(temp_tex_path)
+            try:
+                os.remove(temp_tex_path)
+            except Exception:
+                pass
 
-    print(f"  [OK] LaTeX Typeset PDF Resume created: {output_pdf_path}")
+    print(f"  [OK] LaTeX Typeset PDF Resume created: {output_pdf_path} ({os.path.getsize(output_pdf_path)} bytes)")
     return output_pdf_path
 
 
