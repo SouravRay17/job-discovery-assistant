@@ -6,7 +6,7 @@ model = "llama3.2:3b"
 
 [gemini]
 api_key = ""
-model = "gemini-2.0-flash"
+model = "gemini-3.6-flash"
 
 [scoring]
 threshold = 70
@@ -58,6 +58,3 @@ smtp_port = 587
 provider = "callmebot"
 phone = "+917872567781"
 callmebot_api_key = ""
-twilio_account_sid = ""
-twilio_auth_token = ""
-twilio_from_number = ""

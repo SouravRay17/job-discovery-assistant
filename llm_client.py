@@ -70,9 +70,8 @@ def _query_gemini(prompt: str, config: dict, temperature: float,
         print("    [!] GEMINI_API_KEY not set. Cannot use Gemini provider.")
         return None
 
-    configured_model = config.get("gemini", {}).get("model", "gemini-2.0-flash")
-    models_to_try = [configured_model, "gemini-2.0-flash", "gemini-1.5-flash"]
-    # Deduplicate while preserving order
+    configured_model = config.get("gemini", {}).get("model", "gemini-3.6-flash")
+    models_to_try = [configured_model, "gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.5-pro"]
     seen = set()
     models = [m for m in models_to_try if not (m in seen or seen.add(m))]
 
@@ -107,7 +106,7 @@ def _query_gemini(prompt: str, config: dict, temperature: float,
                     except Exception:
                         pass
                     print(f"    [!] Gemini model '{model}' error ({resp.status_code}): {error_msg}. Trying fallback model...")
-                    break  # Try next model in list
+                    break  # Try next model
 
                 resp.raise_for_status()
                 data = resp.json()
