@@ -75,7 +75,16 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python email_notifier.py
 
-      # 9. Commit and Push Updated DB, Indices, and Resumes
+      # 9. Upload Compiled Resumes as Build Artifact
+      - name: Upload Compiled Resumes Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tailored-resumes-${{ github.run_id }}
+          path: exports/*.pdf
+          if-no-files-found: ignore
+
+      # 10. Commit and Push Updated DB, Indices, and Resumes
       - name: Commit and Push Updated DB, Indices, and Resumes
         run: |
           git config --local user.email "action@github.com"

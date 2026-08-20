@@ -372,8 +372,8 @@ def run_batch_tailoring(top_n: int = 10):
                       j.location, j.remote, j.url, c.tailored_summary, c.recommendation
                FROM candidate_job_scores c
                JOIN jobs j ON c.source = j.source AND c.job_id = j.id
-               WHERE c.recommendation IN ('APPLY', 'MAYBE') OR c.mmr_selected = 1
-               ORDER BY c.llm_score DESC, c.reranker_score DESC
+               WHERE c.recommendation IN ('APPLY', 'MAYBE') OR c.mmr_selected = 1 OR c.hybrid_retrieval_score >= 0.4
+               ORDER BY COALESCE(c.final_composite_score, c.llm_score/100.0, c.reranker_score, c.hybrid_retrieval_score) DESC
                LIMIT ?""",
             (top_n,)
         )
@@ -382,7 +382,25 @@ def run_batch_tailoring(top_n: int = 10):
         conn.close()
 
     if not rows:
-        print("[*] No qualifying candidates found for batch tailoring. Run scorer.py first.")
+        print("[*] No candidates retrieved yet. Running quick retrieval fallback...")
+        from retriever import retrieve_jobs
+        retrieve_jobs(top_k=20)
+        conn = get_connection()
+        try:
+            cursor = conn.execute(
+                """SELECT c.source, c.job_id, j.company, j.title, c.llm_score,
+                          j.location, j.remote, j.url, c.tailored_summary, c.recommendation
+                   FROM candidate_job_scores c
+                   JOIN jobs j ON c.source = j.source AND c.job_id = j.id
+                   ORDER BY c.hybrid_retrieval_score DESC LIMIT ?""",
+                (top_n,)
+            )
+            rows = [dict(row) for row in cursor.fetchall()]
+        finally:
+            conn.close()
+
+    if not rows:
+        print("[*] No jobs available in database to tailor.")
         return
 
     print(f"\n{'='*60}\nBatch Tailoring & Resume Generation -- Processing {len(rows)} Openings\n{'='*60}")
@@ -393,19 +411,21 @@ def run_batch_tailoring(top_n: int = 10):
         job_id = item["job_id"]
         company = item["company"]
         title = item["title"]
-        score = item["llm_score"] or "Pending"
+        score = item["llm_score"] or "Auto"
         location = item["location"]
         rec = item["recommendation"] or "APPLY"
         existing_summary = item["tailored_summary"]
 
-        print(f"\n[{idx}/{len(rows)}] [{rec} - {score}/100] {company} — {title} ({location})")
+        print(f"\n[{idx}/{len(rows)}] [{rec} - {score}] {company} — {title} ({location})")
         if not existing_summary:
-            if tailor_job(source, job_id, config, cv_profile):
-                tailored_count += 1
-            else:
-                continue
+            try:
+                if tailor_job(source, job_id, config, cv_profile):
+                    tailored_count += 1
+            except Exception as e:
+                print(f"  [!] Note: LLM tailoring skipped ({e}), compiling with verified candidate summary.")
 
-        if compile_pdf_resume(source, job_id):
+        pdf_path = compile_pdf_resume(source, job_id)
+        if pdf_path:
             pdf_count += 1
 
     print(f"\n{'='*60}\nBatch Tailoring Complete! Processed: {len(rows)} | Summaries: {tailored_count} | PDFs: {pdf_count}\n{'='*60}\n")
