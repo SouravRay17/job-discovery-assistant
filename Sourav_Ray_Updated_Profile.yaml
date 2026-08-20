@@ -302,3 +302,109 @@ notes_for_llm_resume_tailoring:
   - "For GenAI/Agentic AI/LLM JDs, lead with generative_ai_llm skills and the ai_network_incident_orchestrator, genai_schema_validator, and snowflake_cost_optimization_agent (MCP orchestration angle) projects."
   - "For software engineering / ML infra JDs, lead with data_structures_algorithms and ml_infrastructure skills and emphasize code ownership, code reviews, and the CallAI speech-to-text build."
   - "Do not fabricate metrics or tools not listed here. If a target JD requires a skill not in this file, flag it as a gap rather than inventing it."
+
+# =============================================================================
+# STRUCTURED RETRIEVAL & SEARCH CONFIGURATION (Imported from cv_profile.json)
+# =============================================================================
+version: "2.0"
+last_updated: "2026-08-21"
+
+target_roles:
+  - "AI Engineer"
+  - "ML Engineer"
+  - "Data Engineer"
+  - "Python Developer"
+  - "Backend Engineer"
+  - "Analytics Engineer"
+  - "Software Engineer AI/ML"
+  - "GenAI Engineer"
+  - "Agentic AI Engineer"
+  - "LLM Engineer"
+  - "Snowflake Data Engineer"
+  - "Cloud Data Platform Engineer"
+
+core_skills:
+  - "Python"
+  - "SQL"
+  - "Snowflake"
+  - "dbt"
+  - "PySpark"
+  - "AWS"
+  - "GCP"
+  - "Apache Airflow"
+  - "Kafka"
+  - "ETL/ELT"
+
+ai_ml_skills:
+  - "LLM"
+  - "RAG"
+  - "LangChain"
+  - "LangGraph"
+  - "MLOps"
+  - "Vertex AI"
+  - "OpenAI"
+  - "Gemini"
+  - "ChromaDB"
+  - "NLP"
+  - "Multi-Agent Orchestration"
+  - "Model Context Protocol (MCP)"
+
+secondary_skills:
+  - "Docker"
+  - "Kubernetes"
+  - "Git"
+  - "GitHub Actions"
+  - "Linux/Shell Scripting"
+  - "Data Contracts"
+  - "Data Mesh"
+  - "Sigma"
+
+preferred_domains:
+  - "Data Engineering"
+  - "AI"
+  - "ML Infrastructure"
+  - "Generative AI"
+  - "Data Platforms"
+  - "Cloud Analytics"
+
+preferred_locations:
+  - "Remote"
+  - "India"
+  - "Bangalore"
+  - "Bengaluru"
+  - "Hyderabad"
+  - "Pune"
+  - "Mumbai"
+  - "Delhi"
+  - "Noida"
+  - "Gurgaon"
+  - "Chennai"
+
+preferred_employment_types:
+  - "Full-time"
+  - "Contract"
+  - "Permanent"
+
+excluded_roles:
+  - "Store Design"
+  - "Refrigeration"
+  - "Compliance"
+  - "Civil"
+  - "Mechanical"
+  - "HR"
+  - "Recruiter"
+  - "Payroll"
+  - "Accounting"
+  - "Facilities"
+  - "Legal"
+  - "Sales Representative"
+  - "Marketing Manager"
+  - "Real Estate"
+  - "Chef"
+  - "Security Guard"
+  - "Nurse"
+
+must_have_constraints:
+  min_experience: 0
+  max_experience: 6
+  allow_remote: true
