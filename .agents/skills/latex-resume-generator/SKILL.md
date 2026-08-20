@@ -1,14 +1,14 @@
 ---
 name: latex-resume-generator
 description: >-
-  Maps structured candidate profile data (Sourav_Ray_Updated_Profile.yaml and cv_profile.json)
+  Maps structured candidate profile data (Sourav_Ray_Updated_Profile.yaml)
   to the master LaTeX resume template (Sourav_Ray_Resume_Master.tex) and compiles ATS-optimized
   PDF resumes using the Tectonic engine.
 ---
 
 # LaTeX Resume Generator & Profile Mapping Skill
 
-This skill defines the end-to-end workflow for reading Sourav Ray's master candidate profile (`Sourav_Ray_Updated_Profile.yaml` and `cv_profile.json`), selecting the optimal positioning persona, extracting matching technical skills, mapping them into the LaTeX template (`Sourav_Ray_Resume_Master.tex`), and compiling ATS-optimized PDF resumes via **Tectonic**.
+This skill defines the end-to-end workflow for reading Sourav Ray's master candidate profile (`Sourav_Ray_Updated_Profile.yaml`), selecting the optimal positioning persona, extracting matching technical skills, mapping them into the LaTeX template (`Sourav_Ray_Resume_Master.tex`), and compiling ATS-optimized PDF resumes via **Tectonic**.
 
 ---
 

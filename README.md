@@ -13,7 +13,7 @@ flowchart TD
     B --> D[indexer.py: Dense Embeddings & BM25 Index]
     D --> E[vector_store/ & bm25_index/]
     
-    F[Candidate Profile: cv_profile.json] --> G[retriever.py: Hard Filters]
+    F[Candidate Profile: Sourav_Ray_Updated_Profile.yaml] --> G[retriever.py: Hard Filters]
     E & G --> H[Hybrid Retrieval: Vector + BM25 + RRF + Skill Scoring]
     H -->|Top 100 Candidates| I[reranker.py: Cross-Encoder Deep Scoring]
     I -->|Top 20 Candidates| J[MMR Diversification across Roles & Companies]

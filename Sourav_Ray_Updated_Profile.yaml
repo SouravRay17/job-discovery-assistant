@@ -304,7 +304,7 @@ notes_for_llm_resume_tailoring:
   - "Do not fabricate metrics or tools not listed here. If a target JD requires a skill not in this file, flag it as a gap rather than inventing it."
 
 # =============================================================================
-# STRUCTURED RETRIEVAL & SEARCH CONFIGURATION (Imported from cv_profile.json)
+# STRUCTURED RETRIEVAL & SEARCH CONFIGURATION
 # =============================================================================
 version: "2.0"
 last_updated: "2026-08-21"
