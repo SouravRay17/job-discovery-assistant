@@ -66,7 +66,7 @@ def query_scoring_llm(prompt: str, config: dict) -> dict | None:
         config=config,
         temperature=0.1,
         max_tokens=1024,
-        json_mode=False
+        json_mode=True
     )
     if not response_text:
         return None
@@ -75,6 +75,8 @@ def query_scoring_llm(prompt: str, config: dict) -> dict | None:
 
 def parse_and_validate_json(text: str) -> dict | None:
     """Extract JSON object from response and validate keys."""
+    if not text:
+        return None
     match = re.search(r"(\{.*\})", text.strip(), re.DOTALL)
     if not match:
         print("    [!] No JSON structure found in response.")
@@ -192,8 +194,8 @@ Description:
             print("  [ERR] Failed to evaluate job after retries.")
             failed_count += 1
             consecutive_failures += 1
-            if consecutive_failures >= 5:
-                print("\n[CRITICAL] Too many consecutive LLM failures (5). Exiting.")
+            if consecutive_failures >= 8:
+                print("\n[CRITICAL] Too many consecutive LLM failures (8). Exiting.")
                 sys.exit(1)
             continue
 

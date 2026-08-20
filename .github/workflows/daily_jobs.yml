@@ -47,7 +47,7 @@ jobs:
       - name: Batch Tailor Resume & Compile PDFs (Gemini AI + Tectonic)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python batch_tailor.py
+        run: python tailor.py --batch --top 10
 
       - name: Send Daily Email Digest with PDF Attachments
         env:
