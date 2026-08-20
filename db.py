@@ -5,8 +5,8 @@ Provides a single-file database (jobs.db) for storing job listings,
 scores, and tailored application materials.
 """
 
-import sqlite3
 import os
+import sqlite3
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "jobs.db")
 
@@ -51,24 +51,7 @@ def init_db() -> None:
     try:
         conn.executescript(SCHEMA)
         conn.commit()
-        
-        # Migrations to add new columns dynamically for existing databases
-        import sqlite3
-        try:
-            conn.execute("ALTER TABLE jobs ADD COLUMN notified_email INTEGER DEFAULT 0;")
-            conn.commit()
-            print("Migration: Added notified_email column to jobs table.")
-        except sqlite3.OperationalError:
-            pass  # Already exists
-
-        try:
-            conn.execute("ALTER TABLE jobs ADD COLUMN notified_whatsapp INTEGER DEFAULT 0;")
-            conn.commit()
-            print("Migration: Added notified_whatsapp column to jobs table.")
-        except sqlite3.OperationalError:
-            pass  # Already exists
-
-        print(f"Database initialized and migrated at {DB_PATH}")
+        print(f"Database initialized at {DB_PATH}")
     finally:
         conn.close()
 

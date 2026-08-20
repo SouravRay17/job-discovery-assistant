@@ -1,0 +1,506 @@
+# Company ATS Mapping (TOML)
+
+[[companies]]
+name = "Stripe"
+ats = "greenhouse"
+greenhouse_board = "stripe"
+
+[[companies]]
+name = "Cloudflare"
+ats = "greenhouse"
+greenhouse_board = "cloudflare"
+
+[[companies]]
+name = "Airbnb"
+ats = "greenhouse"
+greenhouse_board = "airbnb"
+
+[[companies]]
+name = "Coinbase"
+ats = "greenhouse"
+greenhouse_board = "coinbase"
+
+[[companies]]
+name = "Databricks"
+ats = "greenhouse"
+greenhouse_board = "databricks"
+
+[[companies]]
+name = "Snowflake"
+ats = "greenhouse"
+greenhouse_board = "snowflake"
+
+[[companies]]
+name = "Scale AI"
+ats = "greenhouse"
+greenhouse_board = "scaleai"
+
+[[companies]]
+name = "Anthropic"
+ats = "greenhouse"
+greenhouse_board = "anthropic"
+
+[[companies]]
+name = "OpenAI"
+ats = "greenhouse"
+greenhouse_board = "openai"
+
+[[companies]]
+name = "Plaid"
+ats = "greenhouse"
+greenhouse_board = "plaid"
+
+[[companies]]
+name = "Affirm"
+ats = "greenhouse"
+greenhouse_board = "affirm"
+
+[[companies]]
+name = "Robinhood"
+ats = "greenhouse"
+greenhouse_board = "robinhood"
+
+[[companies]]
+name = "Chime"
+ats = "greenhouse"
+greenhouse_board = "chime"
+
+[[companies]]
+name = "MongoDB"
+ats = "greenhouse"
+greenhouse_board = "mongodb"
+
+[[companies]]
+name = "Confluent"
+ats = "greenhouse"
+greenhouse_board = "confluent"
+
+[[companies]]
+name = "Elastic"
+ats = "greenhouse"
+greenhouse_board = "elastic"
+
+[[companies]]
+name = "Datadog"
+ats = "greenhouse"
+greenhouse_board = "datadog"
+
+[[companies]]
+name = "Twilio"
+ats = "greenhouse"
+greenhouse_board = "twilio"
+
+[[companies]]
+name = "HashiCorp"
+ats = "greenhouse"
+greenhouse_board = "hashicorp"
+
+[[companies]]
+name = "Netflix"
+ats = "greenhouse"
+greenhouse_board = "netflix"
+
+[[companies]]
+name = "Palantir"
+ats = "greenhouse"
+greenhouse_board = "palantir"
+
+[[companies]]
+name = "Razorpay"
+ats = "greenhouse"
+greenhouse_board = "razorpay"
+
+[[companies]]
+name = "Postman"
+ats = "greenhouse"
+greenhouse_board = "postman"
+
+[[companies]]
+name = "Ripple"
+ats = "greenhouse"
+greenhouse_board = "ripple"
+
+[[companies]]
+name = "CRED"
+ats = "greenhouse"
+greenhouse_board = "cred"
+
+[[companies]]
+name = "Spotify"
+ats = "lever"
+lever_slug = "spotify"
+
+[[companies]]
+name = "Cohere"
+ats = "lever"
+lever_slug = "cohere"
+
+[[companies]]
+name = "Perplexity AI"
+ats = "lever"
+lever_slug = "perplexityai"
+
+[[companies]]
+name = "Together AI"
+ats = "lever"
+lever_slug = "togetherai"
+
+[[companies]]
+name = "Hugging Face"
+ats = "lever"
+lever_slug = "huggingface"
+
+[[companies]]
+name = "Character.AI"
+ats = "lever"
+lever_slug = "character"
+
+[[companies]]
+name = "Mistral AI"
+ats = "lever"
+lever_slug = "mistral"
+
+[[companies]]
+name = "Anduril"
+ats = "lever"
+lever_slug = "anduril"
+
+[[companies]]
+name = "Mastercard"
+ats = "workday"
+workday_url = "https://mastercard.wd1.myworkdayjobs.com/wday/cxs/mastercard/CorporateCareers/jobs"
+
+[[companies]]
+name = "Visa"
+ats = "workday"
+workday_url = "https://visa.wd5.myworkdayjobs.com/wday/cxs/visa/Visa/jobs"
+
+[[companies]]
+name = "Adobe"
+ats = "workday"
+workday_url = "https://adobe.wd5.myworkdayjobs.com/wday/cxs/adobe/external_experienced/jobs"
+
+[[companies]]
+name = "NVIDIA"
+ats = "workday"
+workday_url = "https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs"
+
+[[companies]]
+name = "Target"
+ats = "workday"
+workday_url = "https://target.wd5.myworkdayjobs.com/wday/cxs/target/targetcareers/jobs"
+
+[[companies]]
+name = "Google"
+ats = "custom"
+career_url = "https://www.google.com/about/careers/"
+
+[[companies]]
+name = "Meta"
+ats = "custom"
+career_url = "https://www.metacareers.com/"
+
+[[companies]]
+name = "Amazon"
+ats = "custom"
+career_url = "https://www.amazon.jobs/"
+
+[[companies]]
+name = "Microsoft"
+ats = "custom"
+career_url = "https://careers.microsoft.com/"
+
+[[companies]]
+name = "Apple"
+ats = "custom"
+career_url = "https://jobs.apple.com/"
+
+[[companies]]
+name = "JPMorgan Chase"
+ats = "custom"
+career_url = "https://www.jpmorganchase.com/careers"
+
+[[companies]]
+name = "Citadel"
+ats = "custom"
+career_url = "https://www.citadel.com/careers/"
+
+[[companies]]
+name = "Two Sigma"
+ats = "custom"
+career_url = "https://www.twosigma.com/careers/"
+
+[[companies]]
+name = "Jane Street"
+ats = "custom"
+career_url = "https://www.janestreet.com/join-jane-street/"
+
+[[companies]]
+name = "DE Shaw"
+ats = "custom"
+career_url = "https://www.deshaw.com/careers"
+
+[[companies]]
+name = "Flipkart"
+ats = "custom"
+career_url = "https://www.flipkartcareers.com/"
+
+[[companies]]
+name = "Swiggy"
+ats = "custom"
+career_url = "https://careers.swiggy.com/"
+
+[[companies]]
+name = "Zomato"
+ats = "custom"
+career_url = "https://www.zomato.com/careers"
+
+[[companies]]
+name = "PhonePe"
+ats = "custom"
+career_url = "https://www.phonepe.com/careers/"
+
+[[companies]]
+name = "Freshworks"
+ats = "custom"
+career_url = "https://www.freshworks.com/company/careers/"
+
+[[companies]]
+name = "Zoho"
+ats = "custom"
+career_url = "https://www.zoho.com/careers/"
+
+[[companies]]
+name = "InMobi"
+ats = "custom"
+career_url = "https://www.inmobi.com/company/careers"
+
+[[companies]]
+name = "Meesho"
+ats = "custom"
+career_url = "https://meesho.io/careers"
+
+[[companies]]
+name = "Groww"
+ats = "custom"
+career_url = "https://groww.in/careers"
+
+[[companies]]
+name = "Citi"
+ats = "custom"
+career_url = "https://jobs.citi.com/"
+
+[[companies]]
+name = "Deutsche Bank"
+ats = "custom"
+career_url = "https://careers.db.com/"
+
+[[companies]]
+name = "UBS"
+ats = "custom"
+career_url = "https://www.ubs.com/global/en/careers.html"
+
+[[companies]]
+name = "HSBC"
+ats = "custom"
+career_url = "https://www.hsbc.com/careers"
+
+[[companies]]
+name = "Wells Fargo"
+ats = "custom"
+career_url = "https://www.wellsfargojobs.com/"
+
+[[companies]]
+name = "BNP Paribas"
+ats = "custom"
+career_url = "https://group.bnpparibas/en/careers"
+
+[[companies]]
+name = "Bank of America"
+ats = "custom"
+career_url = "https://careers.bankofamerica.com/"
+
+[[companies]]
+name = "PayPal"
+ats = "custom"
+career_url = "https://careers.pypl.com/"
+
+[[companies]]
+name = "Block (Square)"
+ats = "custom"
+career_url = "https://block.xyz/careers"
+
+[[companies]]
+name = "Revolut"
+ats = "custom"
+career_url = "https://www.revolut.com/careers/"
+
+[[companies]]
+name = "Klarna"
+ats = "custom"
+career_url = "https://www.klarna.com/careers/"
+
+[[companies]]
+name = "Wise"
+ats = "custom"
+career_url = "https://www.wise.jobs/"
+
+[[companies]]
+name = "Adyen"
+ats = "custom"
+career_url = "https://careers.adyen.com/"
+
+[[companies]]
+name = "Tesla"
+ats = "custom"
+career_url = "https://www.tesla.com/careers"
+
+[[companies]]
+name = "SpaceX"
+ats = "custom"
+career_url = "https://www.spacex.com/careers/"
+
+[[companies]]
+name = "xAI"
+ats = "custom"
+career_url = "https://x.ai/careers"
+
+[[companies]]
+name = "DeepMind"
+ats = "custom"
+career_url = "https://deepmind.google/careers/"
+
+[[companies]]
+name = "Stability AI"
+ats = "custom"
+career_url = "https://stability.ai/careers"
+
+[[companies]]
+name = "Renaissance Technologies"
+ats = "custom"
+career_url = "https://www.rentec.com/Careers.action"
+
+[[companies]]
+name = "Jump Trading"
+ats = "custom"
+career_url = "https://www.jumptrading.com/careers/"
+
+[[companies]]
+name = "Optiver"
+ats = "custom"
+career_url = "https://optiver.com/working-at-optiver/career-opportunities/"
+
+[[companies]]
+name = "Hudson River Trading"
+ats = "custom"
+career_url = "https://www.hudsonrivertrading.com/careers/"
+
+[[companies]]
+name = "Point72"
+ats = "custom"
+career_url = "https://point72.com/careers/"
+
+[[companies]]
+name = "Millennium"
+ats = "custom"
+career_url = "https://www.mlp.com/careers/"
+
+[[companies]]
+name = "Susquehanna (SIG)"
+ats = "custom"
+career_url = "https://careers.sig.com/"
+
+[[companies]]
+name = "AQR Capital"
+ats = "custom"
+career_url = "https://careers.aqr.com/"
+
+[[companies]]
+name = "Man Group"
+ats = "custom"
+career_url = "https://www.man.com/careers"
+
+[[companies]]
+name = "McKinsey (QuantumBlack)"
+ats = "custom"
+career_url = "https://www.mckinsey.com/careers"
+
+[[companies]]
+name = "BCG (Gamma)"
+ats = "custom"
+career_url = "https://careers.bcg.com/"
+
+[[companies]]
+name = "Bain"
+ats = "custom"
+career_url = "https://www.bain.com/careers/"
+
+[[companies]]
+name = "Deloitte"
+ats = "custom"
+career_url = "https://www2.deloitte.com/us/en/careers.html"
+
+[[companies]]
+name = "Accenture"
+ats = "custom"
+career_url = "https://www.accenture.com/us-en/careers"
+
+[[companies]]
+name = "AMD"
+ats = "custom"
+career_url = "https://www.amd.com/en/corporate/careers.html"
+
+[[companies]]
+name = "Intel"
+ats = "custom"
+career_url = "https://www.intel.com/content/www/us/en/jobs/jobs-at-intel.html"
+
+[[companies]]
+name = "Qualcomm"
+ats = "custom"
+career_url = "https://www.qualcomm.com/company/careers"
+
+[[companies]]
+name = "Broadcom"
+ats = "custom"
+career_url = "https://www.broadcom.com/company/careers"
+
+[[companies]]
+name = "ARM"
+ats = "custom"
+career_url = "https://careers.arm.com/"
+
+[[companies]]
+name = "Cerebras"
+ats = "custom"
+career_url = "https://www.cerebras.net/careers"
+
+[[companies]]
+name = "Disney"
+ats = "custom"
+career_url = "https://jobs.disneycareers.com/"
+
+[[companies]]
+name = "Ford"
+ats = "custom"
+career_url = "https://corporate.ford.com/careers.html"
+
+[[companies]]
+name = "Rivian"
+ats = "custom"
+career_url = "https://rivian.com/careers"
+
+[[companies]]
+name = "Lockheed Martin"
+ats = "custom"
+career_url = "https://www.lockheedmartinjobs.com/"
+
+[[companies]]
+name = "Cloudera"
+ats = "custom"
+career_url = "https://www.cloudera.com/careers.html"
+
+[[companies]]
+name = "Citadel Securities"
+ats = "custom"
+career_url = "https://www.citadelsecurities.com/careers/"

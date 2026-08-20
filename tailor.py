@@ -1,16 +1,25 @@
 """
 tailor.py — Generate tailored application materials (resume summary & cover letter)
 using LLM (Ollama local or Google Gemini cloud) without fabricating qualifications.
+
+Usage:
+    python tailor.py --source greenhouse:stripe --id 12345
+    python tailor.py --batch [--top 10]
 """
 
+import argparse
+import glob
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
-import requests
+from datetime import datetime
 
+from config import load_config
 from db import get_connection
-from scorer import validate_environment, parse_and_validate_json
+from scorer import validate_environment
 
 SYSTEM_PROMPT = """You are an expert executive resume strategist and ATS optimization expert.
 You will be given a candidate profile and a target job description.
@@ -31,49 +40,64 @@ HARD CONSTRAINTS:
   "cover_letter_draft": "<3-paragraph compelling cover letter connecting candidate experience to the job requirements>"
 }"""
 
+LATEX_TRANS = str.maketrans({
+    '&': r'\&', '%': r'\%', '_': r'\_', '$': r'\$', '#': r'\#',
+    '~': r'\textasciitilde{}', '^': r'\textasciicircum{}',
+})
+
+
+def clean_date(date_str: str) -> str:
+    """Standardise date format (YYYY-MM, YYYY, or 'present') using stdlib datetime."""
+    if not date_str:
+        return ""
+    date_clean = date_str.strip().lower()
+    if date_clean in ("present", "now", "current"):
+        return "present"
+
+    for fmt in ("%B %Y", "%b %Y", "%Y-%m", "%Y/%m", "%Y"):
+        try:
+            dt = datetime.strptime(date_clean, fmt)
+            return dt.strftime("%Y-%m") if any(k in fmt for k in ("%m", "%b", "%B")) else dt.strftime("%Y")
+        except ValueError:
+            pass
+
+    return date_str
+
+
+def escape_latex(text: str) -> str:
+    """Escape special LaTeX characters using native str.translate."""
+    if not text:
+        return ""
+    escaped = text.translate(LATEX_TRANS)
+    return re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', escaped)
+
 
 def query_tailor_llm(prompt: str, config: dict) -> dict | None:
     """Send tailoring prompt to LLM (Ollama or Gemini) and return parsed JSON output."""
     from llm_client import query_llm
 
-    response_text = query_llm(
-        prompt=prompt,
-        config=config,
-        temperature=0.5,
-        max_tokens=1500,
-        json_mode=True
-    )
+    response_text = query_llm(prompt=prompt, config=config, temperature=0.5, max_tokens=1500, json_mode=True)
     if not response_text:
-        print("  [!] LLM returned empty response.")
         return None
 
-    # Try strict JSON load first
     match = re.search(r"(\{.*\})", response_text, re.DOTALL)
     if match:
-        json_str = match.group(1)
         try:
-            data = json.loads(json_str, strict=False)
+            data = json.loads(match.group(1), strict=False)
             if "tailored_summary" in data and "cover_letter_draft" in data:
                 return data
         except json.JSONDecodeError:
             pass
 
-    # Robust regex extraction fallback
-    summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"\s*,\s*"cover_letter_draft"', response_text, re.DOTALL)
-    if not summary_match:
-        summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"(?=\s*,\s*"|(?:\s*,\s*\n?\s*\}))', response_text, re.DOTALL)
-
-    cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"\s*\}', response_text, re.DOTALL)
-    if not cover_match:
-        cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"(?=\s*,\s*"|(?:\s*,\s*\n?\s*\}))', response_text, re.DOTALL)
+    summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"(?=\s*,\s*"cover_letter_draft"|\s*,\s*"|\s*})', response_text, re.DOTALL)
+    cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"(?=\s*})', response_text, re.DOTALL)
 
     if summary_match and cover_match:
-        summary = summary_match.group(1).strip().replace('\\n', '\n').replace('\\"', '"')
-        cover = cover_match.group(1).strip().replace('\\n', '\n').replace('\\"', '"')
-        return {"tailored_summary": summary, "cover_letter_draft": cover}
+        return {
+            "tailored_summary": summary_match.group(1).strip().replace('\\n', '\n').replace('\\"', '"'),
+            "cover_letter_draft": cover_match.group(1).strip().replace('\\n', '\n').replace('\\"', '"'),
+        }
 
-    print("  [!] Failed to parse tailored summary and cover letter from LLM response.")
-    print(f"      Response was:\n{response_text[:300]}...")
     return None
 
 
@@ -81,11 +105,10 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
     """Generate and save tailored summary and cover letter for a specific job."""
     conn = get_connection()
     try:
-        cursor = conn.execute(
+        row = conn.execute(
             "SELECT title, company, location, remote, description_raw FROM jobs WHERE source = ? AND id = ?",
             (job_source, job_id)
-        )
-        row = cursor.fetchone()
+        ).fetchone()
     finally:
         conn.close()
 
@@ -95,18 +118,13 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
 
     title, company, location, remote, description = row
     if not description:
-        print(f"  [*] Description empty for {job_source}/{job_id}. Attempting lazy fetch...")
+        from scraper import fetch_greenhouse_description, fetch_workday_description
         if job_source.startswith("greenhouse:"):
-            board = job_source.split(":", 1)[1]
-            from scraper import GreenhouseFetcher
-            description = GreenhouseFetcher.fetch_description(board, job_id)
+            description = fetch_greenhouse_description(job_source.split(":", 1)[1], job_id)
         elif job_source.startswith("workday:"):
-            company_slug = job_source.split(":", 1)[1]
-            from scraper import WorkdayFetcher
-            description = WorkdayFetcher.fetch_description(company_slug, job_id)
+            description = fetch_workday_description(job_source.split(":", 1)[1], job_id)
 
         if description:
-            # Save fetched description back to DB
             conn = get_connection()
             try:
                 conn.execute(
@@ -118,11 +136,9 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
                 conn.close()
 
     if not description:
-        print("  [!] Description empty. Using synthesized metadata description for tailoring.")
         description = f"Role: {title} at {company} located in {location}. Remote preference: {remote}."
 
     print(f"  * Tailoring for: {title} at {company}...")
-
     prompt = f"""{SYSTEM_PROMPT}
 
 Candidate Profile:
@@ -141,7 +157,6 @@ Description:
     if not result:
         return False
 
-    # Save back to DB
     conn = get_connection()
     try:
         conn.execute(
@@ -156,115 +171,42 @@ Description:
     return True
 
 
-def clean_date(date_str: str) -> str:
-    """Standardise date format for RenderCV compatibility (YYYY-MM or YYYY or 'present')."""
-    if not date_str:
-        return ""
-    date_clean = date_str.strip().lower()
-    if date_clean in ("present", "now", "current"):
-        return "present"
-        
-    if re.match(r'^\d{4}$', date_clean):
-        return date_clean
-        
-    months_map = {
-        "jan": "01", "feb": "02", "mar": "03", "apr": "04", "may": "05", "jun": "06",
-        "jul": "07", "aug": "08", "sep": "09", "oct": "10", "nov": "11", "dec": "12",
-        "january": "01", "february": "02", "march": "03", "april": "04", "june": "06",
-        "july": "07", "august": "08", "september": "09", "october": "10", "november": "11", "december": "12"
-    }
-    
-    m = re.search(r'([a-zA-Z]+)\s*(\d{4})', date_clean)
-    if m:
-        month_name = m.group(1)
-        year = m.group(2)
-        month_num = months_map.get(month_name, "01")
-        return f"{year}-{month_num}"
-        
-    m_year = re.search(r'\b(\d{4})\b', date_clean)
-    if m_year:
-        return m_year.group(1)
-        
-    return date_str
-
-
-def escape_latex(text: str) -> str:
-    """Escape special LaTeX characters in a plain text string."""
-    if not text:
-        return ""
-    # Escape standard special characters
-    chars = {
-        '&': r'\&',
-        '%': r'\%',
-        '_': r'\_',
-        '$': r'\$',
-        '#': r'\#',
-        '~': r'\textasciitilde{}',
-        '^': r'\textasciicircum{}',
-    }
-    
-    escaped = ""
-    for char in text:
-        escaped += chars.get(char, char)
-        
-    # Translate bold markdown to LaTeX bold
-    escaped = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', escaped)
-    return escaped
-
-
 def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
-    """Generate a complete resume by injecting the tailored summary into the master LaTeX template
-    and compiling it using tectonic.exe.
-    Returns the path of the generated PDF.
-    """
-    import subprocess
-
-    # Load environment
-    config, cv_profile = validate_environment()
+    """Generate a complete resume by injecting tailored summary into LaTeX and compiling via Tectonic."""
+    config, _ = validate_environment()
     base_dir = os.path.dirname(os.path.abspath(__file__))
     master_tex_path = os.path.join(base_dir, "Sourav_Ray_Resume_Master.tex")
-    # Resolve Tectonic compiler binary cross-platform
-    import shutil
-    tectonic_bin = shutil.which("tectonic")
-    if not tectonic_bin:
-        # Fallback to local tectonic.exe (Windows) or tectonic (Linux) in workspace
-        local_exe = os.path.join(base_dir, "tectonic.exe")
-        local_bin = os.path.join(base_dir, "tectonic")
-        if os.path.exists(local_exe):
-            tectonic_bin = local_exe
-        elif os.path.exists(local_bin):
-            tectonic_bin = local_bin
+
+    tectonic_bin = shutil.which("tectonic") or next(
+        (os.path.join(base_dir, b) for b in ("tectonic.exe", "tectonic") if os.path.exists(os.path.join(base_dir, b))),
+        None
+    )
 
     exports_dir = os.path.join(base_dir, "exports")
     os.makedirs(exports_dir, exist_ok=True)
 
     if not tectonic_bin:
-        print("  [!] Tectonic LaTeX compiler not found in PATH or workspace. Skipping PDF compilation.")
+        print("  [!] Tectonic LaTeX compiler not found. Skipping PDF compilation.")
         return None
 
-    # 1. Fetch tailored summary from DB
     conn = get_connection()
     try:
-        cursor = conn.execute(
+        row = conn.execute(
             "SELECT company, tailored_summary FROM jobs WHERE source = ? AND id = ?",
             (job_source, job_id)
-        )
-        row = cursor.fetchone()
+        ).fetchone()
     finally:
         conn.close()
 
     if not row or not row[1]:
-        print(f"  [!] Tailored summary not found in DB for {job_source}/{job_id}. Run tailoring first.")
         return None
 
     company, summary_text = row
     company_clean = re.sub(r'[^a-zA-Z0-9]', '_', company)
-    temp_tex_name = f"temp_cv_{company_clean}_{job_id}.tex"
-    temp_tex_path = os.path.join(exports_dir, temp_tex_name)
+    temp_tex_path = os.path.join(exports_dir, f"temp_cv_{company_clean}_{job_id}.tex")
     temp_pdf_path = os.path.join(exports_dir, f"temp_cv_{company_clean}_{job_id}.pdf")
     output_pdf_path = os.path.join(exports_dir, f"Sourav_Resume_{company_clean}_{job_id}.pdf")
 
-    # 2. Modify LaTeX Template
     try:
         with open(master_tex_path, "r", encoding="utf-8") as f:
             tex_content = f.read()
@@ -272,73 +214,104 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
         print(f"  [!] Failed to read master LaTeX template: {e}")
         return None
 
-    escaped_summary = escape_latex(summary_text)
-    summary_latex = f"\\section*{{Professional Summary}}\n\n{escaped_summary}\n\n"
-
+    summary_latex = f"\\section*{{Professional Summary}}\n\n{escape_latex(summary_text)}\n\n"
     if "\\section*{Highlights}" in tex_content:
         tex_content = tex_content.replace("\\section*{Highlights}", summary_latex + "\\section*{Highlights}")
     else:
-        # Fallback to insert right after \begin{document}
-        print("  [!] '\\section*{Highlights}' not found in template. Prepending summary to document body.")
         tex_content = tex_content.replace("\\begin{document}", f"\\begin{{document}}\n\n{summary_latex}")
 
     try:
         with open(temp_tex_path, "w", encoding="utf-8") as f:
             f.write(tex_content)
-    except Exception as e:
-        print(f"  [!] Failed to write temporary LaTeX file: {e}")
-        return None
-
-    # 3. Render using Tectonic CLI
-    try:
-        print(f"  * Compiling LaTeX resume via Tectonic...")
-        cmd = [tectonic_bin, temp_tex_path, "--outdir", exports_dir]
-        env = os.environ.copy()
-        env["PYTHONUTF8"] = "1"
-        subprocess.run(cmd, env=env, capture_output=True, encoding="utf-8", check=True)
+        subprocess.run([tectonic_bin, temp_tex_path, "--outdir", exports_dir], capture_output=True, check=True)
 
         if os.path.exists(temp_pdf_path):
             if os.path.exists(output_pdf_path):
                 os.remove(output_pdf_path)
             os.rename(temp_pdf_path, output_pdf_path)
         else:
-            print("  [!] Tectonic compiled successfully but output PDF was not found.")
             return None
-            
-    except subprocess.CalledProcessError as e:
-        print(f"  [!] Tectonic compilation failed. Checking error logs...")
-        log_path = os.path.join(exports_dir, "tectonic_error.log")
-        with open(log_path, "w", encoding="utf-8") as lf:
-            lf.write(f"Command: {e.cmd}\n")
-            lf.write(f"Exit code: {e.returncode}\n")
-            lf.write(f"Stdout:\n{e.stdout or ''}\n")
-            lf.write(f"Stderr:\n{e.stderr or ''}\n")
-        print(f"      Full error log written to {log_path}")
-        return None
     except Exception as e:
-        print(f"  [!] Tectonic execution failed: {e}")
+        print(f"  [!] Tectonic compilation error: {e}")
         return None
     finally:
-        # Clean up temp TEX
         if os.path.exists(temp_tex_path):
             os.remove(temp_tex_path)
 
-    print(f"  [OK] LaTeX Typeset PDF Resume created at: {output_pdf_path}")
+    print(f"  [OK] LaTeX Typeset PDF Resume created: {output_pdf_path}")
     return output_pdf_path
 
 
+def run_batch_tailoring(top_n: int | None = 10):
+    """Batch generate tailored summaries, cover letters, and PDFs for qualifying jobs."""
+    config = load_config()
+    threshold = config.get("scoring", {}).get("threshold", 60)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    exports_dir = os.path.join(base_dir, "exports")
+
+    if os.path.exists(exports_dir):
+        for old_file in glob.glob(os.path.join(exports_dir, "*")):
+            try:
+                if os.path.isfile(old_file):
+                    os.remove(old_file)
+            except Exception:
+                pass
+    else:
+        os.makedirs(exports_dir, exist_ok=True)
+
+    conn = get_connection()
+    try:
+        query = """
+            SELECT source, id, company, title, score, location, remote, url, tailored_summary
+            FROM jobs WHERE score >= ? AND status = 'to_review' AND description_raw IS NOT NULL
+            ORDER BY score DESC
+        """
+        params = [threshold]
+        if top_n:
+            query += " LIMIT ?"
+            params.append(top_n)
+        rows = conn.execute(query, params).fetchall()
+    finally:
+        conn.close()
+
+    if not rows:
+        print(f"[*] No jobs found with score >= {threshold}.")
+        return
+
+    print(f"\n{'='*60}\nBatch Tailoring -- Processing {len(rows)} Openings\n{'='*60}")
+    tailored_count, pdf_count = 0, 0
+
+    for idx, (source, job_id, company, title, score, location, remote, url, existing_summary) in enumerate(rows, 1):
+        print(f"\n[{idx}/{len(rows)}] [{score}/100] {company} — {title} ({location})")
+        if not existing_summary:
+            cfg, cv_profile = validate_environment()
+            if tailor_job(source, job_id, cfg, cv_profile):
+                tailored_count += 1
+            else:
+                continue
+
+        if compile_pdf_resume(source, job_id):
+            pdf_count += 1
+
+    print(f"\n{'='*60}\nBatch Tailoring Complete! Processed: {len(rows)} | Summaries: {tailored_count} | PDFs: {pdf_count}\n{'='*60}\n")
+
+
 def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="Tailor application materials for a job")
-    parser.add_argument("--source", type=str, required=True, help="Job source (e.g. greenhouse:stripe)")
-    parser.add_argument("--id", type=str, required=True, help="Job ID")
+    parser = argparse.ArgumentParser(description="Tailor application materials for jobs")
+    parser.add_argument("--source", type=str, help="Job source (e.g. greenhouse:stripe)")
+    parser.add_argument("--id", type=str, help="Job ID")
+    parser.add_argument("--batch", action="store_true", help="Run batch tailoring for top qualifying jobs")
+    parser.add_argument("--top", type=int, default=10, help="Max jobs to process in batch mode")
     args = parser.parse_args()
 
-    config, cv_profile = validate_environment()
-
-    success = tailor_job(args.source, args.id, config, cv_profile)
-    if not success:
-        sys.exit(1)
+    if args.batch:
+        run_batch_tailoring(top_n=args.top)
+    elif args.source and args.id:
+        config, cv_profile = validate_environment()
+        if not tailor_job(args.source, args.id, config, cv_profile):
+            sys.exit(1)
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":

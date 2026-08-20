@@ -1,178 +1,119 @@
 """
 email_notifier.py — Send daily job digest and attached tailored PDF resumes via Gmail SMTP.
 
-Sent from candidate's email (sroy.dgp2014@gmail.com) directly to themselves.
-
-Features:
-  - Responsive, modern HTML email formatting
-  - Job Role, Company Name, Match Score, Location, and Direct Apply Link
-  - Automatically attaches top matching tailored PDF resumes from exports/
+Usage:
+    python email_notifier.py
 """
 
 import os
 import re
 import smtplib
-import sqlite3
-import sys
-import yaml
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
+from config import load_config
 from db import get_connection
 import tailor
 
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
-
-def load_config() -> dict:
-    if os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-            return yaml.safe_load(f)
-    return {}
 
 def send_email_digest(top_n: int = 10):
     config = load_config()
     email_cfg = config.get("email", {})
-    
-    sender_email = os.getenv("SENDER_EMAIL") or email_cfg.get("sender_email", "sroy.dgp2014@gmail.com")
-    recipient_email = os.getenv("RECIPIENT_EMAIL") or email_cfg.get("recipient_email", sender_email)
-    app_password = os.getenv("GMAIL_APP_PASSWORD") or email_cfg.get("gmail_app_password", "")
-    smtp_server = email_cfg.get("smtp_server", "smtp.gmail.com")
-    smtp_port = email_cfg.get("smtp_port", 587)
 
+    sender = os.getenv("SENDER_EMAIL") or email_cfg.get("sender_email", "sroy.dgp2014@gmail.com")
+    recipient = os.getenv("RECIPIENT_EMAIL") or email_cfg.get("recipient_email", sender)
+    password = os.getenv("GMAIL_APP_PASSWORD") or email_cfg.get("gmail_app_password", "")
     threshold = config.get("scoring", {}).get("threshold", 70)
 
-    # 1. Fetch top >=70% unnotified matches from DB
     conn = get_connection()
     try:
         cursor = conn.execute("""
             SELECT source, id, company, title, score, location, url, tailored_summary
             FROM jobs
-            WHERE score >= ? 
-              AND status = 'to_review'
-              AND notified_email = 0
-              AND description_raw IS NOT NULL 
-              AND LENGTH(TRIM(description_raw)) > 0
-            ORDER BY score DESC
-            LIMIT ?
+            WHERE score >= ? AND status = 'to_review' AND notified_email = 0 AND description_raw IS NOT NULL
+            ORDER BY score DESC LIMIT ?
         """, (threshold, top_n))
         rows = cursor.fetchall()
     finally:
         conn.close()
 
     if not rows:
-        print("[*] No new unnotified >=70% job matches found to send via Email.")
+        print("[*] No new unnotified >=70% job matches found.")
         return
 
-    print(f"\n{'='*60}")
-    print(f"Preparing Email Digest for {len(rows)} Top Roles -> {recipient_email}")
-    print(f"{'='*60}")
+    print(f"\n{'='*60}\nPreparing Email Digest for {len(rows)} Top Roles -> {recipient}\n{'='*60}")
 
-    # Build MIMEMultipart email
     msg = MIMEMultipart("mixed")
-    msg["Subject"] = f"🚀 Daily Job Discovery Digest: {len(rows)} Top Matches (>70%) & Tailored Resumes"
-    msg["From"] = f"Job Discovery Assistant <{sender_email}>"
-    msg["To"] = recipient_email
+    msg["Subject"] = f"🚀 Job Discovery Digest: {len(rows)} Top Matches (>70%)"
+    msg["From"] = f"Job Discovery Assistant <{sender}>"
+    msg["To"] = recipient
 
-    # HTML Body Construction
-    html_items = []
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    exports_dir = os.path.join(base_dir, "exports")
+    exports_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "exports")
     github_repo = os.getenv("GITHUB_REPOSITORY") or "SouravRay17/job-discovery-assistant"
-
-    attached_files = 0
+    items_html = []
 
     for idx, (source, job_id, company, title, score, location, url, summary) in enumerate(rows, 1):
-        company_clean = re.sub(r'[^a-zA-Z0-9]', '_', company)
-        pdf_name = f"Sourav_Resume_{company_clean}_{job_id}.pdf"
+        clean_co = re.sub(r'[^a-zA-Z0-9]', '_', company)
+        pdf_name = f"Sourav_Resume_{clean_co}_{job_id}.pdf"
         pdf_path = os.path.join(exports_dir, pdf_name)
-        github_pdf_url = f"https://github.com/{github_repo}/blob/main/exports/{pdf_name}"
+        github_url = f"https://github.com/{github_repo}/blob/main/exports/{pdf_name}"
 
-        # Ensure PDF resume is compiled
         if not os.path.exists(pdf_path):
             pdf_path = tailor.compile_pdf_resume(source, job_id) or pdf_path
 
-        # Attach PDF file to email if it exists
         if pdf_path and os.path.exists(pdf_path):
             try:
                 with open(pdf_path, "rb") as f:
-                    part = MIMEApplication(f.read(), Name=os.path.basename(pdf_path))
-                    part['Content-Disposition'] = f'attachment; filename="{os.path.basename(pdf_path)}"'
+                    part = MIMEApplication(f.read(), Name=pdf_name)
+                    part['Content-Disposition'] = f'attachment; filename="{pdf_name}"'
                     msg.attach(part)
-                    attached_files += 1
-            except Exception as e:
-                print(f"  [!] Failed to attach {pdf_name}: {e}")
+            except Exception:
+                pass
 
-        # Item HTML
-        html_items.append(f"""
-        <div style="background-color: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0; color: #38bdf8; font-size: 18px;">{idx}. {title}</h3>
-                <span style="background-color: #16a34a; color: white; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 14px;">Match: {score}/100</span>
-            </div>
-            <p style="margin: 6px 0; font-size: 15px; color: #94a3b8;">🏢 <strong>{company}</strong> &nbsp;|&nbsp; 📍 {location}</p>
-            {f'<p style="margin: 8px 0; font-size: 14px; color: #cbd5e1; font-style: italic;">"{summary[:200]}..."</p>' if summary else ''}
-            <div style="margin-top: 12px;">
-                <a href="{url}" style="background-color: #2563eb; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; margin-right: 10px;" target="_blank">🔗 Apply Now</a>
-                <a href="{github_pdf_url}" style="background-color: #475569; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;" target="_blank">📄 View PDF on GitHub</a>
-            </div>
+        items_html.append(f"""
+        <div style="border-left:4px solid #38bdf8;background:#1e293b;color:#f8fafc;padding:12px;margin:12px 0;border-radius:4px;">
+            <h3 style="margin:0;color:#38bdf8;">{idx}. {title} — <span style="color:#4ade80;">{score}/100</span></h3>
+            <p style="margin:4px 0;color:#94a3b8;">🏢 <strong>{company}</strong> &nbsp;|&nbsp; 📍 {location}</p>
+            {f'<p style="margin:6px 0;font-size:13px;color:#cbd5e1;"><em>"{summary[:180]}..."</em></p>' if summary else ''}
+            <p style="margin:6px 0;">
+                <a href="{url}" style="color:#60a5fa;text-decoration:none;font-weight:bold;">🔗 Apply Now</a> &nbsp;|&nbsp; 
+                <a href="{github_url}" style="color:#94a3b8;text-decoration:none;">📄 GitHub PDF</a>
+            </p>
         </div>
         """)
 
-    full_html = f"""
-    <!DOCTYPE html>
-    <html>
-    <body style="font-family: Arial, sans-serif; background-color: #0f172a; color: #f8fafc; padding: 20px;">
-        <div style="max-width: 680px; margin: 0 auto; background-color: #0f172a;">
-            <h2 style="color: #38bdf8; border-bottom: 2px solid #334155; padding-bottom: 10px;">
-                🚀 Job Discovery Assistant — Daily Top Matches & Tailored Resumes
-            </h2>
-            <p style="font-size: 15px; color: #cbd5e1;">
-                Hi Sourav, here are your top <strong>{len(rows)}</strong> job openings matching <strong>>70%</strong> for your candidate profile.
-                Tailored PDF resumes have been generated and attached below!
-            </p>
-            {"".join(html_items)}
-            <p style="font-size: 13px; color: #64748b; margin-top: 20px; text-align: center;">
-                Generated automatically by your local Job Discovery Assistant pipeline.
-            </p>
-        </div>
-    </body>
-    </html>
+    body = f"""
+    <div style="font-family:sans-serif;background:#0f172a;color:#f8fafc;padding:20px;max-width:640px;margin:auto;">
+        <h2 style="color:#38bdf8;margin-top:0;">🚀 Job Discovery Digest</h2>
+        <p style="color:#cbd5e1;">Here are your top {len(rows)} matching job openings (>70%). Tailored PDFs are attached.</p>
+        {"".join(items_html)}
+    </div>
     """
+    msg.attach(MIMEText(body, "html"))
 
-    # Attach HTML body
-    msg.attach(MIMEText(full_html, "html"))
-
-    # Send via SMTP
-    if not app_password:
-        print("  [!] GMAIL_APP_PASSWORD missing in config.yaml or Environment. Skipping email dispatch.")
-        print("  [*] Printed HTML preview above. To enable automatic sending, add gmail_app_password to config.yaml!")
+    if not password:
+        print("  [!] GMAIL_APP_PASSWORD not set. Skipping email dispatch.")
         return
 
     try:
-        print(f"  * Connecting to {smtp_server}:{smtp_port}...")
-        server = smtplib.SMTP(smtp_server, smtp_port)
+        server = smtplib.SMTP(email_cfg.get("smtp_server", "smtp.gmail.com"), email_cfg.get("smtp_port", 587))
         server.starttls()
-        server.login(sender_email, app_password)
+        server.login(sender, password)
         server.send_message(msg)
         server.quit()
-        print(f"  [OK] Email successfully sent to {recipient_email} with {attached_files} attached PDF resumes!")
+        print(f"  [OK] Email successfully sent to {recipient}!")
 
-        # Update database notified_email flag so they aren't resent tomorrow
         conn = get_connection()
         try:
             for (src, jid, _, _, _, _, _, _) in rows:
-                conn.execute(
-                    "UPDATE jobs SET notified_email = 1 WHERE source = ? AND id = ?",
-                    (src, jid)
-                )
+                conn.execute("UPDATE jobs SET notified_email = 1 WHERE source = ? AND id = ?", (src, jid))
             conn.commit()
-            print(f"  [OK] Marked {len(rows)} jobs as notified via Email in jobs.db!")
         finally:
             conn.close()
-
     except Exception as e:
         print(f"  [ERR] Failed to send email: {e}")
+
 
 if __name__ == "__main__":
     send_email_digest(top_n=10)

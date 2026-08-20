@@ -11,14 +11,14 @@ The assistant coordinates multiple specialized components through a SQLite datab
 ```mermaid
 graph TD
     A[Sourav_Resume_Latest.docx] -->|cv_parser.py| B(cv_profile.json)
-    C[company_ats_mapping.yaml] -->|scraper.py| D[(jobs.db)]
+    C[company_ats_mapping.toml] -->|scraper.py| D[(jobs.db)]
     B & D -->|scorer.py LLM scoring| E{Score >= 70?}
     E -->|No| F[Auto-Rejected / Low Match]
     E -->|Yes| G[batch_tailor.py / tailor.py]
     G -->|LLM Tailoring| H[Tailored Summary & Cover Letter in DB]
     G -->|Tectonic Compiler| I[Custom PDF Resume in exports/]
     H & I -->|email_notifier.py| J[Gmail Email Digest with PDF Attachments]
-    H & I -->|whatsapp_notifier.py / pywhatkit| K[WhatsApp Direct Notifications]
+    H & I -->|whatsapp_notifier.py| K[WhatsApp Direct Notifications]
     D -->|dashboard.py| L[Streamlit Dashboard Review & Action]
 ```
 
@@ -28,8 +28,8 @@ graph TD
 
 *   **Resume Parser ([cv_parser.py](./cv_parser.py))**: Extracts raw text from DOCX or PDF resumes using `pdfplumber` and `python-docx`. Uses an LLM (local Ollama or Google Gemini) to structure it into a normalized candidate profile schema ([cv_profile.json](./cv_profile.json)).
 *   **Job Scraper ([scraper.py](./scraper.py))**:
-    *   Queries Greenhouse, Lever, and RemoteOK APIs directly.
-    *   Resolves company-specific board slugs automatically by referencing the central mappings defined in [company_ats_mapping.yaml](./company_ats_mapping.yaml).
+    *   Queries Greenhouse, Lever, RemoteOK, Workday, Naukri, and LinkedIn.
+    *   Resolves company-specific board slugs automatically by referencing the central mappings defined in [company_ats_mapping.toml](./company_ats_mapping.toml).
     *   Checks job listings against target experience, roles, and locations (e.g., preferring India/Remote while filtering out foreign geographical constraints).
     *   Stores scraped opportunities in a local SQLite database ([jobs.db](./jobs.db)).
 *   **AI Match Scorer ([scorer.py](./scorer.py))**:
@@ -41,7 +41,7 @@ graph TD
     *   Compiles a custom, job-specific PDF resume using the local LaTeX compiler [tectonic.exe](./tectonic.exe), automatically embedding the tailored professional summary.
 *   **Multi-Channel Notifications**:
     *   **Daily Email Digest ([email_notifier.py](./email_notifier.py))**: Dispatches structured, responsive HTML digests directly to the user's Gmail. Auto-attaches corresponding tailored PDF resumes from the `exports/` folder.
-    *   **WhatsApp Dispatchers ([whatsapp_notifier.py](./whatsapp_notifier.py), [whatsapp_pywhatkit.py](./whatsapp_pywhatkit.py), [send_now_pywhatkit.py](./send_now_pywhatkit.py))**: Provides multiple notification channels (CallMeBot API, Twilio API, or PyWhatKit-based browser automation) containing match scores, role descriptions, and link locations.
+    *   **WhatsApp Dispatcher ([whatsapp_notifier.py](./whatsapp_notifier.py))**: Provides direct notifications via CallMeBot API or Twilio API containing match scores, role descriptions, and repository PDF links.
 *   **Streamlit Review Dashboard ([dashboard.py](./dashboard.py))**:
     *   Displays metrics (Total Listings, Unscored Jobs, To Review, Applied, Rejected).
     *   Allows text searching, filtering by minimum match scores, status, and sources.
@@ -73,8 +73,8 @@ The resume generator uses the **Tectonic** LaTeX engine.
 *   **Windows**: A precompiled standalone binary `tectonic.exe` is included in the project directory.
 *   **Other Platforms**: The system expects `tectonic` to be available in your system `PATH`, or set up through the GitHub Actions setup step.
 
-### 4. Configuration File ([config.yaml](./config.yaml))
-Customize config values inside [config.yaml](./config.yaml):
+### 4. Configuration File ([config.toml](./config.toml))
+Customize config values inside [config.toml](./config.toml):
 *   Specify target role names, locations, and experience criteria.
 *   Configure the scoring threshold (default is `70`).
 *   Set up Greenhouse and Lever board company list mappings.
@@ -102,7 +102,7 @@ python run_pipeline.py
 
 2.  **Scrape Job Openings**
     ```bash
-    # Scrape all configured sources (Greenhouse, Lever, RemoteOK)
+    # Scrape all configured sources
     python scraper.py
     
     # Scrape Greenhouse boards only
@@ -130,9 +130,6 @@ python run_pipeline.py
     
     # Send daily WhatsApp digest via CallMeBot or Twilio
     python whatsapp_notifier.py
-    
-    # Send instant WhatsApp messages using PyWhatKit automation
-    python whatsapp_pywhatkit.py
     ```
 
 ---

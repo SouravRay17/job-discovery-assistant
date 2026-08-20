@@ -1,0 +1,63 @@
+# Job Discovery & Application Assistant - Configuration
+
+[ollama]
+host = "http://localhost:11434"
+model = "llama3.2:3b"
+
+[gemini]
+api_key = ""
+model = "gemini-3.5-flash"
+
+[scoring]
+threshold = 70
+
+[cv]
+file_path = "d:/Projects/job-discovery-assistant/Sourav_Resume_Latest.docx"
+
+[candidate]
+years_of_experience = 3
+target_roles = [
+  "Data Engineer",
+  "AI Engineer",
+  "Python Developer",
+  "Backend Engineer",
+  "ML Engineer",
+  "Analytics Engineer"
+]
+target_locations = [
+  "Remote",
+  "Bangalore",
+  "India"
+]
+remote_preference = true
+
+greenhouse_boards = [
+  "stripe",
+  "cloudflare"
+]
+
+lever_boards = [
+  "spotify"
+]
+
+[remoteok]
+tags = [
+  "python",
+  "backend",
+  "data"
+]
+
+[email]
+sender_email = "sroy.dgp2014@gmail.com"
+recipient_email = "sroy.dgp2014@gmail.com"
+gmail_app_password = ""
+smtp_server = "smtp.gmail.com"
+smtp_port = 587
+
+[whatsapp]
+provider = "callmebot"
+phone = "+917872567781"
+callmebot_api_key = ""
+twilio_account_sid = ""
+twilio_auth_token = ""
+twilio_from_number = ""

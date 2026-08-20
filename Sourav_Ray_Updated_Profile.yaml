@@ -1,0 +1,304 @@
+personal_info:
+  name: "Sourav Ray"
+  location: "Bengaluru, India"
+  open_to_relocation: ["UAE", "Qatar", "Saudi Arabia"]
+  phone: "+91-7872567781"
+  email: "sroy.dgp2014@gmail.com"
+  linkedin: "linkedin.com/in/souravray17"
+  github: "github.com/SouravRay17"
+  years_experience: 3
+  current_company: "Factspan Analytics, Bengaluru"
+  current_tenure: "Sep 2023 – Present"
+  current_titles:
+    - title: "Senior Analyst"
+      period: "Sep 2025 – Present"
+    - title: "Analyst"
+      period: "Sep 2023 – Sep 2025"
+  team: "GenAI & Data Engineering"
+  promotion_note: "Promoted within 2 years for consistently exceeding performance expectations, taking on technical-lead responsibility across GenAI, Agentic AI, and core data engineering delivery."
+  current_fixed_salary_lpa: 19.5
+
+positioning_angles:
+  # Use these as different "personas" depending on the job being targeted.
+  - id: genai_agentic_lead
+    headline: "AI & GenAI Engineer | Agentic AI & RAG Systems | Data Platform Architecture"
+    best_for: "GenAI Engineer, Agentic AI Engineer, LLM Engineer, AI Platform Lead roles"
+  - id: snowflake_platform_engineer
+    headline: "Data Engineer | Snowflake Platform Engineering | GenAI & Agentic AI Systems"
+    best_for: "Snowflake Data Engineer, Cloud Data Platform Engineer, Data Platform Lead roles"
+  - id: software_ml_infra
+    headline: "Software Engineer | AI & Data Engineer | ML Infrastructure | GenAI"
+    best_for: "Software Engineer, ML Infrastructure Engineer, backend-leaning roles emphasizing DSA/code ownership"
+  - id: ai_data_engineer_generalist
+    headline: "AI & Data Engineer | GenAI & Agentic AI | ML & Data Engineering | AI Systems"
+    best_for: "Broad AI/Data Engineer roles, generalist screening, recruiter-facing profiles"
+  - id: customer_data_ml
+    headline: "AI & Data Engineer | Technical Lead | GenAI | Customer Data & ML"
+    best_for: "Roles emphasizing Customer 360, data governance, analytics-heavy teams"
+
+skills:
+  generative_ai_llm:
+    - Large Language Models (LLMs)
+    - Generative AI
+    - Agentic AI & Multi-Agent Orchestration
+    - Retrieval-Augmented Generation (RAG)
+    - RAG pipeline design (Exact Match, Semantic Match, LLM-inference layers)
+    - LangChain
+    - LangGraph (adjacent/learning area — verify before claiming)
+    - LLM Evaluation
+    - Prompt Engineering
+    - Context Engineering
+    - Vector Search
+    - Vector Databases
+    - ChromaDB
+    - Snowflake Cortex
+    - Model Context Protocol (MCP) — GitHub, Jira, Airtable, ServiceNow, Snowflake integrations
+    - NLP / NLP-powered chatbots
+    - Responsible AI governance (PII detection & exclusion from LLM inputs)
+  core_engineering:
+    - Python
+    - SQL
+    - PySpark
+    - Spark
+    - Snowflake
+    - AWS
+    - DBT
+    - Data Modelling
+    - Data Warehousing
+    - Advanced Analytics
+    - Data Science / Optimization background (M.Tech Operations Research)
+  snowflake_platform_admin:
+    - Snowpark (Python/pandas)
+    - Snowpipe
+    - Time Travel
+    - Cloning
+    - Warehouse Right-Sizing
+    - Auto Suspend/Resume tuning
+    - Query Profiling (disk spillage, Cartesian joins, Search Optimization Service)
+    - RBAC & Role Design
+    - Account-Level Parameter Management
+    - Apache Iceberg
+  data_engineering:
+    - Data Pipeline Architecture
+    - ETL/ELT
+    - Data Integration
+    - Data Contracts
+    - Data Mesh
+    - Data Governance
+    - Data Quality / Data Validation
+    - Customer 360
+    - Apache Airflow
+    - Kafka
+    - Coalesce
+    - APIs
+    - High-Volume / Distributed Data Processing
+  cloud_platforms:
+    - "AWS: S3, Lambda, Kinesis, Firehose, DMS"
+    - "GCP: Vertex AI, BigQuery"
+    - "Snowflake: Snowpark, Snowpipe"
+    - Terraform (Infrastructure as Code)
+    - Cloud Data Platforms (multi-cloud)
+  tools_delivery:
+    - Docker
+    - Kubernetes
+    - Git
+    - GitHub Actions
+    - CI/CD
+    - ArgoCD / GitOps
+    - MLOps Workflows
+    - Production Deployment
+    - Sigma (BI/lineage)
+  data_structures_algorithms:
+    - Advanced Algorithms
+    - Algorithm Design (Divide & Conquer, DP, Greedy)
+    - Graph Algorithms
+    - Network Flow
+    - NP-Completeness & Approximation Algorithms
+    - Randomized Algorithms
+  ml_infrastructure:
+    - Model Deployment
+    - Model Evaluation
+    - Model Optimization
+    - Data Processing Pipelines
+    - Production Debugging & Monitoring
+    - Speech-to-Text (CallAI project)
+
+certifications:
+  - name: "SnowPro Advanced Architect"
+    issuer: "Snowflake"
+  - name: "SnowPro Advanced Data Scientist"
+    issuer: "Snowflake"
+  - name: "AWS Certified Machine Learning – Specialty"
+    issuer: "AWS"
+  - name: "AWS Certified Solutions Architect – Associate"
+    issuer: "AWS"
+
+education:
+  - degree: "M.Tech, Operations Research"
+    institution: "NIT Durgapur"
+    cgpa: "8.36/10"
+    years: "2021–2023"
+    relevant_coursework:
+      - "Advanced Algorithms (NP-Completeness, Approximation & Randomized Algorithms, Network Flow, Advanced Data Structures)"
+      - "Algorithm Laboratory"
+      - "Mathematical Foundations of Machine Learning"
+      - "Advanced Optimization Techniques"
+  - degree: "B.Tech, Textile Technology"
+    institution: "GCETTB"
+    cgpa: "7.43/10"
+    years: "2015–2019"
+
+projects:
+  - id: snowflake_cost_optimization_agent
+    name: "Snowflake Cost Optimization Agent"
+    role: "Lead Engineer / Technical Lead"
+    tech_stack: ["Snowflake", "Snowflake Cortex", "Snowpark", "DBT", "Terraform", "MCP", "LLM Agents", "GitHub", "Jira", "Airtable"]
+    summary: >
+      Owned end-to-end technical architecture and provided technical direction for an
+      agentic Snowflake cost-optimization platform spanning warehouse administration,
+      query tuning, and LLM-driven remediation.
+    bullets:
+      - "Served as Lead Engineer / Technical Lead, owning end-to-end technical architecture and technical direction for an agentic Snowflake cost-optimization platform."
+      - "Right-sized virtual warehouses and configured auto suspend/resume policies based on real-time utilization patterns."
+      - "Diagnosed high-cost query patterns via query profile analysis, identifying disk spillage and Cartesian joins, applying Search Optimization Service tuning where warranted."
+      - "Delivered a 65% Snowflake compute-cost reduction across 60 DBT models and 70 warehouses by combining warehouse-level tuning with automated, LLM-based query and model remediation."
+      - "Provisioned and managed underlying Snowflake and AWS resources using Terraform (IaC) for repeatable environment setup."
+      - "Designed the full architecture chain: Snowflake Cortex analysis → DBT model diagnostics → LLM-based refactoring recommendations → automated code changes → GitHub PR → Jira tracking → owner approval → staged production deployment."
+      - "Implemented RBAC and account-level parameter management across dev/staging/production environments, supporting multi-owner approval routing and staged promotion with automated PR raise-and-merge on approval."
+      - "Built a main orchestrator agent coordinating dedicated MCP servers for Airtable, GitHub, and Jira, enabling autonomous PR creation, ticket generation, and model-metadata tracking across the workflow."
+      - "Engineered a three-part data-integrity validation suite (row-count, column-count, MD5 hash comparison) run pre- and post-change, paired with post-deployment cost monitoring to validate realized savings."
+    quantified_impact:
+      - "65% Snowflake compute-cost reduction"
+      - "Across 60 DBT models and 70 warehouses"
+
+  - id: ai_network_incident_orchestrator
+    name: "AI-Powered Network Incident Orchestrator"
+    role: "Technical Architecture Owner"
+    tech_stack: ["Python", "MCP", "LLM Agents", "ServiceNow", "Infoblox", "NetBox", "SevOne", "Datadog", "Splunk", "LogicMonitor"]
+    summary: >
+      Owned the technical architecture for a multi-agent orchestration system coordinating
+      specialized AI agents across major observability and network-management platforms to
+      accelerate incident investigation and root-cause analysis.
+    bullets:
+      - "Owned the technical architecture for a multi-agent orchestration system coordinating specialized AI agents across ServiceNow, Infoblox, NetBox, SevOne, Datadog, Splunk, and LogicMonitor."
+      - "Wrote and maintained the Python codebase for per-platform MCP servers; conducted design and code reviews with peers on style, testability, and efficiency."
+      - "Designed a per-platform agent architecture, each backed by its own MCP server, providing a consistent abstraction layer over heterogeneous observability tools and device-management APIs, including secure SSH-based access to Cisco and non-Cisco network devices."
+      - "Architected dynamic agent-selection and parallel-invocation logic correlating multi-source data (incidents, logs, metrics, topology, device health, configuration) into a single LLM-synthesized RCA report."
+      - "Reduced Mean Time to Detect (MTTD) by 60% and Mean Time to Resolve (MTTR) by 65% through in-memory caching and concurrency-controlled multi-agent execution."
+      - "Extended the system to auto-provision a Microsoft Teams incident bridge with on-call/owner notification and an LLM-generated post-incident summary posted back to the ticket."
+      - "Building a real-time speech-to-text and live-transcription capability (CallAI, a Firefly.ai-style meeting-intelligence agent) for the Teams incident bridge that captures conversation, generates a running summary, and auto-posts it back into the ServiceNow incident record."
+    quantified_impact:
+      - "60% reduction in Mean Time to Detect (MTTD)"
+      - "65% reduction in Mean Time to Resolve (MTTR)"
+
+  - id: customer_360_data_mesh
+    name: "Customer 360 Data Mesh & Governance – Petabyte-Scale Platform"
+    role: "Architect / Lead Data Modeler"
+    tech_stack: ["AWS", "Snowflake", "DBT", "Python", "Kinesis", "Lambda", "Kinesis Firehose", "DMS", "Snowpipe", "Apache Iceberg", "S3"]
+    summary: >
+      Architected a petabyte-scale Customer 360 data platform and data-contract-driven
+      data mesh spanning 1,000+ sources across five ingestion patterns, with fault-tolerant
+      streaming validation, Bronze/Silver/Gold data layers, and metadata-driven automation
+      for data-contract and DBT artifact generation.
+    bullets:
+      - "Architected a petabyte-scale Customer 360 data platform integrating 1,000+ sources across five ingestion patterns: RabbitMQ messaging queues, RDBMS databases, flat files, managed APIs, and real-time/event-based systems."
+      - "Designed the end-to-end ingestion architecture: source systems → AWS ingestion services → Raw Kinesis → Lambda-based data-contract validation → validated Kinesis → Kinesis Firehose → S3 → Snowflake Snowpipe → Bronze/Silver/Gold transformation layers."
+      - "Built a data-contract-driven validation framework that evaluated incoming records against schema and contract requirements before allowing data into the Bronze layer, detecting schema drift, missing mandatory columns, unexpected attributes, and invalid/null values for non-optional fields."
+      - "Implemented fault-tolerant validation and recovery workflows where Lambda processing failures were routed to a messaging queue for controlled retry and reprocessing, preventing transient failures from causing data loss and enabling failed records to re-enter the validation stream."
+      - "Led large-scale data modeling and transformation across approximately 100–200 DBT/SQL models spanning Bronze, Silver, and Gold layers for cross-domain Customer 360 data."
+      - "Designed Bronze-layer transformations to flatten complex nested source payloads into downstream-consumable structures while preserving validated source data."
+      - "Developed Silver-layer transformations for deduplication, enrichment, standardization, and business-level data preparation."
+      - "Built Gold-layer curated data products by joining cross-domain datasets to create trusted Customer 360 views for analytics and business consumption."
+      - "Built a Data Contract Evaluator automation capable of generating contracts for approximately 100 tables within 10 minutes with high precision, significantly reducing manual contract-authoring effort."
+      - "Developed metadata-driven automation to generate Bronze and Silver table definitions and DBT models, accelerating repetitive data-model development and contributing to an 80% reduction in development effort."
+      - "Built multi-stage reconciliation and data-quality evaluation workflows to identify discrepancies, validate data fidelity, and support rapid root-cause analysis across the data mesh."
+      - "Participated in peer reviews, production troubleshooting, failure analysis, and recovery workflows across AWS ingestion, data-contract validation, DBT transformations, and Snowflake processing."
+      - "Incorporated Apache Iceberg tables into the data mesh architecture as part of the open-format storage layer, supporting unified data access patterns queryable directly in Snowflake."
+    quantified_impact:
+      - "Petabyte-scale data platform"
+      - "1,000+ data sources spanning 5 integration patterns"
+      - "~100–200 DBT/SQL transformation models"
+      - "100 data contracts generated in approximately 10 minutes"
+      - "60% improvement in enterprise data accessibility"
+      - "80% reduction in data-model development effort"
+
+  - id: genai_schema_validator
+    name: "GenAI Schema Validator & Automated Mapping Platform"
+    role: "Architect"
+    tech_stack: ["RAG", "LLM inference", "Python", "Responsible AI / PII governance"]
+    summary: >
+      Enterprise-scale schema/report-matching platform combining exact match, semantic
+      match, and LLM-based inference layers for automated column mapping, with built-in
+      PII governance controls.
+    bullets:
+      - "Architected an enterprise-scale schema and report-matching platform combining Exact Match, Semantic Match, and LLM-based inference layers — a RAG-style retrieval-and-reasoning pipeline applied to structured data for automated column mapping."
+      - "Built responsible-AI governance controls to identify and exclude masked PII attributes from LLM inputs."
+      - "Applied prompt engineering to auto-generate metadata for undocumented fields, reducing incorrect field mappings through structured validation."
+
+  - id: data_powered_assist_chatbot
+    name: "Data-Powered Assist Chatbot"
+    role: "Contributor / Builder"
+    tech_stack: ["Snowflake", "NLP", "LLM", "Coalesce", "Sigma"]
+    summary: >
+      NLP-powered chatbot enabling semantic querying in Snowflake, backed by Gold-layer
+      models and Coalesce-built ETL pipelines.
+    bullets:
+      - "Enabled semantic querying in Snowflake through an NLP-powered chatbot using LLM-based query understanding, backed by Gold-layer models supporting Sigma lineage analytics and Coalesce-built ETL pipelines."
+
+  - id: job_discovery_assistant
+    name: "Job Discovery & Application Assistant"
+    role: "Creator"
+    tech_stack: ["Python", "LLM", "Ollama", "Google Gemini", "Greenhouse API", "Lever API", "RemoteOK API", "Workday", "Naukri", "LinkedIn", "SQLite", "Streamlit", "LaTeX", "Tectonic", "GitHub Actions", "Gmail", "WhatsApp"]
+    summary: >
+      Built a local-first end-to-end job discovery and application automation platform that
+      continuously ingests job openings from public ATS platforms and job boards, evaluates
+      candidate-job fit using LLMs, generates tailored application materials, compiles
+      job-specific PDF resumes, and distributes daily application digests through email
+      and WhatsApp.
+    bullets:
+      - "Built a local-first Python system that discovers job openings from Greenhouse, Lever, RemoteOK, Workday, Naukri, and LinkedIn, with configurable source and company mappings."
+      - "Designed an automated resume-parsing pipeline using PDF/DOCX extraction and LLM-based normalization into a structured candidate profile for downstream job matching."
+      - "Implemented an LLM-powered match-scoring engine that evaluates job descriptions against the candidate profile on a 0–100 scale using skills overlap, experience, seniority, and location constraints, while providing structured strengths and missing-requirement reasoning."
+      - "Built automated resume and cover-letter tailoring that generates ATS-optimized, job-specific content while explicitly preventing fabrication of qualifications."
+      - "Implemented automated LaTeX resume generation and PDF compilation using Tectonic, producing customized application-ready resumes for qualified opportunities."
+      - "Built a SQLite-backed application workflow to persist job listings, scoring results, tailoring outputs, and application statuses across the pipeline."
+      - "Developed a Streamlit review dashboard providing job search/filtering, match-score analysis, application-status management, generated-content review, and on-demand resume/cover-letter generation."
+      - "Implemented multi-channel notification workflows using Gmail and WhatsApp integrations, delivering structured daily digests with match scores, role information, application links, and tailored PDF resume attachments."
+      - "Built GitHub Actions CI/CD automation to execute the job-discovery workflow on a daily schedule, including job scoring, batch tailoring, PDF generation, email delivery, and persistence of generated artifacts."
+      - "Designed configurable pipeline execution through a central configuration layer controlling target roles, locations, experience criteria, scoring thresholds, ATS company mappings, and notification settings."
+      - "Implemented modular pipeline stages for CV parsing, job ingestion, LLM scoring, batch tailoring, PDF generation, notification dispatch, and interactive review, enabling each stage to be executed independently or orchestrated through a single pipeline."
+    quantified_impact:
+      - "Automated end-to-end job discovery, scoring, tailoring, and notification workflow"
+      - "0–100 LLM-based job-fit scoring with structured reasoning"
+      - "Daily automated job discovery and application digest"
+      - "Multi-channel delivery through Email and WhatsApp"
+      - "Automated job-specific LaTeX/PDF resume generation"
+
+  - id: dbt_airflow_pipeline
+    name: "DBT + Airflow Data Pipeline (Open Source)"
+    role: "Creator"
+    tech_stack: ["DBT", "Apache Airflow", "Snowflake", "Docker", "GitHub Actions"]
+    summary: >
+      Containerized data pipeline integrating DBT transformation models with
+      Airflow-orchestrated DAGs, including automated testing and CI/CD.
+    bullets:
+      - "Containerized data pipeline integrating DBT transformation models with Airflow-orchestrated DAGs on Snowflake."
+      - "Includes automated testing and CI/CD validation via GitHub Actions."
+
+headline_achievements:
+  # Use these as the highest-impact, most reusable one-liners across any resume version.
+  - "Technical Lead / Lead Engineer on the flagship Snowflake Cost Optimization Agent — delivered a 65% Snowflake compute-cost reduction across 60 DBT models and 70 warehouses."
+  - "Reduced Mean Time to Detect (MTTD) by 60% and Mean Time to Resolve (MTTR) by 65% via a multi-agent AI incident orchestration system."
+  - "Architected a petabyte-scale data-mesh/data-contract framework spanning 1,000+ sources across 5 integration patterns, improving data accessibility by 60%."
+  - "Reduced DBT/data-modeling development effort by 80% via metadata-driven automation."
+  - "Promoted within 2 years at Factspan Analytics for consistently exceeding performance expectations, taking on technical-lead responsibility across GenAI, Agentic AI, and data engineering."
+  - "Built production multi-agent, MCP-based AI orchestration integrating LLMs with ServiceNow, Snowflake, GitHub, Jira, Airtable, and observability tools."
+  - "Certified across both Snowflake (SnowPro Advanced Architect, SnowPro Advanced Data Scientist) and AWS (ML Specialty, Solutions Architect Associate) — a relatively rare dual-certification combination at 3 YOE."
+
+notes_for_llm_resume_tailoring:
+  - "This is a single source-of-truth file. When generating a tailored resume, select the positioning_angle that best matches the target job description, then pull only the projects/bullets/skills relevant to that role — do not dump everything."
+  - "Always keep the two headline numbers (65% compute-cost reduction, 60%/65% MTTD/MTTR reduction) somewhere near the top — they are the strongest, most differentiated proof points."
+  - "For Snowflake/data-platform-heavy JDs, lead with snowflake_platform_admin skills and the snowflake_cost_optimization_agent and customer_360_data_mesh projects."
+  - "For GenAI/Agentic AI/LLM JDs, lead with generative_ai_llm skills and the ai_network_incident_orchestrator, genai_schema_validator, and snowflake_cost_optimization_agent (MCP orchestration angle) projects."
+  - "For software engineering / ML infra JDs, lead with data_structures_algorithms and ml_infrastructure skills and emphasize code ownership, code reviews, and the CallAI speech-to-text build."
+  - "Do not fabricate metrics or tools not listed here. If a target JD requires a skill not in this file, flag it as a gap rather than inventing it."
