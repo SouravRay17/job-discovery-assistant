@@ -121,25 +121,18 @@ def normalize_job(
     description_raw: str | None,
     date_posted: str | None,
 ) -> dict:
-    """Create a normalised job dict matching the jobs table schema."""
+    """Create a normalised raw job dict matching the jobs table schema."""
     return {
         "id": str(job_id),
         "source": source,
-        "company": company or "Unknown",
-        "title": title or "Untitled",
-        "location": location or "",
+        "company": (company or "Unknown").strip(),
+        "title": (title or "Untitled").strip(),
+        "location": (location or "").strip(),
         "remote": remote,
-        "url": url or "",
+        "url": (url or "").strip(),
         "description_raw": description_raw,
         "date_posted": date_posted,
         "date_fetched": now_iso(),
-        "score": None,
-        "reasoning": None,
-        "missing_requirements": None,
-        "matching_strengths": None,
-        "tailored_summary": None,
-        "cover_letter_draft": None,
-        "status": "new",
     }
 
 
@@ -612,22 +605,18 @@ def upsert_jobs(jobs: list[dict]) -> tuple[int, int]:
     try:
         for job in jobs:
             try:
-                conn.execute(
+                cursor = conn.execute(
                     """INSERT OR IGNORE INTO jobs
                        (id, source, company, title, location, remote, url,
-                        description_raw, date_posted, date_fetched,
-                        score, reasoning, missing_requirements, matching_strengths,
-                        tailored_summary, cover_letter_draft, status)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                        description_raw, date_posted, date_fetched)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                     (
                         job["id"], job["source"], job["company"], job["title"],
                         job["location"], job["remote"], job["url"], job["description_raw"],
-                        job["date_posted"], job["date_fetched"], job["score"],
-                        job["reasoning"], job["missing_requirements"], job["matching_strengths"],
-                        job["tailored_summary"], job["cover_letter_draft"], job["status"],
+                        job["date_posted"], job["date_fetched"]
                     ),
                 )
-                if conn.total_changes > inserted + skipped:
+                if cursor.rowcount > 0:
                     inserted += 1
                 else:
                     skipped += 1

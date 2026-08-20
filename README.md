@@ -1,51 +1,58 @@
-# 💼 Job Discovery & Application Assistant
+# 💼 Job Discovery & Application Assistant (Retrieval-First Engine)
 
-An automated, local-first system designed to scrape job openings from public applicant tracking systems (Greenhouse, Lever, Workday) and job boards (RemoteOK, Naukri, LinkedIn), evaluate match suitability against a candidate's resume using Large Language Models (LLMs), generate tailored cover letters and LaTeX PDF resumes, and deliver digest notifications via Email and WhatsApp.
+A scalable, local-first and cloud-ready job discovery engine designed to scrape public ATS boards (Greenhouse, Lever, Workday, RemoteOK, Naukri, LinkedIn), normalize structured metadata, perform high-recall hybrid retrieval (Dense Vector + BM25 + RRF + Deterministic Scoring), execute deep Cross-Encoder reranking and MMR diversification, run Gemini AI strategic reviews on top picks only, generate tailored LaTeX resumes, and dispatch email/WhatsApp digests.
 
 ---
 
-## 🏗️ System Architecture & Workflow
-
-The assistant coordinates multiple specialized components through a SQLite database to ingest, score, tailor, and notify. Below is the system flow:
+## 🏗️ Retrieval-First Architecture & Workflow
 
 ```mermaid
-graph TD
-    A[Sourav_Resume_Latest.docx] -->|cv_parser.py| B(cv_profile.json)
-    C[company_ats_mapping.toml] -->|scraper.py| D[(jobs.db)]
-    B & D -->|scorer.py LLM scoring| E{Score >= 70?}
-    E -->|No| F[Auto-Rejected / Low Match]
-    E -->|Yes| G[batch_tailor.py / tailor.py]
-    G -->|LLM Tailoring| H[Tailored Summary & Cover Letter in DB]
-    G -->|Tectonic Compiler| I[Custom PDF Resume in exports/]
-    H & I -->|email_notifier.py| J[Gmail Email Digest with PDF Attachments]
-    H & I -->|whatsapp_notifier.py| K[WhatsApp Direct Notifications]
-    D -->|dashboard.py| L[Streamlit Dashboard Review & Action]
+flowchart TD
+    A[Scraped Job Listings] --> B[normalizer.py: Metadata & Search Docs]
+    B --> C[(jobs.db)]
+    B --> D[indexer.py: Dense Embeddings & BM25 Index]
+    D --> E[vector_store/ & bm25_index/]
+    
+    F[Candidate Profile: cv_profile.json] --> G[retriever.py: Hard Filters]
+    E & G --> H[Hybrid Retrieval: Vector + BM25 + RRF + Skill Scoring]
+    H -->|Top 100 Candidates| I[reranker.py: Cross-Encoder Deep Scoring]
+    I -->|Top 20 Candidates| J[MMR Diversification across Roles & Companies]
+    J -->|Top 10-15 Candidates| K[scorer.py: Gemini AI Strategic Review]
+    K -->|APPLY / MAYBE Picks| L[tailor.py: LaTeX PDF Resume Compilation]
+    L --> M[email_notifier.py: Daily HTML Email Digest]
+    L & K --> N[dashboard.py: Streamlit Review Interface]
 ```
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Features & Pipeline Stages
 
-*   **Resume Parser ([cv_parser.py](./cv_parser.py))**: Extracts raw text from DOCX or PDF resumes using `pdfplumber` and `python-docx`. Uses an LLM (local Ollama or Google Gemini) to structure it into a normalized candidate profile schema ([cv_profile.json](./cv_profile.json)).
-*   **Job Scraper ([scraper.py](./scraper.py))**:
-    *   Queries Greenhouse, Lever, RemoteOK, Workday, Naukri, and LinkedIn.
-    *   Resolves company-specific board slugs automatically by referencing the central mappings defined in [company_ats_mapping.toml](./company_ats_mapping.toml).
-    *   Checks job listings against target experience, roles, and locations (e.g., preferring India/Remote while filtering out foreign geographical constraints).
-    *   Stores scraped opportunities in a local SQLite database ([jobs.db](./jobs.db)).
-*   **AI Match Scorer ([scorer.py](./scorer.py))**:
-    *   Scores raw job descriptions against the candidate's JSON profile using LLMs.
-    *   Evaluates fit from `0` to `100` based on skills overlap, experience, seniority, and location constraints.
-    *   Provides structured reasoning, lists matching strengths, and identifies missing requirements.
-*   **Resume & Cover Letter Tailoring ([tailor.py](./tailor.py) & [batch_tailor.py](./batch_tailor.py))**:
-    *   Dynamically drafts high-impact, ATS-optimized summaries and 3-paragraph cover letters without fabricating qualifications.
-    *   Compiles a custom, job-specific PDF resume using the local LaTeX compiler [tectonic.exe](./tectonic.exe), automatically embedding the tailored professional summary.
-*   **Multi-Channel Notifications**:
-    *   **Daily Email Digest ([email_notifier.py](./email_notifier.py))**: Dispatches structured, responsive HTML digests directly to the user's Gmail. Auto-attaches corresponding tailored PDF resumes from the `exports/` folder.
-    *   **WhatsApp Dispatcher ([whatsapp_notifier.py](./whatsapp_notifier.py))**: Provides direct notifications via CallMeBot API or Twilio API containing match scores, role descriptions, and repository PDF links.
-*   **Streamlit Review Dashboard ([dashboard.py](./dashboard.py))**:
-    *   Displays metrics (Total Listings, Unscored Jobs, To Review, Applied, Rejected).
-    *   Allows text searching, filtering by minimum match scores, status, and sources.
-    *   Provides interface to inspect job details, read generated summaries/letters, update application status, and trigger tailoring or PDF compiles on demand.
+1. **Job Normalization ([`normalizer.py`](./normalizer.py))**: Extracts canonical technical skills (150+ tech taxonomy), experience boundaries (`min/max`), role family, domain, remote status, and builds concise high-signal search documents without calling LLMs.
+2. **Incremental Indexing ([`indexer.py`](./indexer.py))**: Computes dense sentence embeddings (`all-MiniLM-L6-v2`) and builds term-frequency weighted BM25 indices. Embeds only new or modified jobs.
+3. **Hard Filtering & Hybrid Retrieval ([`retriever.py`](./retriever.py))**:
+   - Eliminates out-of-range experience, foreign on-site constraints, and excluded role titles deterministically.
+   - Executes dense vector search and BM25 exact skill search.
+   - Fuses rankings with Reciprocal Rank Fusion (RRF).
+   - Computes deterministic alignment scores emphasizing **Role Intent & Career Trajectory (20%)**, **Domain Fit (10%)**, Dense Vector (25%), BM25 (15%), Required Skills (20%), Preferred Skills (5%), and Experience (5%) to return the **Top 100** candidates.
+4. **Cross-Encoder Reranking & MMR Diversification ([`reranker.py`](./reranker.py))**:
+   - Runs deep pairwise cross-attention (`ms-marco-MiniLM-L-6-v2`) to isolate the **Top 20** highest-relevance jobs.
+   - Applies Maximal Marginal Relevance (MMR) and company caps ($\le 2$ per company) to eliminate clustering and select a diverse **Top 10–15**.
+5. **AI Strategic Review & Blended Scoring ([`scorer.py`](./scorer.py))**:
+   - Bounded Evaluation: Reduces LLM calls from $O(N)$ to $O(K)$, where $K$ is the bounded final candidate set ($K \ll N$, e.g., $10\text{--}20$ calls whether $N = 420$ or $10,000$).
+   - Calculates a blended **Final Composite Score**:
+     $$\text{Final} = 0.25 \times \text{Retrieval} + 0.35 \times \text{Reranker} + 0.40 \times \text{LLM}$$
+     ensuring Gemini reasons and explains without overwriting the deterministic retrieval backbone.
+6. **Information Retrieval Evaluation Suite ([`evaluate.py`](./evaluate.py))**:
+   - Benchmarks retrieval and ranking quality using standard IR metrics: `Recall@100`, `Recall@20`, `NDCG@10`, `NDCG@20`, `Precision@10`, and `MRR`.
+   - Compares baseline embeddings and tunes hyperparameter weights against ground-truth ratings.
+7. **Resume & Cover Letter Tailoring ([`tailor.py`](./tailor.py))**:
+   - Generates ATS-optimized professional summaries and cover letter drafts strictly grounded in candidate profile.
+   - Compiles custom LaTeX PDF resumes with the local `tectonic` engine into `exports/`.
+8. **Daily Email Digest ([`email_notifier.py`](./email_notifier.py))**:
+   - Sends dark-mode HTML email digests with attached tailored PDF resumes directly to your inbox.
+9. **Interactive Review Dashboard with Ground Truth Labeling ([`dashboard.py`](./dashboard.py))**:
+   - Visualizes full funnel metrics, transparent score breakdowns (Semantic, BM25, Skill Match, Cross-Encoder, AI Review, Blended Final), and includes an interactive 1–5★ relevance labeling widget for continuous tuning.
+
 
 ---
 
@@ -84,59 +91,68 @@ Customize config values inside [config.toml](./config.toml):
 
 ## 🚀 Execution Guide
 
-You can run individual pipeline stages manually, or execute the entire workflow together.
+You can run individual pipeline stages manually or execute the entire workflow together.
 
 ### Run the Full Pipeline
-To fetch new jobs, score them, run batch tailoring, and send notifications sequentially:
+To fetch new jobs, normalize metadata, index vectors/BM25, perform hybrid retrieval, rerank with Cross-Encoder, review top picks with Gemini AI, batch tailor, and send notifications:
 ```bash
 python run_pipeline.py
 ```
 
 ### Run Pipeline Stages Separately
 
-1.  **Parse CV Resume (Once or when CV changes)**
-    ```bash
-    python cv_parser.py --cv d:/Projects/job-discovery-assistant/Sourav_Resume_Latest.docx
-    ```
-    This generates the structured candidate profile at [cv_profile.json](./cv_profile.json).
+1. **Scrape Job Openings**
+   ```bash
+   python scraper.py
+   ```
+   Saves raw job listings to [`jobs.db`](./jobs.db).
 
-2.  **Scrape Job Openings**
-    ```bash
-    # Scrape all configured sources
-    python scraper.py
-    
-    # Scrape Greenhouse boards only
-    python scraper.py --source greenhouse
-    ```
-    Fetched jobs are saved to [jobs.db](./jobs.db).
+2. **Deterministic Metadata Normalization & Search Doc Creation**
+   ```bash
+   python normalizer.py
+   ```
+   Extracts canonical skills, experience requirements, role families, domains, and formats concise search documents.
 
-3.  **Run Match Scorer**
-    ```bash
-    python scorer.py
-    ```
-    Evaluates unscored listings in the DB and marks those scoring below the threshold as `rejected`.
+3. **Incremental Dense Vector & BM25 Indexing**
+   ```bash
+   python indexer.py
+   ```
+   Embeds new listings into `vector_store/` and builds keyword index in `bm25_index/`.
 
-4.  **Batch Tailor Qualified Jobs**
-    ```bash
-    # Tailor top 10 qualified jobs in the DB
-    python batch_tailor.py --top 10
-    ```
-    Saves tailored professional summaries, drafts cover letters, and compiles LaTeX PDFs to the `exports/` folder.
+4. **Hybrid Retrieval (Hard Filters + Dense Vector + BM25 + RRF)**
+   ```bash
+   python retriever.py
+   ```
+   Eliminates disqualified jobs and scores the **Top 100** candidates into `candidate_job_scores`.
 
-5.  **Trigger Notifications manually**
-    ```bash
-    # Send daily email digest with PDF resume attachments
-    python email_notifier.py
-    
-    # Send daily WhatsApp digest via CallMeBot or Twilio
-    python whatsapp_notifier.py
-    ```
+5. **Cross-Encoder Reranking & MMR Diversification**
+   ```bash
+   python reranker.py
+   ```
+   Runs deep pairwise cross-attention (`Top 20`) and selects diverse, non-clustering openings (`Top 10–15`).
+
+6. **Strategic AI Review (Gemini AI)**
+   ```bash
+   python scorer.py
+   ```
+   Evaluates **only** the top MMR-diversified candidates and outputs structured `APPLY`/`MAYBE`/`SKIP` classifications.
+
+7. **Batch Tailor Resumes & Compile LaTeX PDFs**
+   ```bash
+   python tailor.py --batch --top 10
+   ```
+   Drafts tailored summaries/cover letters and compiles LaTeX PDF resumes into `exports/`.
+
+8. **Trigger Email Notification**
+   ```bash
+   python email_notifier.py
+   ```
 
 ---
 
 ## 🖥️ Streamlit Interactive Dashboard
 
-To review fetched listings, read match justifications, update statuses, or generate customized material on demand, start the Streamlit app:
+To inspect the retrieval funnel, review multi-stage alignment breakdowns, update statuses, or generate tailored application materials on demand:
 ```bash
 streamlit run dashboard.py
 ```
@@ -145,16 +161,20 @@ streamlit run dashboard.py
 
 ## 🤖 Continuous Integration (GitHub Actions)
 
-The repository includes a daily automation workflow at [.github/workflows/daily_jobs.yml](./.github/workflows/daily_jobs.yml):
-*   **Trigger**: Runs on schedule daily at **3:30 AM UTC (9:00 AM IST)** or can be dispatched manually.
-*   **Workflow steps**:
-    1.  Checks out the codebase and configures Python 3.11.
-    2.  Installs the Tectonic LaTeX compiler.
-    3.  Scores new jobs using Gemini AI.
-    4.  Batch-tailors resume drafts and compiles the PDFs.
-    5.  Emails the daily HTML digest with the PDFs attached.
-    6.  Commits the updated [jobs.db](./jobs.db) and tailored PDF resumes in `exports/` back to the GitHub repository automatically.
-*   **Required Secrets**:
-    *   `GEMINI_API_KEY`: Google Gemini API Key.
-    *   `SENDER_EMAIL` / `RECIPIENT_EMAIL`: Gmail account credentials.
-    *   `GMAIL_APP_PASSWORD`: Gmail 16-character App Password.
+The repository includes an automated workflow at [`.github/workflows/daily_jobs.yml`](./.github/workflows/daily_jobs.yml):
+* **Trigger**: Daily at **3:30 AM UTC (9:00 AM IST)** or on-demand via `workflow_dispatch`.
+* **Workflow Execution**:
+  1. Checks out repository and provisions Python 3.11 + Tectonic compiler.
+  2. Scrapes new jobs via `scraper.py`.
+  3. Normalizes structured metadata via `normalizer.py`.
+  4. Indexes embeddings and BM25 keywords via `indexer.py`.
+  5. Runs hard filtering and hybrid retrieval via `retriever.py` (Top 100).
+  6. Reranks and diversifies via `reranker.py` (Top 10–20).
+  7. Conducts Gemini AI strategic review via `scorer.py` on top picks only.
+  8. Generates tailored summaries and compiles LaTeX PDFs via `tailor.py`.
+  9. Dispatches daily HTML email digest with attached PDF resumes via `email_notifier.py`.
+  10. Commits updated `jobs.db`, `vector_store/`, `bm25_index/`, and `exports/*.pdf` back to GitHub.
+* **Required Secrets**:
+  * `GEMINI_API_KEY`: Google Gemini API Key.
+  * `SENDER_EMAIL` / `RECIPIENT_EMAIL`: Gmail account credentials.
+  * `GMAIL_APP_PASSWORD`: Gmail 16-character App Password.

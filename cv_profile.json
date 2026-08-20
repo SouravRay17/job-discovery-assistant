@@ -1,4 +1,5 @@
 {
+  "version": "2.0",
   "name": "Sourav Ray",
   "contact": {
     "email": "sroy.dgp2014@gmail.com",
@@ -6,7 +7,102 @@
     "linkedin": "linkedin.com/in/souravray17",
     "github": "github.com/SouravRay17"
   },
-  "years_of_experience": 3,
+  "experience_years": 3,
+  "target_roles": [
+    "AI Engineer",
+    "ML Engineer",
+    "Data Engineer",
+    "Python Developer",
+    "Backend Engineer",
+    "Analytics Engineer",
+    "Software Engineer AI/ML"
+  ],
+  "core_skills": [
+    "Python",
+    "SQL",
+    "Snowflake",
+    "dbt",
+    "PySpark",
+    "AWS",
+    "GCP",
+    "Apache Airflow",
+    "Kafka",
+    "ETL/ELT"
+  ],
+  "ai_ml_skills": [
+    "LLM",
+    "RAG",
+    "LangChain",
+    "LangGraph",
+    "MLOps",
+    "Vertex AI",
+    "OpenAI",
+    "Gemini",
+    "ChromaDB",
+    "NLP",
+    "Multi-Agent Orchestration",
+    "Model Context Protocol (MCP)"
+  ],
+  "secondary_skills": [
+    "Docker",
+    "Kubernetes",
+    "Git",
+    "GitHub Actions",
+    "Linux/Shell Scripting",
+    "Data Contracts",
+    "Data Mesh",
+    "Sigma"
+  ],
+  "preferred_domains": [
+    "Data Engineering",
+    "AI",
+    "ML Infrastructure",
+    "Generative AI",
+    "Data Platforms",
+    "Cloud Analytics"
+  ],
+  "preferred_locations": [
+    "Remote",
+    "India",
+    "Bangalore",
+    "Bengaluru",
+    "Hyderabad",
+    "Pune",
+    "Mumbai",
+    "Delhi",
+    "Noida",
+    "Gurgaon",
+    "Chennai"
+  ],
+  "preferred_employment_types": [
+    "Full-time",
+    "Contract",
+    "Permanent"
+  ],
+  "excluded_roles": [
+    "Store Design",
+    "Refrigeration",
+    "Compliance",
+    "Civil",
+    "Mechanical",
+    "HR",
+    "Recruiter",
+    "Payroll",
+    "Accounting",
+    "Facilities",
+    "Legal",
+    "Sales Representative",
+    "Marketing Manager",
+    "Real Estate",
+    "Chef",
+    "Security Guard",
+    "Nurse"
+  ],
+  "must_have_constraints": {
+    "min_experience": 0,
+    "max_experience": 6,
+    "allow_remote": true
+  },
   "skills": [
     "Cloud & Data Platforms: AWS (S3, Lambda, Kinesis, Firehose, DMS), Snowflake (Snowpark, Snowpipe), GCP (Vertex AI, BigQuery)",
     "Data Engineering: DBT, Apache Airflow, Coalesce, SQL, PySpark, Kafka, ETL/ELT, Data Contracts, Data Mesh",

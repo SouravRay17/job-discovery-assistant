@@ -2,9 +2,8 @@
 tailor.py — Generate tailored application materials (resume summary & cover letter)
 using LLM (Ollama local or Google Gemini cloud) without fabricating qualifications.
 
-Usage:
-    python tailor.py --source greenhouse:stripe --id 12345
-    python tailor.py --batch [--top 10]
+Targeting:
+    Evaluates only the final Top 10 recommendations from candidate_job_scores.
 """
 
 import argparse
@@ -15,11 +14,11 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 
-from config import load_config
-from db import get_connection
-from scorer import validate_environment
+from config import load_config, CV_PATH
+from db import get_connection, init_db
+from retriever import load_candidate_profile
 
 SYSTEM_PROMPT = """You are an expert executive resume strategist and ATS optimization expert.
 You will be given a candidate profile and a target job description.
@@ -46,22 +45,18 @@ LATEX_TRANS = str.maketrans({
 })
 
 
+def now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
 def clean_date(date_str: str) -> str:
-    """Standardise date format (YYYY-MM, YYYY, or 'present') using stdlib datetime."""
-    if not date_str:
-        return ""
-    date_clean = date_str.strip().lower()
-    if date_clean in ("present", "now", "current"):
+    """Standardise date format using native datetime.fromisoformat or simple prefix slice."""
+    if not date_str or date_str.lower().strip() in ("present", "now", "current"):
         return "present"
-
-    for fmt in ("%B %Y", "%b %Y", "%Y-%m", "%Y/%m", "%Y"):
-        try:
-            dt = datetime.strptime(date_clean, fmt)
-            return dt.strftime("%Y-%m") if any(k in fmt for k in ("%m", "%b", "%B")) else dt.strftime("%Y")
-        except ValueError:
-            pass
-
-    return date_str
+    try:
+        return datetime.fromisoformat(date_str.replace("Z", "+00:00")).strftime("%Y-%m")
+    except ValueError:
+        return date_str[:7] if len(date_str) >= 7 and date_str[:4].isdigit() else date_str
 
 
 def escape_latex(text: str) -> str:
@@ -73,21 +68,16 @@ def escape_latex(text: str) -> str:
 
 
 def query_tailor_llm(prompt: str, config: dict) -> dict | None:
-    """Send tailoring prompt to LLM (Ollama or Gemini) and return parsed JSON output."""
-    from llm_client import query_llm
+    """Send tailoring prompt to LLM and return parsed JSON output."""
+    from llm_client import query_llm, parse_json_from_llm
 
     response_text = query_llm(prompt=prompt, config=config, temperature=0.5, max_tokens=1500, json_mode=True)
     if not response_text:
         return None
 
-    match = re.search(r"(\{.*\})", response_text, re.DOTALL)
-    if match:
-        try:
-            data = json.loads(match.group(1), strict=False)
-            if "tailored_summary" in data and "cover_letter_draft" in data:
-                return data
-        except json.JSONDecodeError:
-            pass
+    data = parse_json_from_llm(response_text)
+    if data and "tailored_summary" in data and "cover_letter_draft" in data:
+        return data
 
     summary_match = re.search(r'"tailored_summary"\s*:\s*"(.*?)"(?=\s*,\s*"cover_letter_draft"|\s*,\s*"|\s*})', response_text, re.DOTALL)
     cover_match = re.search(r'"cover_letter_draft"\s*:\s*"(.*?)"(?=\s*})', response_text, re.DOTALL)
@@ -106,7 +96,7 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
     conn = get_connection()
     try:
         row = conn.execute(
-            "SELECT title, company, location, remote, description_raw FROM jobs WHERE source = ? AND id = ?",
+            "SELECT title, company, location, remote, description_raw, search_text FROM jobs WHERE source = ? AND id = ?",
             (job_source, job_id)
         ).fetchone()
     finally:
@@ -116,7 +106,7 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
         print(f"  [!] Job {job_source} / {job_id} not found in database.")
         return False
 
-    title, company, location, remote, description = row
+    title, company, location, remote, description, search_text = row
     if not description:
         from scraper import fetch_greenhouse_description, fetch_workday_description
         if job_source.startswith("greenhouse:"):
@@ -124,19 +114,8 @@ def tailor_job(job_source: str, job_id: str, config: dict, cv_profile: dict) -> 
         elif job_source.startswith("workday:"):
             description = fetch_workday_description(job_source.split(":", 1)[1], job_id)
 
-        if description:
-            conn = get_connection()
-            try:
-                conn.execute(
-                    "UPDATE jobs SET description_raw = ? WHERE source = ? AND id = ?",
-                    (description, job_source, job_id)
-                )
-                conn.commit()
-            finally:
-                conn.close()
-
     if not description:
-        description = f"Role: {title} at {company} located in {location}. Remote preference: {remote}."
+        description = search_text or f"Role: {title} at {company} located in {location}."
 
     print(f"  * Tailoring for: {title} at {company}...")
     prompt = f"""{SYSTEM_PROMPT}
@@ -157,11 +136,15 @@ Description:
     if not result:
         return False
 
+    now_str = now_iso()
     conn = get_connection()
     try:
+        # Update candidate_job_scores
         conn.execute(
-            "UPDATE jobs SET tailored_summary = ?, cover_letter_draft = ? WHERE source = ? AND id = ?",
-            (result["tailored_summary"], result["cover_letter_draft"], job_source, job_id)
+            """UPDATE candidate_job_scores
+               SET tailored_summary = ?, cover_letter_draft = ?, status = 'tailored', tailored_at = ?
+               WHERE source = ? AND job_id = ?""",
+            (result["tailored_summary"], result["cover_letter_draft"], now_str, job_source, job_id)
         )
         conn.commit()
     finally:
@@ -173,7 +156,6 @@ Description:
 
 def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
     """Generate a complete resume by injecting tailored summary into LaTeX and compiling via Tectonic."""
-    config, _ = validate_environment()
     base_dir = os.path.dirname(os.path.abspath(__file__))
     master_tex_path = os.path.join(base_dir, "Sourav_Ray_Resume_Master.tex")
 
@@ -192,7 +174,10 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
     conn = get_connection()
     try:
         row = conn.execute(
-            "SELECT company, tailored_summary FROM jobs WHERE source = ? AND id = ?",
+            """SELECT j.company, c.tailored_summary
+               FROM candidate_job_scores c
+               JOIN jobs j ON c.source = j.source AND c.job_id = j.id
+               WHERE c.source = ? AND c.job_id = ?""",
             (job_source, job_id)
         ).fetchone()
     finally:
@@ -242,50 +227,52 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
     return output_pdf_path
 
 
-def run_batch_tailoring(top_n: int | None = 10):
-    """Batch generate tailored summaries, cover letters, and PDFs for qualifying jobs."""
+def run_batch_tailoring(top_n: int = 10):
+    """Batch generate tailored summaries, cover letters, and PDFs for top recommendations."""
+    init_db()
     config = load_config()
-    threshold = config.get("scoring", {}).get("threshold", 60)
+    cv_profile = load_candidate_profile()
     base_dir = os.path.dirname(os.path.abspath(__file__))
     exports_dir = os.path.join(base_dir, "exports")
 
-    if os.path.exists(exports_dir):
-        for old_file in glob.glob(os.path.join(exports_dir, "*")):
-            try:
-                if os.path.isfile(old_file):
-                    os.remove(old_file)
-            except Exception:
-                pass
-    else:
-        os.makedirs(exports_dir, exist_ok=True)
+    os.makedirs(exports_dir, exist_ok=True)
 
     conn = get_connection()
     try:
-        query = """
-            SELECT source, id, company, title, score, location, remote, url, tailored_summary
-            FROM jobs WHERE score >= ? AND status = 'to_review' AND description_raw IS NOT NULL
-            ORDER BY score DESC
-        """
-        params = [threshold]
-        if top_n:
-            query += " LIMIT ?"
-            params.append(top_n)
-        rows = conn.execute(query, params).fetchall()
+        cursor = conn.execute(
+            """SELECT c.source, c.job_id, j.company, j.title, c.llm_score,
+                      j.location, j.remote, j.url, c.tailored_summary, c.recommendation
+               FROM candidate_job_scores c
+               JOIN jobs j ON c.source = j.source AND c.job_id = j.id
+               WHERE c.recommendation IN ('APPLY', 'MAYBE') OR c.mmr_selected = 1
+               ORDER BY c.llm_score DESC, c.reranker_score DESC
+               LIMIT ?""",
+            (top_n,)
+        )
+        rows = [dict(row) for row in cursor.fetchall()]
     finally:
         conn.close()
 
     if not rows:
-        print(f"[*] No jobs found with score >= {threshold}.")
+        print("[*] No qualifying candidates found for batch tailoring. Run scorer.py first.")
         return
 
-    print(f"\n{'='*60}\nBatch Tailoring -- Processing {len(rows)} Openings\n{'='*60}")
+    print(f"\n{'='*60}\nBatch Tailoring & Resume Generation -- Processing {len(rows)} Openings\n{'='*60}")
     tailored_count, pdf_count = 0, 0
 
-    for idx, (source, job_id, company, title, score, location, remote, url, existing_summary) in enumerate(rows, 1):
-        print(f"\n[{idx}/{len(rows)}] [{score}/100] {company} — {title} ({location})")
+    for idx, item in enumerate(rows, 1):
+        source = item["source"]
+        job_id = item["job_id"]
+        company = item["company"]
+        title = item["title"]
+        score = item["llm_score"] or "Pending"
+        location = item["location"]
+        rec = item["recommendation"] or "APPLY"
+        existing_summary = item["tailored_summary"]
+
+        print(f"\n[{idx}/{len(rows)}] [{rec} - {score}/100] {company} — {title} ({location})")
         if not existing_summary:
-            cfg, cv_profile = validate_environment()
-            if tailor_job(source, job_id, cfg, cv_profile):
+            if tailor_job(source, job_id, config, cv_profile):
                 tailored_count += 1
             else:
                 continue
@@ -307,9 +294,11 @@ def main():
     if args.batch:
         run_batch_tailoring(top_n=args.top)
     elif args.source and args.id:
-        config, cv_profile = validate_environment()
+        config = load_config()
+        cv_profile = load_candidate_profile()
         if not tailor_job(args.source, args.id, config, cv_profile):
             sys.exit(1)
+        compile_pdf_resume(args.source, args.id)
     else:
         parser.print_help()
 

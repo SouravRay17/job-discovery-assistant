@@ -1,51 +1,59 @@
 """
 email_notifier.py — Send daily job digest and attached tailored PDF resumes via Gmail SMTP.
 
-Usage:
-    python email_notifier.py
+Reads Top 10 recommendations from candidate_job_scores and sends structured HTML digest.
 """
 
+import json
 import os
 import re
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
+from datetime import datetime, timezone
 
 from config import load_config
-from db import get_connection
+from db import get_connection, init_db
 import tailor
 
 
+def now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
 def send_email_digest(top_n: int = 10):
+    init_db()
     config = load_config()
     email_cfg = config.get("email", {})
 
     sender = os.getenv("SENDER_EMAIL") or email_cfg.get("sender_email", "sroy.dgp2014@gmail.com")
     recipient = os.getenv("RECIPIENT_EMAIL") or email_cfg.get("recipient_email", sender)
     password = os.getenv("GMAIL_APP_PASSWORD") or email_cfg.get("gmail_app_password", "")
-    threshold = config.get("scoring", {}).get("threshold", 70)
 
     conn = get_connection()
     try:
         cursor = conn.execute("""
-            SELECT source, id, company, title, score, location, url, tailored_summary
-            FROM jobs
-            WHERE score >= ? AND status = 'to_review' AND notified_email = 0 AND description_raw IS NOT NULL
-            ORDER BY score DESC LIMIT ?
-        """, (threshold, top_n))
-        rows = cursor.fetchall()
+            SELECT c.source, c.job_id, j.company, j.title, c.llm_score,
+                   c.recommendation, c.match_reason, c.strengths, c.skill_gaps,
+                   j.location, j.url, c.tailored_summary, c.hybrid_retrieval_score, c.reranker_score
+            FROM candidate_job_scores c
+            JOIN jobs j ON c.source = j.source AND c.job_id = j.id
+            WHERE c.notified_email = 0 AND (c.recommendation IN ('APPLY', 'MAYBE') OR c.mmr_selected = 1)
+            ORDER BY c.llm_score DESC, c.reranker_score DESC LIMIT ?
+        """, (top_n,))
+        rows = [dict(row) for row in cursor.fetchall()]
     finally:
         conn.close()
 
     if not rows:
-        print("[*] No new unnotified >=70% job matches found.")
+        print("[*] No new unnotified job recommendations found.")
         return
 
     print(f"\n{'='*60}\nPreparing Email Digest for {len(rows)} Top Roles -> {recipient}\n{'='*60}")
 
     msg = MIMEMultipart("mixed")
-    msg["Subject"] = f"🚀 Job Discovery Digest: {len(rows)} Top Matches (>70%)"
+    msg["Subject"] = f"🚀 Top {len(rows)} AI & Data Roles Recommendation Digest"
     msg["From"] = f"Job Discovery Assistant <{sender}>"
     msg["To"] = recipient
 
@@ -53,7 +61,19 @@ def send_email_digest(top_n: int = 10):
     github_repo = os.getenv("GITHUB_REPOSITORY") or "SouravRay17/job-discovery-assistant"
     items_html = []
 
-    for idx, (source, job_id, company, title, score, location, url, summary) in enumerate(rows, 1):
+    for idx, item in enumerate(rows, 1):
+        source = item["source"]
+        job_id = item["job_id"]
+        company = item["company"]
+        title = item["title"]
+        score = item["llm_score"] or int((item["reranker_score"] or 0.8) * 100)
+        rec = item["recommendation"] or "APPLY"
+        reason = item["match_reason"] or "Strong technical synergy in hybrid retrieval."
+        strengths = json.loads(item["strengths"] or "[]")
+        summary = item["tailored_summary"] or ""
+        location = item["location"]
+        url = item["url"]
+
         clean_co = re.sub(r'[^a-zA-Z0-9]', '_', company)
         pdf_name = f"Sourav_Resume_{clean_co}_{job_id}.pdf"
         pdf_path = os.path.join(exports_dir, pdf_name)
@@ -71,23 +91,32 @@ def send_email_digest(top_n: int = 10):
             except Exception:
                 pass
 
+        badge_color = "#22c55e" if rec == "APPLY" else "#eab308"
+        strengths_html = "".join(f"<span style='background:#334155;color:#38bdf8;padding:2px 6px;margin-right:4px;border-radius:3px;font-size:11px;'>{s}</span>" for s in strengths[:4])
+
         items_html.append(f"""
-        <div style="border-left:4px solid #38bdf8;background:#1e293b;color:#f8fafc;padding:12px;margin:12px 0;border-radius:4px;">
-            <h3 style="margin:0;color:#38bdf8;">{idx}. {title} — <span style="color:#4ade80;">{score}/100</span></h3>
-            <p style="margin:4px 0;color:#94a3b8;">🏢 <strong>{company}</strong> &nbsp;|&nbsp; 📍 {location}</p>
-            {f'<p style="margin:6px 0;font-size:13px;color:#cbd5e1;"><em>"{summary[:180]}..."</em></p>' if summary else ''}
-            <p style="margin:6px 0;">
+        <div style="border-left:4px solid #38bdf8;background:#1e293b;color:#f8fafc;padding:14px;margin:14px 0;border-radius:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <h3 style="margin:0;color:#38bdf8;font-size:16px;">{idx}. {title} — <span style="color:#4ade80;">{score}/100</span></h3>
+                <span style="background:{badge_color};color:#000;font-weight:bold;padding:2px 8px;border-radius:4px;font-size:12px;">{rec}</span>
+            </div>
+            <p style="margin:4px 0;color:#94a3b8;font-size:13px;">🏢 <strong>{company}</strong> &nbsp;|&nbsp; 📍 {location}</p>
+            <p style="margin:6px 0;font-size:13px;color:#cbd5e1;"><strong>Why Apply:</strong> {reason}</p>
+            <div style="margin:6px 0;">{strengths_html}</div>
+            {f'<p style="margin:6px 0;font-size:12px;color:#94a3b8;border-top:1px solid #334155;padding-top:6px;"><em>Summary: "{summary[:150]}..."</em></p>' if summary else ''}
+            <p style="margin:8px 0 0 0;">
                 <a href="{url}" style="color:#60a5fa;text-decoration:none;font-weight:bold;">🔗 Apply Now</a> &nbsp;|&nbsp; 
-                <a href="{github_url}" style="color:#94a3b8;text-decoration:none;">📄 GitHub PDF</a>
+                <a href="{github_url}" style="color:#94a3b8;text-decoration:none;">📄 View LaTeX PDF</a>
             </p>
         </div>
         """)
 
     body = f"""
-    <div style="font-family:sans-serif;background:#0f172a;color:#f8fafc;padding:20px;max-width:640px;margin:auto;">
-        <h2 style="color:#38bdf8;margin-top:0;">🚀 Job Discovery Digest</h2>
-        <p style="color:#cbd5e1;">Here are your top {len(rows)} matching job openings (>70%). Tailored PDFs are attached.</p>
+    <div style="font-family:sans-serif;background:#0f172a;color:#f8fafc;padding:20px;max-width:640px;margin:auto;border-radius:8px;">
+        <h2 style="color:#38bdf8;margin-top:0;">🚀 Job Discovery Assistant — Top Recommendations</h2>
+        <p style="color:#cbd5e1;font-size:14px;">Here are your top {len(rows)} curated opportunities evaluated via Retrieval-First Architecture (Vector + BM25 + Cross-Encoder + Gemini Review). Tailored resumes are attached.</p>
         {"".join(items_html)}
+        <p style="color:#64748b;font-size:11px;margin-top:20px;">Delivered by Job Discovery Assistant • Retrieval-First Engine</p>
     </div>
     """
     msg.attach(MIMEText(body, "html"))
@@ -106,8 +135,12 @@ def send_email_digest(top_n: int = 10):
 
         conn = get_connection()
         try:
-            for (src, jid, _, _, _, _, _, _) in rows:
-                conn.execute("UPDATE jobs SET notified_email = 1 WHERE source = ? AND id = ?", (src, jid))
+            now_str = now_iso()
+            for item in rows:
+                conn.execute(
+                    "UPDATE candidate_job_scores SET notified_email = 1, notified_at = ? WHERE source = ? AND job_id = ?",
+                    (now_str, item["source"], item["job_id"])
+                )
             conn.commit()
         finally:
             conn.close()

@@ -35,35 +35,55 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Scrape new jobs. If some sources block GHA runners, they will log errors but NOT fail the pipeline.
-      - name: Run Job Scraper
+      # 1. Scrape new jobs
+      - name: Scrape Jobs
         run: python scraper.py
 
-      - name: Run Job Fit Scorer (Gemini AI)
+      # 2. Normalize jobs & extract structured metadata
+      - name: Normalize Jobs
+        run: python normalizer.py
+
+      # 3. Dense Vector & BM25 Incremental Indexing
+      - name: Index Jobs
+        run: python indexer.py
+
+      # 4. Hybrid Retrieval (Hard Filters + Vector + BM25 + RRF) -> Top 100
+      - name: Retrieve Relevant Jobs
+        run: python retriever.py
+
+      # 5. Cross-Encoder Reranking & MMR Diversification -> Top 10-20
+      - name: Rerank & Diversify Jobs
+        run: python reranker.py
+
+      # 6. Strategic AI Review on Top Picks Only (Gemini AI)
+      - name: AI Review (Gemini)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scorer.py
 
-      - name: Batch Tailor Resume & Compile PDFs (Gemini AI + Tectonic)
+      # 7. Batch Tailor Resumes & Compile LaTeX PDFs
+      - name: Batch Tailor Resumes (Gemini AI + Tectonic)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python tailor.py --batch --top 10
 
-      - name: Send Daily Email Digest with PDF Attachments
+      # 8. Send Daily Email Digest with Attachments
+      - name: Send Daily Email Digest
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python email_notifier.py
 
-      - name: Commit and Push Updated DB and Resumes
+      # 9. Commit and Push Updated DB, Indices, and Resumes
+      - name: Commit and Push Updated DB, Indices, and Resumes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
-          git add jobs.db exports/ || true
+          git add jobs.db vector_store/ bm25_index/ exports/ || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Auto Update: Daily Jobs & Tailored Resumes [$(date +'%Y-%m-%d')]"
+            git commit -m "Auto Update: Daily Jobs, Retrieval Indices & Tailored Resumes [$(date +'%Y-%m-%d')]"
             git push origin main
           fi
