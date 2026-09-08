@@ -40,6 +40,19 @@ lever_boards = [
   "spotify"
 ]
 
+ashby_boards = [
+  "perplexity",
+  "cursor",
+  "linear",
+  "ramp",
+  "cohere"
+]
+
+[pipeline]
+daily_job_cap = 30
+max_experience_years = 5.0
+max_hours_old = 24
+
 [remoteok]
 tags = [
   "python",

@@ -17,6 +17,9 @@ import json
 import os
 import pickle
 import re
+
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+
 from datetime import datetime, timezone
 import numpy as np
 
@@ -59,9 +62,13 @@ def check_hard_filters(job: dict, profile: dict) -> tuple[bool, str | None]:
     exp_min = job.get("experience_min")
     candidate_exp = profile.get("experience_years", 3)
 
-    # 1. Experience Ceiling Filter: Eliminate jobs requiring >= (candidate_exp + 3.0) years
-    if exp_min is not None and exp_min > (candidate_exp + 3.0):
-        return False, f"Requires {int(exp_min)}+ yrs (candidate has {candidate_exp} yrs)"
+    # 1. Experience Ceiling Filter: Hard cap at 0 to 5 years (reject > 5.0 years)
+    if exp_min is not None and exp_min > 5.0:
+        return False, f"Requires {int(exp_min)}+ yrs (exceeds 0-5 yr ceiling)"
+
+    # Also eliminate executive and senior leadership titles exceeding 0-5 yr range
+    if any(bad in title for bad in ["director", "vp ", "vice president", "principal", "head of", "architect", "chief"]):
+        return False, "Executive/leadership title (exceeds mid-level target)"
 
     # 2. Excluded Roles Filter
     excluded = profile.get("excluded_roles", [])

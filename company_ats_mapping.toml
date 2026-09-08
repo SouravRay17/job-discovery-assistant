@@ -137,33 +137,28 @@ lever_slug = "cohere"
 
 [[companies]]
 name = "Perplexity AI"
-ats = "lever"
-lever_slug = "perplexityai"
+ats = "ashby"
+ashby_board = "perplexity"
 
 [[companies]]
-name = "Together AI"
-ats = "lever"
-lever_slug = "togetherai"
+name = "Cursor / Anysphere"
+ats = "ashby"
+ashby_board = "cursor"
 
 [[companies]]
-name = "Hugging Face"
-ats = "lever"
-lever_slug = "huggingface"
+name = "Linear"
+ats = "ashby"
+ashby_board = "linear"
 
 [[companies]]
-name = "Character.AI"
-ats = "lever"
-lever_slug = "character"
+name = "Ramp"
+ats = "ashby"
+ashby_board = "ramp"
 
 [[companies]]
-name = "Mistral AI"
-ats = "lever"
-lever_slug = "mistral"
-
-[[companies]]
-name = "Anduril"
-ats = "lever"
-lever_slug = "anduril"
+name = "Cohere"
+ats = "ashby"
+ashby_board = "cohere"
 
 [[companies]]
 name = "Mastercard"

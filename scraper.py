@@ -172,6 +172,20 @@ def fetch_greenhouse(config: dict) -> list[dict]:
                 filtered += 1
                 continue
 
+            if any(bad in title.lower() for bad in ["director", "principal", "vp ", "vice president", "head of", "architect", "fellow"]):
+                filtered += 1
+                continue
+
+            pub_date = job.get("first_published") or job.get("updated_at")
+            if pub_date:
+                try:
+                    dt = datetime.fromisoformat(pub_date.replace("Z", "+00:00"))
+                    if (datetime.now(timezone.utc) - dt).total_seconds() > 48 * 3600:
+                        filtered += 1
+                        continue
+                except Exception:
+                    pass
+
             remote = bool(re.search(r"\bremote\b", location_name, re.IGNORECASE))
             all_jobs.append(normalize_job(
                 source=f"greenhouse:{board}",
@@ -361,7 +375,7 @@ def fetch_workday(config: dict) -> list[dict]:
         if not cxs_url:
             continue
 
-        print(f"  >> Workday: fetching '{company_name}'...")
+        print(f"  >> Workday: fetching '{company_name}'...", flush=True)
         seen_ids = set()
 
         for search_text in target_roles:
@@ -369,7 +383,7 @@ def fetch_workday(config: dict) -> list[dict]:
             while True:
                 payload = {"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": search_text}
                 try:
-                    resp = requests.post(cxs_url, json=payload, headers=workday_headers, timeout=30)
+                    resp = requests.post(cxs_url, json=payload, headers=workday_headers, timeout=10)
                     if resp.status_code != 200:
                         break
                     data = resp.json()
@@ -393,8 +407,20 @@ def fetch_workday(config: dict) -> list[dict]:
                     if not is_role_relevant(title) or not is_location_suitable(location, target_locations):
                         continue
 
-                    base_url = cxs_url.replace("/wday/cxs/", "/").replace("/jobs", "")
-                    apply_url = f"{base_url}{ext_path}" if ext_path else ""
+                    # Filter out executive / leadership titles exceeding 0-5 yr target
+                    if any(bad in title.lower() for bad in ["director", "principal", "vp ", "vice president", "head of", "architect", "fellow", "chief"]):
+                        continue
+
+                    # Recency filter: Accept recent postings (last 24-48 hours)
+                    posted_on = (job.get("postedOn") or "").lower()
+                    if not any(k in posted_on for k in ["today", "yesterday", "1 day ago", "2 days ago", "just posted"]):
+                        continue
+
+                    # Construct clean Workday public URL without duplicate tenant in path
+                    parts = cxs_url.split("/wday/cxs/")
+                    domain = parts[0]
+                    site_path = parts[1].split("/", 1)[1].replace("/jobs", "")
+                    apply_url = f"{domain}/{site_path}{ext_path}" if ext_path else ""
                     remote = bool(re.search(r"\bremote\b", location, re.IGNORECASE))
 
                     all_jobs.append(normalize_job(
@@ -410,7 +436,7 @@ def fetch_workday(config: dict) -> list[dict]:
                     ))
 
                 offset += 20
-                if offset >= data.get("total", 0):
+                if offset >= 40 or offset >= data.get("total", 0):
                     break
                 time.sleep(REQUEST_DELAY)
 
@@ -565,6 +591,10 @@ def fetch_linkedin(config: dict) -> list[dict]:
             job_id, title, company, job_location = job_id.strip(), title.strip(), company.strip(), job_location.strip()
             if job_id in seen_ids or not is_role_relevant(title) or not is_location_suitable(job_location or "India", target_locations):
                 continue
+
+            if any(bad in title.lower() for bad in ["director", "principal", "vp ", "vice president", "head of", "architect", "fellow", "chief"]):
+                continue
+
             seen_ids.add(job_id)
 
             remote = bool(re.search(r"\bremote\b", job_location, re.IGNORECASE))
@@ -585,11 +615,79 @@ def fetch_linkedin(config: dict) -> list[dict]:
     return all_jobs
 
 
+def fetch_ashby(config: dict) -> list[dict]:
+    """Fetch jobs from Ashby public posting API (Perplexity, Cursor, Linear, Ramp, Cohere)."""
+    boards = config.get("ashby_boards", [])
+    target_locations = config.get("candidate", {}).get("target_locations", [])
+    all_jobs = []
+
+    for board in boards:
+        print(f"  >> Ashby: fetching board '{board}'...")
+        url = f"https://api.ashbyhq.com/posting-api/job-board/{board}"
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=30)
+            if resp.status_code != 200:
+                print(f"  [!] Skipping Ashby board '{board}' (status {resp.status_code})")
+                continue
+            data = resp.json()
+        except Exception as e:
+            print(f"  [!] Request failed for Ashby '{board}': {e}")
+            continue
+
+        jobs_list = data.get("jobs", [])
+        print(f"     Found {len(jobs_list)} listings")
+
+        fetched, filtered = 0, 0
+        for job in jobs_list:
+            title = job.get("title", "")
+            location_name = job.get("location", "")
+            is_remote = bool(job.get("isRemote"))
+
+            if not is_role_relevant(title) or not is_location_suitable(location_name, target_locations):
+                filtered += 1
+                continue
+
+            if any(bad in title.lower() for bad in ["director", "principal", "vp ", "vice president", "head of", "architect", "fellow", "chief"]):
+                filtered += 1
+                continue
+
+            # Recency filter: within 48h
+            pub_date = job.get("publishedAt")
+            if pub_date:
+                try:
+                    dt = datetime.fromisoformat(pub_date.replace("Z", "+00:00"))
+                    if (datetime.now(timezone.utc) - dt).total_seconds() > 48 * 3600:
+                        filtered += 1
+                        continue
+                except Exception:
+                    pass
+
+            desc_raw = strip_html(job.get("descriptionHtml", "")) if job.get("descriptionHtml") else None
+
+            all_jobs.append(normalize_job(
+                source=f"ashby:{board}",
+                job_id=str(job.get("id", "")),
+                company=board.replace("-", " ").title(),
+                title=title,
+                location=location_name,
+                remote=is_remote,
+                url=job.get("jobUrl") or f"https://jobs.ashbyhq.com/{board}/{job.get('id')}",
+                description_raw=desc_raw,
+                date_posted=pub_date or now_iso(),
+            ))
+            fetched += 1
+
+        print(f"     Kept {fetched}, filtered {filtered}")
+
+    return all_jobs
+
+
 FETCHER_MAP = {
     "greenhouse": fetch_greenhouse,
     "lever": fetch_lever,
     "remoteok": fetch_remoteok,
     "workday": fetch_workday,
+    "ashby": fetch_ashby,
     "naukri": fetch_naukri,
     "linkedin": fetch_linkedin,
 }

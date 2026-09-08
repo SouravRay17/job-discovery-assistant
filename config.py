@@ -75,4 +75,11 @@ def auto_populate_config(config: dict) -> dict:
             lever_boards.add(c["lever_slug"])
     config["lever_boards"] = sorted(lever_boards)
 
+    # Collect Ashby boards
+    ashby_boards = set(config.get("ashby_boards", []))
+    for c in mapping:
+        if c.get("ats") == "ashby" and c.get("ashby_board"):
+            ashby_boards.add(c["ashby_board"])
+    config["ashby_boards"] = sorted(ashby_boards)
+
     return config

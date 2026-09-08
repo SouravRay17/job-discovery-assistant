@@ -11,6 +11,9 @@ Pipeline:
 import json
 import os
 import re
+
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+
 from datetime import datetime, timezone
 import numpy as np
 
