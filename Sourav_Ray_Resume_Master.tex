@@ -1,82 +1,93 @@
 \documentclass[10pt,a4paper]{article}
-
-\usepackage[a4paper,top=0.32in,bottom=0.32in,left=0.4in,right=0.4in]{geometry}
+\usepackage[margin=0.5in,top=0.4in,bottom=0.4in]{geometry}
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
 \usepackage{titlesec}
-\usepackage{tabularx}
-\usepackage{array}
-
+\usepackage{xcolor}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
-
-\titleformat{\section}
-{\large\bfseries}
-{}{0em}{}[\titlerule]
-
-\titlespacing*{\section}{0pt}{4pt}{2pt}
-
-\setlist[itemize]{
-leftmargin=10pt,
-itemsep=0.5pt,
-topsep=0.5pt,
-parsep=0pt,
-partopsep=0pt
-}
+\definecolor{accent}{HTML}{1F3A5F}
+\titleformat{\section}{\large\bfseries\color{accent}}{}{0em}{}[\vspace{-0.6em}\rule{\linewidth}{0.5pt}]
+\titlespacing*{\section}{0pt}{7pt}{4pt}
+\setlist[itemize]{leftmargin=1.1em,itemsep=0.8pt,parsep=0pt,topsep=1.5pt,label=\textbullet}
+\newcommand{\role}[3]{\textbf{#1} \hfill \textit{#2}\\[-1pt] \textit{#3}}
+\newcommand{\proj}[2]{\vspace{2pt}\textbf{#1} \hfill \textit{#2}\par\vspace{-1pt}}
 
 \begin{document}
 
-%=====================================================
-% HEADER
-%=====================================================
-
 \begin{center}
-{\Huge \textbf{__CANDIDATE_NAME__}}\\[3pt]
-
-__CANDIDATE_LOCATION__ \hspace{0.5em} | \hspace{0.5em}
-__CANDIDATE_PHONE__ \hspace{0.5em} | \hspace{0.5em}
-__CANDIDATE_EMAIL__\\
-
-\href{__CANDIDATE_LINKEDIN_URL__}{__CANDIDATE_LINKEDIN__}
-\hspace{0.5em} | \hspace{0.5em}
-\href{__CANDIDATE_GITHUB_URL__}{__CANDIDATE_GITHUB__}
+{\Huge\bfseries\color{accent} Sourav Ray}\\[3pt]
+{\large Data Scientist \textbar{} Predictive Modeling \textbar{} Machine Learning \textbar{} GenAI}\\[3pt]
+Bengaluru, India \textbar{} +91-7872567781 \textbar{} \href{mailto:sroy.dgp2014@gmail.com}{sroy.dgp2014@gmail.com} \textbar{}
+\href{https://linkedin.com/in/souravray17}{linkedin.com/in/souravray17} \textbar{}
+\href{https://github.com/SouravRay17}{github.com/SouravRay17}
 \end{center}
 
-\vspace{-4mm}
-
-%=====================================================
-% PROFESSIONAL SUMMARY
-%=====================================================
-
-__SECTION_SUMMARY__
-
-%=====================================================
-% TECHNICAL SKILLS
-%=====================================================
+\section*{Professional Summary}
+Data scientist with 3 years of experience building Python and SQL data and ML systems on AWS, Snowflake and GCP, plus an M.Tech in Operations Research (NIT Durgapur) with a thesis on Transformer-based regression (R\textsuperscript{2} up to 0.986). Strong in EDA, statistical evaluation, and pre/post-change validation, and in turning technical findings into business results: \textbf{65\% lower Snowflake compute cost}, \textbf{60\% faster incident detection (MTTD)} and \textbf{65\% faster resolution (MTTR)} using LLM agents. Experienced in documenting work clearly and owning deliverables end to end with stakeholders.
 
 \section*{Technical Skills}
-
-__SECTION_SKILLS__
-
-%=====================================================
-% PROFESSIONAL EXPERIENCE
-%=====================================================
+\begin{itemize}[label={},leftmargin=0pt,itemsep=1pt]
+\item \textbf{Programming \& Analysis:} Python (pandas, NumPy, scikit-learn), SQL (advanced, large-scale), Shell Scripting
+\item \textbf{Statistics \& ML:} Regression and classification, EDA, outlier detection (Z-score/IQR), time-series forecasting, hypothesis testing (t-test, p-value), MLE, PCA, mathematical optimization, model evaluation (RMSE, MAE, MAPE, R\textsuperscript{2})
+\item \textbf{Deep Learning:} TensorFlow, Keras, Transformers (self-attention), LSTM/GRU/Bi-LSTM, 1D CNN
+\item \textbf{GenAI \& LLMs:} LLM agents, RAG, Model Context Protocol (MCP), multi-agent orchestration, prompt engineering, Snowflake Cortex, hybrid retrieval and reranking
+\item \textbf{Cloud \& Data:} GCP (BigQuery, Vertex AI), Snowflake (Snowpark, Snowpipe), AWS (S3, Lambda, Kinesis, DMS), DBT, Airflow, Kafka, CDC, data contracts and data quality
+\item \textbf{Tools \& DevOps:} Git, GitHub Actions, Docker, Kubernetes, Terraform/CDKTF
+\end{itemize}
 
 \section*{Professional Experience}
+\role{Factspan Analytics}{Bengaluru, India}{Senior Analyst \hfill Sep 2025 -- Present}
 
-__SECTION_EXPERIENCE__
+\proj{Snowflake Cost Optimization Agent}{May 2026 -- Present}
+\begin{itemize}
+\item Cut Snowflake compute cost by \textbf{65\%} across 60 DBT models and 70 virtual warehouses by profiling queries (disk spillage, Cartesian joins) and tuning warehouse auto-suspend and right-sizing.
+\item Built an autonomous LLM agent (Snowflake Cortex, Snowpark, DBT, MCP) that diagnoses cost anomalies and automates fix recommendations via GitHub pull requests and Jira tickets as Lead Engineer.
+\item Designed a three-part validation suite (row count, column count, MD5 hash diffing) run pre- and post-change, with post-deployment telemetry to verify savings without data drift.
+\item Automated RBAC and account-level parameter management across dev, staging, and production using Terraform and staged rollouts.
+\end{itemize}
 
-%=====================================================
-% EDUCATION & CERTIFICATIONS
-%=====================================================
+\proj{AI-Powered Network Incident Orchestrator}{Jan 2026 -- Present}
+\begin{itemize}
+\item Reduced MTTD by \textbf{60\%} and MTTR by \textbf{65\%} using a multi-agent AI system: one orchestrator directing five specialist sub-orchestrators for automated troubleshooting and diagnostics.
+\item Correlated incidents, telemetry, topology, and change history across 20+ enterprise tools (ServiceNow, Datadog, Splunk, NetBox, PagerDuty) into a single LLM-generated root-cause summary.
+\item Built and deployed Python MCP servers on Kubernetes with workload autoscaling; integrated automated incident summaries into ServiceNow and Microsoft Teams bridges.
+\end{itemize}
+
+\vspace{3pt}
+\role{Factspan Analytics}{Bengaluru, India}{Analyst \hfill Sep 2023 -- Aug 2025}
+
+\proj{Customer 360 Data Mesh \& Governance Platform}{Sep 2023 -- Dec 2025}
+\begin{itemize}
+\item Architected Bronze/Silver/Gold lakehouse layers across 100--200 DBT/SQL models for a petabyte-scale Customer 360 platform integrating 1,000+ sources across five patterns.
+\item Improved data accessibility by \textbf{60\%} through governed data products, multi-stage reconciliation, and contract-driven onboarding.
+\item Cut data modeling effort by \textbf{80\%} via metadata-driven code generation, automating data contract creation for 100+ tables in ~10 minutes.
+\item Ingested ~500 tables from Oracle, MySQL, MariaDB, and PostgreSQL via AWS DMS (full load + CDC) with zero data loss using LSN handoffs and automated Snowpipe streaming.
+\item Accelerated CI/CD delivery with Terraform/CDKTF and GitHub Actions, deploying ephemeral per-PR test environments to validate changes before merge.
+\end{itemize}
+
+\newpage
+\section*{Projects}
+\proj{Job Discovery \& Application Assistant -- Retrieval-First AI Engine (Independent, GitHub)}{}
+\begin{itemize}
+\item Built a high-recall hybrid retrieval engine (Dense embeddings + BM25) with Reciprocal Rank Fusion (RRF), Cross-Encoder reranking, and MMR diversification (Top-100 $\rightarrow$ Top-20 $\rightarrow$ Top-10--15).
+\item Developed an offline IR evaluation suite (Recall@K, Precision@10, NDCG@K, MRR), candidate-job fit analysis, and an interactive Streamlit dashboard scheduled daily via GitHub Actions.
+\end{itemize}
+
+\proj{Spatio-Temporal Air Pollution Prediction using a Transformer (M.Tech Thesis)}{May 2023}
+\begin{itemize}
+\item Designed an encoder-only Transformer with masked-value pre-training to forecast PM2.5, PM10, SO\textsubscript{2}, and NO\textsubscript{2} on Beijing AQI data (TensorFlow, Keras, scikit-learn).
+\item Outperformed GRU, LSTM, Bi-LSTM, and CNN baselines with highest R\textsuperscript{2} across all 4 pollutants (up to 0.986 on NO\textsubscript{2}), confirmed statistically by residual t-tests.
+\item Built full data pipeline: outlier detection (Z-score/IQR/Tukey), rolling windows, normalization, and Pearson spatial-correlation analysis across 12 monitoring stations.
+\end{itemize}
 
 \section*{Education}
-
-__SECTION_EDUCATION__
+\textbf{National Institute of Technology (NIT), Durgapur} \hfill 2021 -- 2023\\
+M.Tech, Operations Research \textbar{} CGPA 8.36/10\\[2pt]
+\textbf{Government College of Engineering and Textile Technology} \hfill 2015 -- 2019\\
+B.Tech, Textile Technology \textbar{} CGPA 7.43/10
 
 \section*{Certifications}
-
-__SECTION_CERTIFICATIONS__
+Google Cloud Professional Data Engineer \textbar{} Snowflake SnowPro Advanced Data Scientist \textbar{} AWS Certified Machine Learning -- Specialty \textbar{} Snowflake SnowPro Advanced Architect \textbar{} AWS Certified Solutions Architect -- Associate
 
 \end{document}

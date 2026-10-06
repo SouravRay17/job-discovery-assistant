@@ -1,0 +1,846 @@
+personal_info:
+  name: Sourav Ray
+  location: Bengaluru, India
+  open_to_relocation:
+  - UAE
+  - Qatar
+  - Saudi Arabia
+  phone: +91-7872567781
+  email: sroy.dgp2014@gmail.com
+  linkedin: linkedin.com/in/souravray17
+  github: github.com/SouravRay17
+  years_experience: 3
+  current_company: Factspan Analytics, Bengaluru
+  current_tenure: Sep 2023 – Present
+  current_titles:
+  - title: Senior Analyst
+    period: Sep 2025 – Present
+  - title: Analyst
+    period: Sep 2023 – Sep 2025
+  team: GenAI & Data Engineering
+  promotion_note: Promoted within 2 years for consistently exceeding performance expectations, taking on technical-lead responsibility
+    across GenAI, Agentic AI, and core data engineering delivery.
+  current_fixed_salary_lpa: 19.5
+positioning_angles:
+- id: genai_agentic_lead
+  headline: AI & GenAI Engineer | Agentic AI & RAG Systems | Data Platform Architecture
+  best_for: GenAI Engineer, Agentic AI Engineer, LLM Engineer, AI Platform Lead roles
+- id: snowflake_platform_engineer
+  headline: Data Engineer | Snowflake Platform Engineering | GenAI & Agentic AI Systems
+  best_for: Snowflake Data Engineer, Cloud Data Platform Engineer, Data Platform Lead roles
+- id: software_ml_infra
+  headline: Software Engineer | AI & Data Engineer | ML Infrastructure | GenAI
+  best_for: Software Engineer, ML Infrastructure Engineer, backend-leaning roles emphasizing DSA/code ownership
+- id: ai_data_engineer_generalist
+  headline: AI & Data Engineer | GenAI & Agentic AI | ML & Data Engineering | AI Systems
+  best_for: Broad AI/Data Engineer roles, generalist screening, recruiter-facing profiles
+- id: customer_data_ml
+  headline: AI & Data Engineer | Technical Lead | GenAI | Customer Data & ML
+  best_for: Roles emphasizing Customer 360, data governance, analytics-heavy teams
+skills:
+  generative_ai_llm:
+  - Large Language Models (LLMs)
+  - Generative AI
+  - Agentic AI & Multi-Agent Orchestration
+  - Retrieval-Augmented Generation (RAG)
+  - RAG pipeline design (Exact Match, Semantic Match, LLM-inference layers)
+  - LangChain
+  - LangGraph (adjacent/learning area — verify before claiming)
+  - LLM Evaluation
+  - Prompt Engineering
+  - Context Engineering
+  - Vector Search
+  - Vector Databases
+  - ChromaDB
+  - Snowflake Cortex
+  - Model Context Protocol (MCP) — GitHub, Jira, Airtable, ServiceNow, Snowflake integrations
+  - NLP / NLP-powered chatbots
+  - Responsible AI governance (PII detection & exclusion from LLM inputs)
+  - Hybrid Retrieval (Dense Vector + BM25)
+  - Reciprocal Rank Fusion (RRF)
+  - Cross-Encoder Reranking
+  - Maximal Marginal Relevance (MMR)
+  - Information Retrieval Evaluation (Recall@K, Precision@K, NDCG@K, MRR)
+  - Sentence Transformers
+  core_engineering:
+  - Python
+  - SQL
+  - PySpark
+  - Spark
+  - Advanced Algorithms
+  - Data Structures & Algorithms
+  - Probability & Statistics
+  - Optimization
+  - Graph Algorithms
+  - Mathematical Foundations of Machine Learning
+  - Snowflake
+  - AWS
+  - DBT
+  - Data Modelling
+  - Data Warehousing
+  - Advanced Analytics
+  - Data Science / Optimization background (M.Tech Operations Research)
+  snowflake_platform_admin:
+  - Snowpark (Python/pandas)
+  - Snowpipe
+  - Time Travel
+  - Cloning
+  - Warehouse Right-Sizing
+  - Auto Suspend/Resume tuning
+  - Query Profiling (disk spillage, Cartesian joins, Search Optimization Service)
+  - RBAC & Role Design
+  - Account-Level Parameter Management
+  - Apache Iceberg
+  data_engineering:
+  - Data Pipeline Architecture
+  - ETL/ELT
+  - Data Integration
+  - Data Contracts
+  - Data Mesh
+  - Data Governance
+  - Data Quality / Data Validation
+  - Customer 360
+  - AWS DMS (Database Migration Service) — Full Load & CDC
+  - Change Data Capture (CDC) — LSN-based incremental sync
+  - Multi-RDBMS Migration & Integration (Oracle, MySQL, MariaDB, PostgreSQL)
+  - CDKTF (CDK for Terraform) — Infrastructure as Code (cdktf synth / cdktf deploy)
+  - Config-Driven Source Onboarding (declarative source-type, contract & mapping configs)
+  - Ephemeral / Per-PR Environments for Infra Change Validation
+  - GitHub-triggered CI/CD for Infrastructure-as-Code pipelines
+  - Apache Airflow
+  - Kafka
+  - Coalesce
+  - APIs
+  - High-Volume / Distributed Data Processing
+  cloud_platforms:
+  - 'AWS: S3, Lambda, Kinesis, Firehose, DMS (Full Load + CDC), CDKTF'
+  - 'GCP: Vertex AI, BigQuery'
+  - 'Snowflake: Snowpark, Snowpipe'
+  - Terraform (Infrastructure as Code)
+  - Cloud Data Platforms (multi-cloud)
+  tools_delivery:
+  - Docker
+  - Kubernetes
+  - Git
+  - GitHub Actions
+  - CI/CD
+  - ArgoCD / GitOps
+  - MLOps Workflows
+  - Production Deployment
+  - Sigma (BI/lineage)
+  data_structures_algorithms:
+  - Advanced Algorithms
+  - Algorithm Design (Divide & Conquer, DP, Greedy)
+  - Graph Algorithms
+  - Network Flow
+  - NP-Completeness & Approximation Algorithms
+  - Randomized Algorithms
+  ml_infrastructure:
+  - Model Deployment
+  - Model Evaluation
+  - Model Optimization
+  - Data Processing Pipelines
+  - Production Debugging & Monitoring
+  - Speech-to-Text (CallAI project)
+  deep_learning_time_series:
+  - TensorFlow
+  - Keras
+  - scikit-learn (sklearn.preprocessing)
+  - Transformer Architecture (Encoder-only, Multi-Head Self-Attention, Positional Encoding)
+  - Unsupervised / Self-Supervised Pre-training (masked-value denoising/reconstruction objective)
+  - Recurrent Neural Networks (GRU, LSTM, Bi-LSTM) for sequence modeling
+  - 1D Convolutional Neural Networks (CNN) for time-series data
+  - Multivariate & Multi-Output Time Series Forecasting
+  - Spatio-Temporal Prediction
+  - Spatial Dependency Analysis (Pearson correlation coefficient across sites)
+  - Time Series Data Preprocessing (outlier detection via Z-score/IQR/Tukey's method, upsampling/downsampling/resampling,
+    rolling-window creation, feature extraction, min-max & z-score normalization)
+  - Model Evaluation & Statistical Significance Testing (MSE, RMSE, MAE, MAPE, R-squared, MFE, MAD, SAD, CSI, POD, FAR, p-value/t-test)
+  - Regression & Classification with Transformer Encoders
+  - Data Visualization for Time Series (box plots, line plots, residual/error distribution plots)
+  - Academic Research & Technical Writing (literature review, benchmarking against GRU/LSTM/Bi-LSTM/CNN baselines)
+  mtech_operations_research_ai_ml:
+  - Probability & Statistics
+  - Statistical Inference
+  - Maximum Likelihood Estimation (MLE)
+  - Hypothesis Testing & p-values
+  - Correlation & Linear Regression
+  - Linear Algebra for Machine Learning
+  - Eigenvalues & Eigenvectors
+  - Matrix Decomposition (LU, QR, SVD)
+  - Orthogonal Projections & PCA
+  - Multivariate Calculus
+  - Gradient, Jacobian & Hessian
+  - Mathematical Optimization
+  - Linear Programming
+  - Integer Programming
+  - Dynamic Programming
+  - Non-Linear Programming
+  - Convex Optimization Concepts
+  - Lagrangian Optimization & KKT Conditions
+  - Sensitivity Analysis
+  - Primal-Dual Optimization Concepts
+  - Game Theory & Nash Equilibrium
+  - Network Optimization & Flow Algorithms
+  - Decision Theory
+  - Simulation & Modeling
+  mtech_advanced_cs_algorithms:
+  - Asymptotic Analysis & Complexity
+  - Recurrence Relations
+  - Amortized Analysis
+  - Advanced Data Structures
+  - Parallel Algorithms
+  - Parallel Graph Algorithms
+  - Network Flow Algorithms
+  - Maximum Bipartite Matching
+  - Randomized Algorithms
+  - Monte Carlo & Las Vegas Algorithms
+  - Online Algorithms
+  - Online Learning Concepts
+  - NP-Completeness & Reductions
+  - Approximation Algorithms
+  - PTAS / FPTAS Concepts
+  - Divide & Conquer
+  - Greedy Algorithms
+  - Dynamic Programming
+  - Graph Traversal (BFS / DFS)
+  - Shortest Path Algorithms
+  - Minimum Spanning Trees
+  mtech_ml_ai_foundations:
+  - Mathematical Foundations of Machine Learning
+  - Supervised Learning Foundations
+  - Function Approximation View of Learning
+  - Statistical Learning Foundations
+  - Probabilistic Modeling & Inference
+  - Bayesian Inference
+  - MAP Estimation
+  - Information Theory Fundamentals
+  - Entropy & Information Gain
+  - Gradient Descent / Stochastic Gradient Descent Concepts
+  - Soft Computing
+  - Pattern Recognition Foundations
+  mtech_data_ai_cs_elective_alignment:
+  - Data Mining (curriculum elective)
+  - Big Data Analytics (curriculum elective)
+  - Big Data Modelling & Management (curriculum elective)
+  - Statistical Learning for Data Science (curriculum elective)
+  - Pattern Recognition (curriculum elective)
+  - Deep Learning (curriculum elective)
+  - Applied AI (curriculum elective)
+  - Knowledge Based System Engineering (curriculum elective)
+  - Information Retrieval / Search (curriculum elective)
+  - Data Stream Algorithms (curriculum elective)
+  - Online Algorithms (curriculum elective)
+  - Randomized Algorithms (curriculum elective)
+certifications:
+- name: SnowPro Advanced Architect
+  issuer: Snowflake
+- name: SnowPro Advanced Data Scientist
+  issuer: Snowflake
+- name: AWS Certified Machine Learning – Specialty
+  issuer: AWS
+- name: AWS Certified Solutions Architect – Associate
+  issuer: AWS
+education:
+- degree: M.Tech, Operations Research
+  institution: NIT Durgapur
+  cgpa: 8.36/10
+  years: 2021–2023
+  relevant_coursework:
+  - Advanced Algorithms (NP-Completeness, Approximation & Randomized Algorithms, Network Flow, Advanced Data Structures)
+  - Algorithm Laboratory
+  - Mathematical Foundations of Machine Learning
+  - Advanced Optimization Techniques
+  - Probability and Statistics
+  - Fundamentals of Operations Research
+  - Optimization Techniques
+  - Graph Theory and its Applications
+  - Automata & Algorithms
+  - Advanced Operations Research
+  - Soft Computing
+  - Discrete Mathematics
+  - Decision Theory
+  thesis:
+    title: Multi-output Spatio-Temporal Prediction of Air Pollution using a Transformer Model
+    supervisor: Dr. Samarjit Kar, Professor, Dept. of Mathematics, NIT Durgapur
+    date: May 2023
+    summary: 'Designed an encoder-only Transformer framework (with an unsupervised masked-value pre-training objective) for
+      multivariate, multi-output spatio-temporal forecasting of air pollutants (PM2.5, PM10, SO2, NO2) on the Beijing AQI
+      public dataset, benchmarked against GRU, LSTM, Bi-LSTM, and CNN baselines.
+
+      '
+    key_results:
+    - 'Transformer model achieved the best R-squared across all four pollutants (PM2.5: 0.8848, PM10: 0.9564, SO2: 0.9612,
+      NO2: 0.9860), outperforming GRU, LSTM, Bi-LSTM, and CNN baselines.'
+    - Lowest RMSE/MAE/SAD/MAD among all five models for most pollutants, with statistically significant improvement confirmed
+      via t-test on residuals.
+    - Performed spatial dependency analysis using Pearson correlation coefficients across 12 Beijing monitoring stations to
+      study cross-site pollutant correlation.
+    - 'Built full preprocessing pipeline: missing-value handling, outlier detection (Z-score/IQR/Tukey), rolling-window construction,
+      and min-max/z-score normalization.'
+    tech_stack:
+    - Python
+    - TensorFlow
+    - Keras
+    - scikit-learn
+    - Pandas
+    - NumPy
+    - Transformer (Self-Attention)
+    - GRU
+    - LSTM
+    - Bi-LSTM
+    - CNN
+- degree: B.Tech, Textile Technology
+  institution: GCETTB
+  cgpa: 7.43/10
+  years: 2015–2019
+projects:
+- id: snowflake_cost_optimization_agent
+  name: Snowflake Cost Optimization Agent
+  role: Lead Engineer / Technical Lead
+  tech_stack:
+  - Snowflake
+  - Snowflake Cortex
+  - Snowpark
+  - DBT
+  - Terraform
+  - MCP
+  - LLM Agents
+  - GitHub
+  - Jira
+  - Airtable
+  summary: 'Owned end-to-end technical architecture and provided technical direction for an agentic Snowflake cost-optimization
+    platform spanning warehouse administration, query tuning, and LLM-driven remediation.
+
+    '
+  bullets:
+  - Served as Lead Engineer / Technical Lead, owning end-to-end technical architecture and technical direction for an agentic
+    Snowflake cost-optimization platform.
+  - Right-sized virtual warehouses and configured auto suspend/resume policies based on real-time utilization patterns.
+  - Diagnosed high-cost query patterns via query profile analysis, identifying disk spillage and Cartesian joins, applying
+    Search Optimization Service tuning where warranted.
+  - Delivered a 65% Snowflake compute-cost reduction across 60 DBT models and 70 warehouses by combining warehouse-level tuning
+    with automated, LLM-based query and model remediation.
+  - Provisioned and managed underlying Snowflake and AWS resources using Terraform (IaC) for repeatable environment setup.
+  - 'Designed the full architecture chain: Snowflake Cortex analysis → DBT model diagnostics → LLM-based refactoring recommendations
+    → automated code changes → GitHub PR → Jira tracking → owner approval → staged production deployment.'
+  - Implemented RBAC and account-level parameter management across dev/staging/production environments, supporting multi-owner
+    approval routing and staged promotion with automated PR raise-and-merge on approval.
+  - Built a main orchestrator agent coordinating dedicated MCP servers for Airtable, GitHub, and Jira, enabling autonomous
+    PR creation, ticket generation, and model-metadata tracking across the workflow.
+  - Engineered a three-part data-integrity validation suite (row-count, column-count, MD5 hash comparison) run pre- and post-change,
+    paired with post-deployment cost monitoring to validate realized savings.
+  quantified_impact:
+  - 65% Snowflake compute-cost reduction
+  - Across 60 DBT models and 70 warehouses
+- id: ai_network_incident_orchestrator
+  name: AI-Powered Network Incident Orchestrator
+  role: Technical Architecture Owner
+  tech_stack:
+  - Python
+  - MCP
+  - LLM Agents
+  - ServiceNow
+  - Infoblox
+  - NetBox
+  - SevOne
+  - Datadog
+  - Splunk
+  - LogicMonitor
+  - PagerDuty
+  - Microsoft Teams
+  - Roster
+  - BigPanda
+  - Docker
+  - Kubernetes
+  - Cisco
+  - Palo Alto
+  - Catalyst Center
+  - Aruba
+  - Forward Networks
+  summary: 'Owned the technical architecture for a hierarchical multi-agent network incident orchestration platform with a
+    primary orchestrator and specialized service-level sub-orchestrators for capability assessment, troubleshooting, change
+    correlation, monitoring and adapting, and network-device diagnostics. The platform coordinates heterogeneous observability,
+    ITSM, topology, inventory, network-management, and external observability capabilities to accelerate incident investigation
+    and RCA.
+
+    '
+  bullets:
+  - 'Owned the technical architecture for a hierarchical multi-agent network incident orchestration platform with a primary
+    orchestrator connected to five service-level sub-orchestrators: Capability Assessment, Troubleshooting, Change Correlation,
+    Monitoring and Adapting, and Network Device.'
+  - Designed the primary orchestrator to interpret user requests, determine high-level intent, select the appropriate service-level
+    sub-orchestrator, coordinate cross-domain lifecycle flows, and synthesize the final response.
+  - Designed the Capability Assessment sub-orchestrator to establish investigation scope and identify relevant elements including
+    CI, application, location, provider, infrastructure, domain, and supported investigation boundaries.
+  - Designed the Troubleshooting sub-orchestrator to lead technical investigation, manage hypotheses and evidence collection,
+    and coordinate required domain capabilities for root-cause analysis and next-best action.
+  - Designed the Change Correlation sub-orchestrator to determine whether recent environmental changes are related to incident
+    degradation or disruption through evidence-based correlation.
+  - Designed the Monitoring and Adapting sub-orchestrator to abstract observability platforms and normalize health alerts,
+    metrics, trace events, and log evidence for downstream investigation.
+  - Designed the Network Device sub-orchestrator to lead network-specific diagnostics and dynamically select the appropriate
+    vendor-platform specialist.
+  - Connected service-level sub-orchestrators to specialized Datadog, Network Context, Splunk, Logic Monitor, ServiceNow,
+    ImpactRedux, and NetBox agents, creating a domain-oriented capability layer.
+  - Integrated specialized network capabilities including a Unified Network Agent for Cisco/non-Cisco SSH diagnostics, Panorama
+    Agent for read-only Palo Alto and managed-fiber diagnostics, Catalyst Center Agent, Aruba Agent, Forward Network Agent,
+    and specialist Knowledge Base agents.
+  - Used NetBox as the primary inventory, topology, IPAM, asset, relationship, ownership, and location source; used ImpactRedux
+    for service-dependency mapping plus business-application and impact analysis.
+  - Integrated ServiceNow for incident, change, problem, work-note, and historical ITSM intelligence; Logic Monitor for infrastructure
+    alerts and telemetry; Network Context for logs, event symmetry, and network-trial evidence; and Datadog for infrastructure/application
+    observability, availability signals, traces, and APM evidence.
+  - Integrated PagerDuty, Microsoft Teams, and roster capabilities to identify incident participants, determine affected applications,
+    identify the on-call engineer responsible for resolution, and support incident collaboration and responder coordination.
+  - Integrated BigPanda as an external observability signal to surface broader infrastructure/provider events, such as an
+    AWS-wide outage, and provide independent evidence that an incident may be caused by an external or large-scale service
+    disruption rather than an isolated application or network fault.
+  - Integrated historical trend/problem-analysis capability for recurring incident patterns and problem-management analysis;
+    the architecture includes the Incident Pain Analysis Agent and the Infinite Trend Analysis Agent terminology as specified
+    in the current design.
+  - Wrote and maintained the Python codebase for per-platform MCP servers and conducted design and code reviews with peers
+    on style, testability, and efficiency.
+  - Implemented MCP capabilities as containerized services running on Kubernetes, with MCP workloads scaled up and down according
+    to AI-agent demand to support elastic execution across heterogeneous tools.
+  - Designed dynamic capability selection and parallel invocation to correlate incidents, logs, metrics, topology, device
+    health, configuration, ownership, application impact, change history, and external observability signals into a single
+    LLM-synthesized RCA response.
+  - Reduced Mean Time to Detect (MTTD) by 60% and Mean Time to Resolve (MTTR) by 65% through in-memory caching and concurrency-controlled
+    multi-agent execution.
+  - Extended the system to auto-provision a Microsoft Teams incident bridge with on-call/owner notification and an LLM-generated
+    post-incident summary posted back to the ticket.
+  - Building a real-time speech-to-text and live-transcription capability (CallAI, a Firefly.ai-style meeting-intelligence
+    agent) for the Teams incident bridge that captures conversation, generates a running summary, and auto-posts it back into
+    the ServiceNow incident record.
+  quantified_impact:
+  - 60% reduction in Mean Time to Detect (MTTD)
+  - 65% reduction in Mean Time to Resolve (MTTR)
+  architecture:
+    primary_orchestrator:
+      responsibilities:
+      - Interprets user request
+      - Determines high-level intent
+      - Selects the appropriate service-level sub-orchestrator
+      - Coordinates cross-domain lifecycle flow
+      - Synthesizes the final response
+    sub_orchestrators:
+      capability_assessment:
+        purpose: Determines investigation scope and supported boundaries.
+        scope_elements:
+        - CI
+        - application
+        - location
+        - provider
+        - infrastructure
+        - domain
+      troubleshooting:
+        purpose: Leads technical investigation, hypothesis management, evidence collection, RCA, and next-best action.
+      change_correlation:
+        purpose: Correlates recent environmental changes with incident degradation or disruption using evidence.
+      monitoring_and_adapting:
+        purpose: Abstracts observability platforms and normalizes health alerts, metrics, trace events, and log evidence.
+      network_device:
+        purpose: Leads network-specific diagnostics and dynamically selects the appropriate vendor specialist.
+    domain_capabilities:
+    - Datadog Agent
+    - Network Context Agent
+    - Splunk Agent
+    - Logic Monitor Agent
+    - ServiceNow Agent
+    - ImpactRedux Agent
+    - NetBox Agent
+    - Unified Network Agent — Cisco/non-Cisco SSH
+    - Panorama Agent — read-only Palo Alto and managed-fiber diagnostics
+    - Catalyst Center Agent
+    - Incident Pain Analysis Agent
+    - Forward Network Agent
+    - Aruba Agent
+    - Specialist Knowledge Base Agents
+    - Infinite Trend Analysis Agent
+    - PagerDuty
+    - Microsoft Teams
+    - Roster
+    - BigPanda
+    mcp_runtime:
+      deployment: Containerized MCP services running on Kubernetes
+      scaling: MCP containers scale up/down according to AI-agent workload demand
+- id: customer_360_data_mesh
+  name: Customer 360 Data Mesh & Governance – Petabyte-Scale Platform
+  role: Architect / Lead Data Modeler
+  tech_stack:
+  - AWS
+  - AWS DMS
+  - CDKTF (CDK for Terraform)
+  - Terraform
+  - GitHub Actions
+  - Ephemeral Environments
+  - Oracle
+  - MySQL
+  - MariaDB
+  - PostgreSQL
+  - CDC (Change Data Capture)
+  - Snowflake
+  - DBT
+  - Python
+  - Kinesis
+  - Lambda
+  - Kinesis Firehose
+  - Snowpipe
+  - Apache Iceberg
+  - S3
+  summary: 'Architected a petabyte-scale Customer 360 data platform and data-contract-driven data mesh spanning 1,000+ sources
+    across five ingestion patterns, with fault-tolerant streaming validation, Bronze/Silver/Gold data layers, and metadata-driven
+    automation for data-contract and DBT artifact generation.
+
+    '
+  bullets:
+  - 'Architected a petabyte-scale Customer 360 data platform integrating 1,000+ sources across five ingestion patterns: RabbitMQ
+    messaging queues, RDBMS databases, flat files, managed APIs, and real-time/event-based systems.'
+  - Owned RDBMS ingestion via AWS DMS across multiple source database engines — Oracle, MySQL, MariaDB, and PostgreSQL — designing
+    both full-load and CDC (Change Data Capture) replication pipelines for each source.
+  - Partitioned large-scale table sets (e.g. ~500 source tables) across multiple parallel DMS full-load and CDC task pairs
+    (e.g. 10 full-load + 10 CDC tasks) to parallelize migration and keep individual task scope manageable.
+  - 'Designed the full-load-to-CDC handoff: on full-load completion, coordinated with DBAs to capture the LSN (Log Sequence
+    Number) marking the exact completion point, then configured each CDC task to resume incremental replication from that
+    LSN, ensuring no data gap or duplication between full-load and CDC phases.'
+  - Provisioned and managed AWS DMS replication instances, endpoints, and task configurations as Infrastructure-as-Code using
+    CDKTF (CDK for Terraform), enabling repeatable, version-controlled environment setup.
+  - 'Designed a declarative, config-file-driven source onboarding framework: each new source''s config file specified its
+    ingestion type (DMS/RDBMS, messaging queue, flat file, real-time/event stream, or managed API), its data contract, source-to-target
+    field mapping (''data coordinates''), and the target Snowflake schema and table name.'
+  - Used metadata columns embedded in every ingested record (source schema name, source table name) to trace and map each
+    incoming record back to its originating source table without manual lookup, supporting reconciliation and debugging across
+    1,000+ sources.
+  - Built a GitHub-triggered CI/CD pipeline where committing a new source config file automatically ran CDKTF (cdktf synth
+    → cdktf deploy) to generate and deploy the corresponding Terraform-managed infrastructure for that source.
+  - 'Validated new source configs and infrastructure changes end-to-end in short-lived, per-PR ephemeral environments before
+    merging to production: opened a PR to spin up an ephemeral environment, confirmed the ingestion flow was running correctly
+    end-to-end, then raised a separate PR to promote the change into the main pipeline once validated — keeping production
+    infrastructure changes safe and reviewable.'
+  - 'Designed the end-to-end ingestion architecture: source systems → AWS ingestion services (incl. DMS full load + CDC) →
+    Raw Kinesis → Lambda-based data-contract validation → validated Kinesis → Kinesis Firehose → S3 → Snowflake Snowpipe →
+    Bronze/Silver/Gold transformation layers.'
+  - Built a data-contract-driven validation framework that evaluated incoming records against schema and contract requirements
+    before allowing data into the Bronze layer, detecting schema drift, missing mandatory columns, unexpected attributes,
+    and invalid/null values for non-optional fields.
+  - Implemented fault-tolerant validation and recovery workflows where Lambda processing failures were routed to a messaging
+    queue for controlled retry and reprocessing, preventing transient failures from causing data loss and enabling failed
+    records to re-enter the validation stream.
+  - Led large-scale data modeling and transformation across approximately 100–200 DBT/SQL models spanning Bronze, Silver,
+    and Gold layers for cross-domain Customer 360 data.
+  - Designed Bronze-layer transformations to flatten complex nested source payloads into downstream-consumable structures
+    while preserving validated source data.
+  - Developed Silver-layer transformations for deduplication, enrichment, standardization, and business-level data preparation.
+  - Built Gold-layer curated data products by joining cross-domain datasets to create trusted Customer 360 views for analytics
+    and business consumption.
+  - Built a Data Contract Evaluator automation capable of generating contracts for approximately 100 tables within 10 minutes
+    with high precision, significantly reducing manual contract-authoring effort.
+  - Developed metadata-driven automation to generate Bronze and Silver table definitions and DBT models, accelerating repetitive
+    data-model development and contributing to an 80% reduction in development effort.
+  - Built multi-stage reconciliation and data-quality evaluation workflows to identify discrepancies, validate data fidelity,
+    and support rapid root-cause analysis across the data mesh.
+  - Participated in peer reviews, production troubleshooting, failure analysis, and recovery workflows across AWS ingestion,
+    data-contract validation, DBT transformations, and Snowflake processing.
+  - Incorporated Apache Iceberg tables into the data mesh architecture as part of the open-format storage layer, supporting
+    unified data access patterns queryable directly in Snowflake.
+  quantified_impact:
+  - Petabyte-scale data platform
+  - 1,000+ data sources spanning 5 integration patterns
+  - Multi-RDBMS ingestion (Oracle, MySQL, MariaDB, PostgreSQL) via AWS DMS full load + CDC
+  - ~500 tables partitioned across 10 parallel DMS full-load/CDC task pairs
+  - ~100–200 DBT/SQL transformation models
+  - 100 data contracts generated in approximately 10 minutes
+  - 60% improvement in enterprise data accessibility
+  - 80% reduction in data-model development effort
+- id: genai_schema_validator
+  name: GenAI Schema Validator & Automated Mapping Platform
+  role: Architect
+  tech_stack:
+  - RAG
+  - LLM inference
+  - Python
+  - Responsible AI / PII governance
+  summary: 'Enterprise-scale schema/report-matching platform combining exact match, semantic match, and LLM-based inference
+    layers for automated column mapping, with built-in PII governance controls.
+
+    '
+  bullets:
+  - Architected an enterprise-scale schema and report-matching platform combining Exact Match, Semantic Match, and LLM-based
+    inference layers — a RAG-style retrieval-and-reasoning pipeline applied to structured data for automated column mapping.
+  - Built responsible-AI governance controls to identify and exclude masked PII attributes from LLM inputs.
+  - Applied prompt engineering to auto-generate metadata for undocumented fields, reducing incorrect field mappings through
+    structured validation.
+- id: data_powered_assist_chatbot
+  name: Data-Powered Assist Chatbot
+  role: Contributor / Builder
+  tech_stack:
+  - Snowflake
+  - NLP
+  - LLM
+  - Coalesce
+  - Sigma
+  summary: 'NLP-powered chatbot enabling semantic querying in Snowflake, backed by Gold-layer models and Coalesce-built ETL
+    pipelines.
+
+    '
+  bullets:
+  - Enabled semantic querying in Snowflake through an NLP-powered chatbot using LLM-based query understanding, backed by Gold-layer
+    models supporting Sigma lineage analytics and Coalesce-built ETL pipelines.
+- id: mtech_thesis_transformer_air_quality
+  name: Multi-output Spatio-Temporal Air Pollution Prediction using Transformer Model (M.Tech Thesis)
+  role: Researcher / Author
+  tech_stack:
+  - Python
+  - TensorFlow
+  - Keras
+  - scikit-learn
+  - Pandas
+  - NumPy
+  - Transformer (Self-Attention)
+  - GRU
+  - LSTM
+  - Bi-LSTM
+  - CNN
+  summary: 'M.Tech thesis (NIT Durgapur, Dept. of Mathematics, Operations Research, May 2023) proposing an encoder-only Transformer
+    framework with unsupervised masked-value pre-training for multivariate, multi-output spatio-temporal forecasting of air
+    pollutants on the Beijing AQI dataset.
+
+    '
+  bullets:
+  - Designed and implemented an encoder-only Transformer architecture (multi-head self-attention + positional encoding) for
+    multivariate time-series regression, extending BERT-style masked pre-training to spatio-temporal air-quality data.
+  - Built an unsupervised pre-training objective that masks geometric-length segments of each variable and trains the model
+    to reconstruct original values, reducing dependency on labeled data.
+  - Benchmarked the Transformer against GRU, LSTM, Bi-LSTM, and CNN baselines across four pollutants (PM2.5, PM10, SO2, NO2)
+    on the Beijing AQI public dataset, evaluating with RMSE, MAE, MAPE, R-squared, CSI, POD, FAR, and statistical significance
+    (t-test).
+  - Performed spatial dependency analysis using Pearson correlation coefficients across 12 Beijing monitoring stations to
+    quantify cross-site pollutant relationships.
+  - 'Built the full data pipeline: cleaning, missing-value handling, outlier detection (Z-score/IQR/Tukey''s method), rolling-window
+    construction, and min-max/z-score normalization using pandas and scikit-learn.'
+  quantified_impact:
+  - Best R-squared among 5 benchmarked models on all 4 pollutants (up to 0.986 on NO2)
+  - Statistically significant improvement over GRU/LSTM/Bi-LSTM/CNN (t-test on residuals)
+  - Spatial correlation analysis across 12 Beijing air-quality monitoring stations
+- id: dbt_airflow_pipeline
+  name: DBT + Airflow Data Pipeline (Open Source)
+  role: Creator
+  tech_stack:
+  - DBT
+  - Apache Airflow
+  - Snowflake
+  - Docker
+  - GitHub Actions
+  summary: 'Containerized data pipeline integrating DBT transformation models with Airflow-orchestrated DAGs, including automated
+    testing and CI/CD.
+
+    '
+  bullets:
+  - Containerized data pipeline integrating DBT transformation models with Airflow-orchestrated DAGs on Snowflake.
+  - Includes automated testing and CI/CD validation via GitHub Actions.
+- id: job_discovery_retrieval_reranking_engine
+  name: Job Discovery & Application Assistant — Retrieval-First AI Engine
+  role: Creator / AI Engineer (Independent Production-Grade Project)
+  context: Independent personal project maintained as a production-grade GitHub repository; not presented as Factspan employment
+    experience.
+  tech_stack:
+  - Python
+  - LLM
+  - Google Gemini
+  - Ollama
+  - Sentence Transformers
+  - Dense Vector Retrieval
+  - BM25
+  - RRF
+  - Cross-Encoder Reranking
+  - MMR
+  - ChromaDB
+  - SQLite
+  - Streamlit
+  - GitHub Actions
+  - LaTeX
+  - Tectonic
+  - Gmail
+  - WhatsApp
+  summary: Built a local-first, cloud-ready retrieval-first AI platform that ingests public job openings, performs deterministic
+    filtering and hybrid retrieval, applies Cross-Encoder reranking and MMR diversification, runs bounded LLM strategic review,
+    and automates tailored resume generation and notifications.
+  bullets:
+  - Built a modular Python pipeline for job discovery, normalization, hybrid retrieval, reranking, LLM review, resume tailoring,
+    and notification delivery.
+  - Implemented high-recall hybrid retrieval using dense sentence embeddings and BM25, fused with Reciprocal Rank Fusion (RRF),
+    producing a Top-100 candidate set.
+  - Implemented Cross-Encoder reranking with ms-marco-MiniLM-L-6-v2 to perform pairwise relevance scoring and refine the Top-100
+    set to the Top-20.
+  - Applied Maximal Marginal Relevance (MMR) and company-level caps to diversify the final Top-10–15 recommendations and reduce
+    result clustering.
+  - Built an information-retrieval evaluation suite using Recall@100, Recall@20, NDCG@10, NDCG@20, Precision@10, and MRR against
+    ground-truth relevance labels.
+  - Designed a bounded LLM review stage that evaluates only the final candidate set, reducing LLM calls from O(N) to O(K)
+    while preserving deterministic retrieval and ranking as the backbone.
+  - Implemented LLM-powered candidate-job fit analysis using skills, experience, seniority, and location constraints with
+    structured strengths and missing-requirement reasoning.
+  - Built automated ATS-oriented resume and cover-letter tailoring with fabrication-safe constraints, followed by LaTeX/Tectonic
+    PDF generation.
+  - Developed a Streamlit dashboard for retrieval-funnel inspection, score breakdowns, application tracking, and interactive
+    1–5 relevance labeling for continuous ranking evaluation.
+  - Automated daily execution with GitHub Actions, including ingestion, indexing, retrieval, Cross-Encoder reranking, MMR
+    diversification, Gemini review, PDF generation, and notification delivery.
+  quantified_impact:
+  - Top 100 candidates after hybrid retrieval
+  - Top 20 after Cross-Encoder reranking
+  - Top 10–15 after MMR diversification
+  - IR evaluation with Recall@K, Precision@K, NDCG@K, and MRR
+  - Daily end-to-end automated pipeline via GitHub Actions
+headline_achievements:
+- Technical Lead / Lead Engineer on the flagship Snowflake Cost Optimization Agent — delivered a 65% Snowflake compute-cost
+  reduction across 60 DBT models and 70 warehouses.
+- Reduced Mean Time to Detect (MTTD) by 60% and Mean Time to Resolve (MTTR) by 65% via a multi-agent AI incident orchestration
+  system.
+- Architected a petabyte-scale data-mesh/data-contract framework spanning 1,000+ sources across 5 integration patterns, improving
+  data accessibility by 60%.
+- Reduced DBT/data-modeling development effort by 80% via metadata-driven automation.
+- Promoted within 2 years at Factspan Analytics for consistently exceeding performance expectations, taking on technical-lead
+  responsibility across GenAI, Agentic AI, and data engineering.
+- Built production multi-agent, MCP-based AI orchestration integrating LLMs with ServiceNow, Snowflake, GitHub, Jira, Airtable,
+  and observability tools.
+- Certified across both Snowflake (SnowPro Advanced Architect, SnowPro Advanced Data Scientist) and AWS (ML Specialty, Solutions
+  Architect Associate) — a relatively rare dual-certification combination at 3 YOE.
+notes_for_llm_resume_tailoring:
+- This is a single source-of-truth file. When generating a tailored resume, select the positioning_angle that best matches
+  the target job description, then pull only the projects/bullets/skills relevant to that role — do not dump everything.
+- Always keep the two headline numbers (65% compute-cost reduction, 60%/65% MTTD/MTTR reduction) somewhere near the top —
+  they are the strongest, most differentiated proof points.
+- For Snowflake/data-platform-heavy JDs, lead with snowflake_platform_admin skills and the snowflake_cost_optimization_agent
+  and customer_360_data_mesh projects.
+- For GenAI/Agentic AI/LLM JDs, lead with generative_ai_llm skills and the ai_network_incident_orchestrator, genai_schema_validator,
+  and snowflake_cost_optimization_agent (MCP orchestration angle) projects.
+- For software engineering / ML infra JDs, lead with data_structures_algorithms and ml_infrastructure skills and emphasize
+  code ownership, code reviews, and the CallAI speech-to-text build.
+- Do not fabricate metrics or tools not listed here. If a target JD requires a skill not in this file, flag it as a gap rather
+  than inventing it.
+- For JDs emphasizing classical ML/DL, statistics, or research depth (e.g. 'regression, classification, feature engineering,
+  experimentation'), lead with the deep_learning_time_series skills and the mtech_thesis_transformer_air_quality project —
+  this directly evidences hands-on TensorFlow/Keras model-building, evaluation-metric rigor, and academic research ability
+  that the GenAI-only projects don't cover.
+- For AI Engineer/LLM/RAG JDs asking specifically for reranking, use the Job Discovery & Application Assistant project to
+  evidence hands-on Cross-Encoder reranking, RRF, MMR, and IR evaluation.
+- Do not describe the Job Discovery & Application Assistant as Factspan employment experience unless an employment relationship
+  for that project is independently true. It may be described as an independent production-grade GitHub project.
+- For recruiter questionnaires, distinguish professional experience from hands-on independent project experience for LangGraph,
+  reranking, fine-tuning, or other skills.
+- For retrieval-heavy JDs, emphasize Dense Retrieval, BM25, RRF, Cross-Encoder Reranking, MMR, vector search, and IR evaluation
+  metrics.
+version: '2.1'
+last_updated: '2026-08-22'
+target_roles:
+- AI Engineer
+- ML Engineer
+- Data Engineer
+- Python Developer
+- Backend Engineer
+- Analytics Engineer
+- Software Engineer AI/ML
+- GenAI Engineer
+- Agentic AI Engineer
+- LLM Engineer
+- Snowflake Data Engineer
+- Cloud Data Platform Engineer
+core_skills:
+- Python
+- SQL
+- Snowflake
+- dbt
+- PySpark
+- AWS
+- GCP
+- Apache Airflow
+- Kafka
+- ETL/ELT
+- Oracle
+- MySQL
+- MariaDB
+- PostgreSQL
+- AWS DMS
+- Change Data Capture (CDC)
+- CDKTF (CDK for Terraform)
+- Terraform
+- Ephemeral Environments / IaC CI/CD
+ai_ml_skills:
+- LLM
+- RAG
+- LangChain
+- LangGraph
+- MLOps
+- Vertex AI
+- OpenAI
+- Gemini
+- ChromaDB
+- NLP
+- Multi-Agent Orchestration
+- Model Context Protocol (MCP)
+- TensorFlow
+- Keras
+- scikit-learn
+- Transformers (Self-Attention/Multi-Head Attention)
+- GRU
+- LSTM / Bi-LSTM
+- CNN (1D, Time Series)
+- Time Series Forecasting
+- Multivariate & Multi-Output Forecasting
+- Spatio-Temporal Modeling
+secondary_skills:
+- Docker
+- Kubernetes
+- Git
+- GitHub Actions
+- Linux/Shell Scripting
+- Data Contracts
+- Data Mesh
+- Sigma
+preferred_domains:
+- Data Engineering
+- AI
+- ML Infrastructure
+- Generative AI
+- Data Platforms
+- Cloud Analytics
+preferred_locations:
+- Remote
+- India
+- Bangalore
+- Bengaluru
+- Hyderabad
+- Pune
+- Mumbai
+- Delhi
+- Noida
+- Gurgaon
+- Chennai
+preferred_employment_types:
+- Full-time
+- Contract
+- Permanent
+excluded_roles:
+- Store Design
+- Refrigeration
+- Compliance
+- Civil
+- Mechanical
+- HR
+- Recruiter
+- Payroll
+- Accounting
+- Facilities
+- Legal
+- Sales Representative
+- Marketing Manager
+- Real Estate
+- Chef
+- Security Guard
+- Nurse
+must_have_constraints:
+  min_experience: 0
+  max_experience: 6
+  allow_remote: true
