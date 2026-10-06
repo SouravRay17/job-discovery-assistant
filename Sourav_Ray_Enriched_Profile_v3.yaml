@@ -646,6 +646,7 @@ projects:
     experience.
   tech_stack:
   - Python
+  - ATS APIs (Greenhouse, Lever, Ashby, Workday, RemoteOK)
   - LLM
   - Google Gemini
   - Ollama
@@ -657,18 +658,15 @@ projects:
   - MMR
   - ChromaDB
   - SQLite
-  - Streamlit
   - GitHub Actions
   - LaTeX
   - Tectonic
   - Gmail
-  - WhatsApp
-  summary: Built a local-first, cloud-ready retrieval-first AI platform that ingests public job openings, performs deterministic
-    filtering and hybrid retrieval, applies Cross-Encoder reranking and MMR diversification, runs bounded LLM strategic review,
-    and automates tailored resume generation and notifications.
+  summary: Built a local-first, cloud-ready retrieval-first AI ETL platform that ingests public job openings from multiple ATS APIs, performs deterministic
+    filtering, normalization, and hybrid retrieval, applies Cross-Encoder reranking and MMR diversification, runs bounded LLM strategic review,
+    and automates tailored resume generation and email notifications.
   bullets:
-  - Built a modular Python pipeline for job discovery, normalization, hybrid retrieval, reranking, LLM review, resume tailoring,
-    and notification delivery.
+  - Built an automated ETL pipeline ingesting live job postings from ATS APIs (Greenhouse, Lever, Ashby, Workday), normalizing semi-structured metadata into SQLite with deduplication and data-quality checks.
   - Implemented high-recall hybrid retrieval using dense sentence embeddings and BM25, fused with Reciprocal Rank Fusion (RRF),
     producing a Top-100 candidate set.
   - Implemented Cross-Encoder reranking with ms-marco-MiniLM-L-6-v2 to perform pairwise relevance scoring and refine the Top-100
@@ -683,10 +681,8 @@ projects:
     structured strengths and missing-requirement reasoning.
   - Built automated ATS-oriented resume and cover-letter tailoring with fabrication-safe constraints, followed by LaTeX/Tectonic
     PDF generation.
-  - Developed a Streamlit dashboard for retrieval-funnel inspection, score breakdowns, application tracking, and interactive
-    1–5 relevance labeling for continuous ranking evaluation.
   - Automated daily execution with GitHub Actions, including ingestion, indexing, retrieval, Cross-Encoder reranking, MMR
-    diversification, Gemini review, PDF generation, and notification delivery.
+    diversification, Gemini review, PDF generation, and email notification delivery.
   quantified_impact:
   - Top 100 candidates after hybrid retrieval
   - Top 20 after Cross-Encoder reranking

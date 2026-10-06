@@ -67,7 +67,3 @@ gmail_app_password = ""
 smtp_server = "smtp.gmail.com"
 smtp_port = 587
 
-[whatsapp]
-provider = "callmebot"
-phone = "+917872567781"
-callmebot_api_key = ""

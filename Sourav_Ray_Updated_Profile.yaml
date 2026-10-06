@@ -248,30 +248,28 @@ projects:
   - id: job_discovery_assistant
     name: "Job Discovery & Application Assistant"
     role: "Creator"
-    tech_stack: ["Python", "LLM", "Ollama", "Google Gemini", "Greenhouse API", "Lever API", "RemoteOK API", "Workday", "Naukri", "LinkedIn", "SQLite", "Streamlit", "LaTeX", "Tectonic", "GitHub Actions", "Gmail", "WhatsApp"]
+    tech_stack: ["Python", "LLM", "Ollama", "Google Gemini", "Greenhouse API", "Lever API", "RemoteOK API", "Workday", "Ashby", "SQLite", "LaTeX", "Tectonic", "GitHub Actions", "Gmail"]
     summary: >
-      Built a local-first end-to-end job discovery and application automation platform that
-      continuously ingests job openings from public ATS platforms and job boards, evaluates
-      candidate-job fit using LLMs, generates tailored application materials, compiles
-      job-specific PDF resumes, and distributes daily application digests through email
-      and WhatsApp.
+      Built a local-first end-to-end job discovery and ETL application automation platform that
+      continuously ingests job openings from public ATS APIs, normalizes structured data into SQLite,
+      evaluates candidate-job fit using hybrid retrieval and LLMs, generates tailored application
+      materials, compiles job-specific PDF resumes, and distributes daily application digests through email.
     bullets:
-      - "Built a local-first Python system that discovers job openings from Greenhouse, Lever, RemoteOK, Workday, Naukri, and LinkedIn, with configurable source and company mappings."
-      - "Designed an automated resume-parsing pipeline using PDF/DOCX extraction and LLM-based normalization into a structured candidate profile for downstream job matching."
-      - "Implemented an LLM-powered match-scoring engine that evaluates job descriptions against the candidate profile on a 0–100 scale using skills overlap, experience, seniority, and location constraints, while providing structured strengths and missing-requirement reasoning."
-      - "Built automated resume and cover-letter tailoring that generates ATS-optimized, job-specific content while explicitly preventing fabrication of qualifications."
+      - "Built an automated ETL pipeline that discovers and ingests job openings from ATS APIs (Greenhouse, Lever, RemoteOK, Workday, Ashby) with deduplication and contract validation."
+      - "Designed an automated resume-parsing pipeline using PDF/DOCX extraction and normalization into a structured candidate profile for downstream matching."
+      - "Implemented a hybrid retrieval and match-scoring engine evaluating job descriptions on a 0–100 scale using skills overlap, experience, seniority, and location constraints with structured reasoning."
+      - "Built automated resume and cover-letter tailoring that generates ATS-optimized content while explicitly preventing fabrication of qualifications."
       - "Implemented automated LaTeX resume generation and PDF compilation using Tectonic, producing customized application-ready resumes for qualified opportunities."
       - "Built a SQLite-backed application workflow to persist job listings, scoring results, tailoring outputs, and application statuses across the pipeline."
-      - "Developed a Streamlit review dashboard providing job search/filtering, match-score analysis, application-status management, generated-content review, and on-demand resume/cover-letter generation."
-      - "Implemented multi-channel notification workflows using Gmail and WhatsApp integrations, delivering structured daily digests with match scores, role information, application links, and tailored PDF resume attachments."
-      - "Built GitHub Actions CI/CD automation to execute the job-discovery workflow on a daily schedule, including job scoring, batch tailoring, PDF generation, email delivery, and persistence of generated artifacts."
-      - "Designed configurable pipeline execution through a central configuration layer controlling target roles, locations, experience criteria, scoring thresholds, ATS company mappings, and notification settings."
-      - "Implemented modular pipeline stages for CV parsing, job ingestion, LLM scoring, batch tailoring, PDF generation, notification dispatch, and interactive review, enabling each stage to be executed independently or orchestrated through a single pipeline."
+      - "Implemented email notification workflows using Gmail SMTP delivering structured daily digests with match scores, role information, application links, and tailored PDF attachments."
+      - "Built GitHub Actions CI/CD automation to execute the entire ETL and tailoring pipeline on a daily schedule, including job scoring, batch tailoring, PDF generation, and persistence of artifacts."
+      - "Designed configurable pipeline execution through a central configuration layer controlling target roles, locations, experience criteria, scoring thresholds, and ATS company mappings."
+      - "Implemented modular pipeline stages for job ingestion, normalisation, indexing, retrieval, reranking, LLM scoring, batch tailoring, and notification dispatch."
     quantified_impact:
       - "Automated end-to-end job discovery, scoring, tailoring, and notification workflow"
       - "0–100 LLM-based job-fit scoring with structured reasoning"
-      - "Daily automated job discovery and application digest"
-      - "Multi-channel delivery through Email and WhatsApp"
+      - "Daily automated job discovery and application digest via GitHub Actions"
+      - "Email delivery with attached tailored PDF resumes"
       - "Automated job-specific LaTeX/PDF resume generation"
 
   - id: dbt_airflow_pipeline

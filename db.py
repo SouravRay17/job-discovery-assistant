@@ -72,7 +72,6 @@ CREATE TABLE IF NOT EXISTS candidate_job_scores (
     cover_letter_draft TEXT,
     status TEXT DEFAULT 'retrieved',
     notified_email INTEGER DEFAULT 0,
-    notified_whatsapp INTEGER DEFAULT 0,
     retrieved_at TEXT,
     reranked_at TEXT,
     ai_reviewed_at TEXT,

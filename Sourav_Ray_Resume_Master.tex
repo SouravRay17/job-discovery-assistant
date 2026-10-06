@@ -68,10 +68,11 @@ Data scientist with 3 years of experience building Python and SQL data and ML sy
 
 \newpage
 \section*{Projects}
-\proj{Job Discovery \& Application Assistant -- Retrieval-First AI Engine (Independent, GitHub)}{}
+\proj{Job Discovery \& Retrieval Pipeline -- Automated ATS Ingestion Engine (Independent, GitHub)}{}
 \begin{itemize}
+\item Built an automated ETL pipeline ingesting live job postings from ATS APIs (Greenhouse, Lever, Ashby, Workday), normalizing semi-structured metadata into SQLite with deduplication.
 \item Built a high-recall hybrid retrieval engine (Dense embeddings + BM25) with Reciprocal Rank Fusion (RRF), Cross-Encoder reranking, and MMR diversification (Top-100 $\rightarrow$ Top-20 $\rightarrow$ Top-10--15).
-\item Developed an offline IR evaluation suite (Recall@K, Precision@10, NDCG@K, MRR), candidate-job fit analysis, and an interactive Streamlit dashboard scheduled daily via GitHub Actions.
+\item Automated daily batch execution via GitHub Actions, running IR evaluation (Recall@K, NDCG@K, MRR), candidate-job fit scoring, and dynamic LaTeX/PDF resume tailoring.
 \end{itemize}
 
 \proj{Spatio-Temporal Air Pollution Prediction using a Transformer (M.Tech Thesis)}{May 2023}

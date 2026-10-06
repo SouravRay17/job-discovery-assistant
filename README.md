@@ -1,6 +1,6 @@
 # 💼 Job Discovery & Application Assistant (Retrieval-First Engine)
 
-A scalable, local-first and cloud-ready job discovery engine designed to scrape public ATS boards (Greenhouse, Lever, Workday, RemoteOK, Naukri, LinkedIn), normalize structured metadata, perform high-recall hybrid retrieval (Dense Vector + BM25 + RRF + Deterministic Scoring), execute deep Cross-Encoder reranking and MMR diversification, run Gemini AI strategic reviews on top picks only, generate tailored LaTeX resumes, and dispatch email/WhatsApp digests.
+A scalable, local-first and cloud-ready job discovery engine designed to scrape public ATS boards (Greenhouse, Lever, Ashby, Workday, RemoteOK), normalize structured metadata, perform high-recall hybrid retrieval (Dense Vector + BM25 + RRF + Deterministic Scoring), execute deep Cross-Encoder reranking and MMR diversification, run Gemini AI strategic reviews on top picks only, generate tailored LaTeX resumes, and dispatch email digests.
 
 ---
 
@@ -8,7 +8,7 @@ A scalable, local-first and cloud-ready job discovery engine designed to scrape 
 
 ```mermaid
 flowchart TD
-    A[Scraped Job Listings] --> B[normalizer.py: Metadata & Search Docs]
+    A[Scraped Job Listings from ATS APIs] --> B[normalizer.py: Metadata & Search Docs]
     B --> C[(jobs.db)]
     B --> D[indexer.py: Dense Embeddings & BM25 Index]
     D --> E[vector_store/ & bm25_index/]
@@ -19,8 +19,7 @@ flowchart TD
     I -->|Top 20 Candidates| J[MMR Diversification across Roles & Companies]
     J -->|Top 10-15 Candidates| K[scorer.py: Gemini AI Strategic Review]
     K -->|APPLY / MAYBE Picks| L[tailor.py: LaTeX PDF Resume Compilation]
-    L --> M[email_notifier.py: Daily HTML Email Digest]
-    L & K --> N[dashboard.py: Streamlit Review Interface]
+    L --> M[email_notifier.py: Daily HTML Email Digest with PDFs]
 ```
 
 ---
@@ -50,9 +49,6 @@ flowchart TD
    - Compiles custom LaTeX PDF resumes with the local `tectonic` engine into `exports/`.
 8. **Daily Email Digest ([`email_notifier.py`](./email_notifier.py))**:
    - Sends dark-mode HTML email digests with attached tailored PDF resumes directly to your inbox.
-9. **Interactive Review Dashboard with Ground Truth Labeling ([`dashboard.py`](./dashboard.py))**:
-   - Visualizes full funnel metrics, transparent score breakdowns (Semantic, BM25, Skill Match, Cross-Encoder, AI Review, Blended Final), and includes an interactive 1–5★ relevance labeling widget for continuous tuning.
-
 
 ---
 
@@ -147,15 +143,6 @@ python run_pipeline.py
    ```bash
    python email_notifier.py
    ```
-
----
-
-## 🖥️ Streamlit Interactive Dashboard
-
-To inspect the retrieval funnel, review multi-stage alignment breakdowns, update statuses, or generate tailored application materials on demand:
-```bash
-streamlit run dashboard.py
-```
 
 ---
 

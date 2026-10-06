@@ -73,7 +73,6 @@ def run_pipeline():
     print("\n" + "=" * 70)
     print("JOB DISCOVERY PIPELINE -- COMPLETED RUN")
     print("=" * 70)
-    print("Launch the interactive review dashboard:\n  streamlit run dashboard.py\n")
 
 
 if __name__ == "__main__":
