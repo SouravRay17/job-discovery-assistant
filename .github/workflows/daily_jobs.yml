@@ -65,7 +65,7 @@ jobs:
       - name: Batch Tailor Resumes (Gemini AI + Tectonic)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python tailor.py --batch --top 10
+        run: python tailor.py --batch --top 15
 
       # 8. Send Daily Email Digest with Attachments
       - name: Send Daily Email Digest
@@ -81,6 +81,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tailored-materials-${{ github.run_id }}
-          path: exports/*.pdf
+          path: |
+            exports/*.pdf
+            exports/*.txt
           if-no-files-found: ignore
 
