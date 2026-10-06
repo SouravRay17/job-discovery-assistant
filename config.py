@@ -9,7 +9,9 @@ import yaml
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, "config.toml")
 ATS_MAPPING_PATH = os.path.join(BASE_DIR, "company_ats_mapping.toml")
-CV_PATH = os.path.join(BASE_DIR, "Sourav_Ray_Updated_Profile.yaml")
+CV_V3_PATH = os.path.join(BASE_DIR, "Sourav_Ray_Enriched_Profile_v3.yaml")
+CV_LEGACY_PATH = os.path.join(BASE_DIR, "Sourav_Ray_Updated_Profile.yaml")
+CV_PATH = CV_V3_PATH if os.path.exists(CV_V3_PATH) else CV_LEGACY_PATH
 DB_PATH = os.path.join(BASE_DIR, "jobs.db")
 
 

@@ -1,0 +1,38 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=0.75in,top=0.6in,bottom=0.6in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\definecolor{accent}{HTML}{1F3A5F}
+
+\begin{document}
+
+{\Huge\bfseries\color{accent} \VAR{ personal_info.name }}\\[2pt]
+{\large \VAR{ target_headline }}\\[2pt]
+\VAR{ personal_info.location } \textbar{} \VAR{ personal_info.phone } \textbar{} \href{mailto:\VAR{ personal_info.email }}{\VAR{ personal_info.email }} \textbar{} \href{https://\VAR{ personal_info.linkedin }}{\VAR{ personal_info.linkedin }}
+
+\vspace{4pt}
+\hrule
+\vspace{8pt}
+
+\textbf{Date:} \VAR{ current_date }\\[4pt]
+\textbf{To:} Hiring Team / Recruiting Department\\
+\textbf{Company:} \VAR{ company }\\
+\textbf{Position:} \VAR{ job_title }
+
+\vspace{6pt}
+
+\textbf{Dear Hiring Team,}
+
+\VAR{ cover_letter_body }
+
+\vspace{10pt}
+
+Sincerely,\\[4pt]
+\textbf{\VAR{ personal_info.name }}\\
+\VAR{ personal_info.phone } \textbar{} \VAR{ personal_info.email }
+
+\end{document}

@@ -75,24 +75,12 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python email_notifier.py
 
-      # 9. Upload Compiled Resumes as Build Artifact
-      - name: Upload Compiled Resumes Artifact
+      # 9. Upload Compiled Resumes & Cover Letters as Build Artifact
+      - name: Upload Compiled Resumes & Cover Letters
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tailored-resumes-${{ github.run_id }}
+          name: tailored-materials-${{ github.run_id }}
           path: exports/*.pdf
           if-no-files-found: ignore
 
-      # 10. Commit and Push Updated DB, Indices, and Resumes
-      - name: Commit and Push Updated DB, Indices, and Resumes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action Bot"
-          git add jobs.db vector_store/ bm25_index/ exports/ || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "Auto Update: Daily Jobs, Retrieval Indices & Tailored Resumes [$(date +'%Y-%m-%d')]"
-            git push origin main
-          fi

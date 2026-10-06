@@ -94,6 +94,18 @@ def send_email_digest(top_n: int = 10):
         else:
             print(f"  [!] PDF resume not found for attachment: {pdf_name}")
 
+        cl_name = f"Sourav_Cover_Letter_{clean_co}_{job_id}.pdf"
+        cl_path = os.path.join(exports_dir, cl_name)
+        if os.path.exists(cl_path):
+            try:
+                with open(cl_path, "rb") as f:
+                    part_cl = MIMEApplication(f.read(), Name=cl_name)
+                    part_cl['Content-Disposition'] = f'attachment; filename="{cl_name}"'
+                    msg.attach(part_cl)
+                    print(f"  [+] Attached PDF cover letter: {cl_name} ({os.path.getsize(cl_path)} bytes)")
+            except Exception as e:
+                print(f"  [!] Failed to attach {cl_name}: {e}")
+
         badge_color = "#22c55e" if rec == "APPLY" else "#eab308"
         strengths_html = "".join(f"<span style='background:#334155;color:#38bdf8;padding:2px 6px;margin-right:4px;border-radius:3px;font-size:11px;'>{s}</span>" for s in strengths[:4])
 

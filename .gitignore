@@ -6,3 +6,15 @@ __pycache__/
 PyWhatKit_DB.txt
 tectonic.exe
 .DS_Store
+
+# Data & Runtime artifacts
+jobs.db
+vector_store/
+bm25_index/
+
+# LaTeX build artifacts & compiled exports
+exports/*.pdf
+exports/*.tex
+*.aux
+*.out
+
