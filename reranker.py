@@ -92,6 +92,7 @@ def apply_mmr_diversification(
 
         for idx, cand in enumerate(unselected):
             key = f"{cand['source']}::{cand['job_id']}"
+            company = cand.get("company", "Unknown")
             # Dynamic company cap: allow 3rd role if score is exceptionally high (>= 0.85 or within 0.05 of top match)
             rel_score = cand.get("reranker_score", cand.get("hybrid_retrieval_score", 0.5))
             curr_count = company_counts.get(company, 0)
