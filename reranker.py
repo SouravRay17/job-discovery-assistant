@@ -92,13 +92,14 @@ def apply_mmr_diversification(
 
         for idx, cand in enumerate(unselected):
             key = f"{cand['source']}::{cand['job_id']}"
-            company = cand.get("company", "Unknown")
-
-            # Enforce max per company constraint
-            if company_counts.get(company, 0) >= max_per_company:
-                continue
-
+            # Dynamic company cap: allow 3rd role if score is exceptionally high (>= 0.85 or within 0.05 of top match)
             rel_score = cand.get("reranker_score", cand.get("hybrid_retrieval_score", 0.5))
+            curr_count = company_counts.get(company, 0)
+            if curr_count >= max_per_company:
+                top_match_score = selected[0].get("reranker_score", 0.9) if selected else 0.9
+                is_exceptional = rel_score >= 0.85 or (top_match_score - rel_score <= 0.05)
+                if not (is_exceptional and curr_count < max_per_company + 2):
+                    continue
             cand_vec = embeddings_map.get(key)
 
             if not selected or cand_vec is None:

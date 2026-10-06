@@ -212,6 +212,27 @@ def extract_experience(text: str) -> tuple[float | None, float | None]:
     return None, None
 
 
+def extract_salary(text: str) -> str | None:
+    """Extract salary compensation string from description text if present."""
+    if not text:
+        return None
+    patterns = [
+        # USD ranges: $120,000 - $160,000 or $120k - $160k or $150k
+        r"\$\s*\d{1,3}(?:,\d{3})*(?:\.\d+)?\s*(?:k|kilo)?\s*(?:-|to)\s*\$?\s*\d{1,3}(?:,\d{3})*(?:\.\d+)?\s*(?:k|kilo)?(?:\s*(?:per\s+year|annually|\/yr|\/year))?",
+        r"\$\s*\d{2,3}\s*k\b",
+        # INR / LPA ranges: 20-30 LPA, INR 25,00,000, 15 to 25 Lakhs
+        r"(?:INR|₹|Rs\.?)\s*\d{1,2}(?:,\d{2})*(?:,\d{3})*(?:\s*(?:-|to)\s*(?:INR|₹|Rs\.?)?\s*\d{1,2}(?:,\d{2})*(?:,\d{3})*)?",
+        r"\b\d{1,2}(?:\.\d+)?\s*(?:-|to)\s*\d{1,2}(?:\.\d+)?\s*(?:lpa|lakhs?|lac)\b",
+        # Hourly: $50 - $80 / hr
+        r"\$\s*\d{2,3}(?:\.\d+)?\s*(?:-|to)\s*\$?\s*\d{2,3}(?:\.\d+)?\s*(?:\/hr|per\s+hour)",
+    ]
+    for pat in patterns:
+        m = re.search(pat, text, re.IGNORECASE)
+        if m:
+            return m.group(0).strip()
+    return None
+
+
 def classify_role_family(title: str, description: str) -> str:
     """Classify job into standard role families."""
     combined = f"{title} {description[:300]}".lower()
@@ -335,6 +356,8 @@ def normalize_job_record(job: dict) -> dict:
         raw_desc=raw_desc
     )
 
+    salary = extract_salary(raw_desc)
+
     return {
         "source": job["source"],
         "id": job["id"],
@@ -349,6 +372,7 @@ def normalize_job_record(job: dict) -> dict:
         "certifications": "Cloud/Data Certifications preferred",
         "employment_type": "Full-time",
         "remote_type": remote_type,
+        "salary": salary,
         "normalized_at": now_iso(),
     }
 
@@ -402,13 +426,13 @@ def normalize_jobs():
                    SET search_text = ?, required_skills = ?, preferred_skills = ?,
                        role_family = ?, domain = ?, experience_min = ?, experience_max = ?,
                        education = ?, certifications = ?, employment_type = ?, remote_type = ?,
-                       normalized_at = ?
+                       salary = ?, normalized_at = ?
                    WHERE source = ? AND id = ?""",
                 (
                     norm["search_text"], norm["required_skills"], norm["preferred_skills"],
                     norm["role_family"], norm["domain"], norm["experience_min"], norm["experience_max"],
                     norm["education"], norm["certifications"], norm["employment_type"], norm["remote_type"],
-                    norm["normalized_at"], source, job_id
+                    norm["salary"], norm["normalized_at"], source, job_id
                 )
             )
             normalized_count += 1

@@ -6,7 +6,7 @@
   "4": "normalizer.py",
   "5": "get_connection",
   "6": "Core Engineering Stages",
-  "7": "evaluate.py",
+  "7": "scorer.py",
   "8": "retriever.py",
   "11": "Graphify Knowledge Graph Rule"
 }

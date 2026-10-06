@@ -152,6 +152,54 @@ class TestAuditRemediation(unittest.TestCase):
         finally:
             conn.close()
 
+    def test_extract_salary(self):
+        """extract_salary must cleanly parse USD and INR salary formats."""
+        from normalizer import extract_salary
+
+        text1 = "Offering an attractive package of $140,000 - $180,000 per year plus equity."
+        self.assertEqual(extract_salary(text1), "$140,000 - $180,000 per year")
+
+        text2 = "Compensation ranges between 24-32 LPA based on skills."
+        self.assertEqual(extract_salary(text2), "24-32 LPA")
+
+        text3 = "No compensation stated."
+        self.assertIsNone(extract_salary(text3))
+
+    def test_foreign_remote_rejection(self):
+        """Hard filter must reject foreign geo-restricted remote roles for India-based candidate."""
+        profile = {"preferred_locations": ["remote", "india"], "excluded_roles": []}
+
+        # Global/India remote should pass
+        job_global = {"title": "Data Engineer", "location": "Remote - India / Global", "remote": True}
+        passed, _ = check_hard_filters(job_global, profile)
+        self.assertTrue(passed)
+
+        # US Only remote must be rejected
+        job_us_only = {"title": "Data Engineer", "location": "Remote - US Only", "remote": True}
+        passed, reason = check_hard_filters(job_us_only, profile)
+        self.assertFalse(passed)
+        self.assertIn("Foreign geo-restricted", reason)
+
+    def test_dynamic_company_cap(self):
+        """MMR should dynamically allow 3rd role for top-tier matching company."""
+        from reranker import apply_mmr_diversification
+        import numpy as np
+
+        # 4 jobs from Databricks with high scores
+        candidates = [
+            {"source": "test", "job_id": "1", "company": "Databricks", "reranker_score": 0.95},
+            {"source": "test", "job_id": "2", "company": "Databricks", "reranker_score": 0.92},
+            {"source": "test", "job_id": "3", "company": "Databricks", "reranker_score": 0.90},
+            {"source": "test", "job_id": "4", "company": "OtherCo", "reranker_score": 0.70},
+        ]
+        embeddings = {
+            f"test::{i}": np.array([1.0, 0.0] if i != "4" else [0.0, 1.0])
+            for i in ["1", "2", "3", "4"]
+        }
+        diversified = apply_mmr_diversification(candidates, embeddings, top_n=4, max_per_company=2)
+        databricks_count = sum(1 for c in diversified if c["company"] == "Databricks")
+        self.assertGreaterEqual(databricks_count, 3, "Exceptional jobs should allow >= 3 roles from same company")
+
 
 if __name__ == "__main__":
     unittest.main()

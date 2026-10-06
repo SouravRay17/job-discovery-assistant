@@ -82,7 +82,15 @@ def check_hard_filters(job: dict, profile: dict) -> tuple[bool, str | None]:
     target_locations = [loc.lower().strip() for loc in profile.get("preferred_locations", ["remote", "india"])]
     is_remote = bool(job.get("remote")) or any(k in location for k in ("remote", "anywhere", "worldwide", "global"))
 
-    if not is_remote:
+    if is_remote:
+        # Check if remote position has explicit foreign restriction (e.g. "US Only", "US/Canada", "EMEA Only")
+        foreign_remote_kws = [
+            "us only", "usa only", "united states only", "north america only",
+            "us/canada", "us / canada", "emea only", "latam only", "uk only", "canada only"
+        ]
+        if any(kw in location for kw in foreign_remote_kws) and not any(k in location for k in ("india", "worldwide", "global", "anywhere")):
+            return False, f"Foreign geo-restricted remote position ({job.get('location')})"
+    else:
         # Check if job is in acceptable country/cities
         matched_loc = any(re.search(r'\b' + re.escape(t) + r'\b', location) for t in target_locations if t != "remote")
         if not matched_loc:
@@ -271,6 +279,8 @@ def retrieve_jobs(top_k: int = 150) -> list[dict]:
         v_rank = vec_ranks.get(key, len(eligible_jobs))
         b_rank = bm25_ranks.get(key, len(eligible_jobs))
         rrf = (1.0 / (60.0 + v_rank)) + (1.0 / (60.0 + b_rank))
+        max_possible_rrf = (1.0 / 61.0) + (1.0 / 61.0)
+        rrf_norm = min(1.0, rrf / max_possible_rrf)
 
         # Deterministic Skills & Role Alignment
         req_skills = json.loads(job.get("required_skills") or "[]")
@@ -281,16 +291,15 @@ def retrieve_jobs(top_k: int = 150) -> list[dict]:
         domain_score = compute_domain_score(job.get("domain", ""), profile.get("preferred_domains", []))
         exp_score = compute_experience_score(job.get("experience_min"), job.get("experience_max"), candidate_exp)
 
-        # Refined Hybrid Composite Formula:
-        # 25% Vector + 15% BM25 + 20% Role Intent/Trajectory + 10% Domain Fit + 20% Required Skills + 5% Preferred Skills + 5% Experience
+        # Calibrated Hybrid Composite Formula:
+        # 30% Rank-Fused RRF (Vector + BM25) + 25% Required Skills + 15% Role Intent + 10% Domain + 15% Experience + 5% Preferred Skills
         hybrid_retrieval_score = (
-            0.25 * v_score +
-            0.15 * b_score +
-            0.20 * role_score +
+            0.30 * rrf_norm +
+            0.25 * req_skill_score +
+            0.15 * role_score +
             0.10 * domain_score +
-            0.20 * req_skill_score +
-            0.05 * pref_skill_score +
-            0.05 * exp_score
+            0.15 * exp_score +
+            0.05 * pref_skill_score
         )
 
         scored_candidates.append({

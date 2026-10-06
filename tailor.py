@@ -507,6 +507,15 @@ def compile_pdf_resume(job_source: str, job_id: str) -> str | None:
                         except Exception:
                             pass
 
+        # Also export clean plain-text version for quick copy-pasting
+        cl_txt_path = os.path.join(exports_dir, f"Sourav_Cover_Letter_{company_clean}_{job_id}.txt")
+        try:
+            with open(cl_txt_path, "w", encoding="utf-8") as f:
+                f.write(f"COVER LETTER: {title} at {company}\n{'='*60}\n\n{cover_letter_text.strip()}\n")
+            print(f"  [OK] Tailored Cover Letter TXT created: {cl_txt_path}")
+        except Exception as e:
+            print(f"  [!] Cover letter text export warning: {e}")
+
     # 3. Automated ATS Extraction Validation
     if os.path.exists(output_pdf_path):
         ats_ok, ats_err = verify_pdf_ats_extractability(output_pdf_path)

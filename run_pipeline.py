@@ -26,54 +26,92 @@ from tailor import run_batch_tailoring
 from email_notifier import send_email_digest
 
 
-def run_pipeline():
+def run_pipeline(from_step: int = 1, skip_scraping: bool = False):
     print(f"{'='*70}\nJOB DISCOVERY ASSISTANT -- RETRIEVAL-FIRST PIPELINE RUN\n{'='*70}")
 
     # 1. Load config & auto populate from mapping
     config = auto_populate_config(load_config())
 
-    # 2. Step 1: Scrape Jobs
-    print("\n--- STEP 1: SCRAPING NEW JOBS ---")
-    try:
-        run_all_fetchers(config)
-    except Exception as e:
-        print(f"  [!] Scraper step warning: {e}")
+    # Step 1: Scrape Jobs
+    if from_step <= 1 and not skip_scraping:
+        print("\n--- STEP 1: SCRAPING NEW JOBS ---")
+        try:
+            run_all_fetchers(config)
+        except Exception as e:
+            print(f"  [!] Scraper step warning: {e}")
+    else:
+        print("\n--- STEP 1: SCRAPING SKIPPED ---")
 
-    # 3. Step 2: Normalize Jobs
-    print("\n--- STEP 2: DETERMINISTIC JOB NORMALIZATION & SEARCH DOC GENERATION ---")
-    normalize_jobs()
+    # Step 2: Normalize Jobs
+    if from_step <= 2:
+        print("\n--- STEP 2: DETERMINISTIC JOB NORMALIZATION & SEARCH DOC GENERATION ---")
+        try:
+            normalize_jobs()
+        except Exception as e:
+            print(f"  [!] Normalizer error: {e}")
 
-    # 4. Step 3: Index Jobs
-    print("\n--- STEP 3: DENSE VECTOR & BM25 INCREMENTAL INDEXING ---")
-    index_jobs()
+    # Step 3: Index Jobs
+    if from_step <= 3:
+        print("\n--- STEP 3: DENSE VECTOR & BM25 INCREMENTAL INDEXING ---")
+        try:
+            index_jobs()
+        except Exception as e:
+            print(f"  [!] Indexing error: {e}")
 
-    # 5. Step 4: Hybrid Retrieval
-    print("\n--- STEP 4: HYBRID RETRIEVAL (HARD FILTERS + VECTOR + BM25 + RRF) -> TOP 150 ---")
-    retrieve_jobs(top_k=150)
+    # Step 4: Hybrid Retrieval
+    if from_step <= 4:
+        print("\n--- STEP 4: HYBRID RETRIEVAL (HARD FILTERS + VECTOR + BM25 + RRF) -> TOP 150 ---")
+        try:
+            retrieve_jobs(top_k=150)
+        except Exception as e:
+            print(f"  [!] Hybrid retrieval error: {e}")
 
-    # 6. Step 5: Cross-Encoder Reranking & MMR
-    print("\n--- STEP 5: CROSS-ENCODER RERANKING & MMR DIVERSIFICATION -> TOP 10-20 ---")
-    rerank_jobs(top_rerank=20, top_diversified=10)
+    # Step 5: Cross-Encoder Reranking & MMR
+    if from_step <= 5:
+        print("\n--- STEP 5: CROSS-ENCODER RERANKING & MMR DIVERSIFICATION -> TOP 10-20 ---")
+        try:
+            rerank_jobs(top_rerank=20, top_diversified=10)
+        except Exception as e:
+            print(f"  [!] Reranking error: {e}")
 
-    # 7. Step 6: AI Review (Gemini)
-    print("\n--- STEP 6: STRATEGIC AI REVIEW (GEMINI) ON TOP PICKS ONLY ---")
-    score_jobs()
+    # Step 6: AI Review (Gemini)
+    if from_step <= 6:
+        print("\n--- STEP 6: STRATEGIC AI REVIEW (GEMINI) ON TOP PICKS ONLY ---")
+        try:
+            score_jobs()
+        except Exception as e:
+            print(f"  [!] Scorer error: {e}")
 
-    # 8. Step 7: Batch Tailoring & LaTeX PDF Compilation
-    print("\n--- STEP 7: RESUME TAILORING & LATEX COMPILATION (TOP 10) ---")
-    run_batch_tailoring(top_n=10)
+    # Step 7: Batch Tailoring & LaTeX PDF Compilation
+    if from_step <= 7:
+        print("\n--- STEP 7: RESUME TAILORING & LATEX COMPILATION (TOP 10) ---")
+        try:
+            run_batch_tailoring(top_n=10)
+        except Exception as e:
+            print(f"  [!] Tailoring error: {e}")
 
-    # 9. Step 8: Multi-channel Notifications
-    print("\n--- STEP 8: DISPATCHING EMAIL DIGEST ---")
-    try:
-        send_email_digest(top_n=10)
-    except Exception as e:
-        print(f"  [!] Email notification error: {e}")
+    # Step 8: Multi-channel Notifications
+    if from_step <= 8:
+        print("\n--- STEP 8: DISPATCHING EMAIL DIGEST ---")
+        try:
+            send_email_digest(top_n=10)
+        except Exception as e:
+            print(f"  [!] Email notification error: {e}")
 
     print("\n" + "=" * 70)
     print("JOB DISCOVERY PIPELINE -- COMPLETED RUN")
     print("=" * 70)
 
 
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Run Job Discovery retrieval pipeline")
+    parser.add_argument("--from-step", type=int, default=1, choices=range(1, 9), help="Start from specific step (1-8)")
+    parser.add_argument("--skip-scraping", action="store_true", help="Skip scraping and start from normalization")
+    args = parser.parse_args()
+
+    run_pipeline(from_step=args.from_step, skip_scraping=args.skip_scraping)
+
+
 if __name__ == "__main__":
-    run_pipeline()
+    main()

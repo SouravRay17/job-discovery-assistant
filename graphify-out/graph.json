@@ -48,6 +48,18 @@
       "source_location": "L16"
     },
     {
+      "id": "config_auto_populate_config",
+      "label": "auto_populate_config()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "scraper.py",
+      "file_type": "code",
+      "norm_label": "auto_populate_config()",
+      "source_file": "config.py",
+      "source_location": "L62"
+    },
+    {
       "id": "config_load_ats_mapping",
       "label": "load_ats_mapping()",
       "_callable": true,
@@ -58,18 +70,6 @@
       "norm_label": "load_ats_mapping()",
       "source_file": "config.py",
       "source_location": "L53"
-    },
-    {
-      "id": "db_compute_job_fingerprint",
-      "label": "compute_job_fingerprint()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "code",
-      "norm_label": "compute_job_fingerprint()",
-      "source_file": "db.py",
-      "source_location": "L173"
     },
     {
       "id": "scraper_fetch_ashby",
@@ -94,18 +94,6 @@
       "norm_label": "fetch_greenhouse()",
       "source_file": "scraper.py",
       "source_location": "L143"
-    },
-    {
-      "id": "scraper_fetch_greenhouse_description",
-      "label": "fetch_greenhouse_description()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "code",
-      "norm_label": "fetch_greenhouse_description()",
-      "source_file": "scraper.py",
-      "source_location": "L215"
     },
     {
       "id": "scraper_fetch_lever",
@@ -252,18 +240,6 @@
       "source_location": "L46"
     },
     {
-      "id": "scraper_run_all_fetchers",
-      "label": "run_all_fetchers()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "code",
-      "norm_label": "run_all_fetchers()",
-      "source_file": "scraper.py",
-      "source_location": "L809"
-    },
-    {
       "id": "scraper_strip_html",
       "label": "strip_html()",
       "_callable": true,
@@ -276,30 +252,6 @@
       "source_location": "L37"
     },
     {
-      "id": "scraper_upsert_jobs",
-      "label": "upsert_jobs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "code",
-      "norm_label": "upsert_jobs()",
-      "source_file": "scraper.py",
-      "source_location": "L752"
-    },
-    {
-      "id": "test_remediation_suite_testauditremediation_test_upsert_jobs_rejects_empty_description_and_duplicates",
-      "label": ".test_upsert_jobs_rejects_empty_description_and_duplicates()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "code",
-      "norm_label": ".test_upsert_jobs_rejects_empty_description_and_duplicates()",
-      "source_file": "test_remediation_suite.py",
-      "source_location": "L96"
-    },
-    {
       "id": "config_load_candidate_profile",
       "label": "load_candidate_profile()",
       "_callable": true,
@@ -310,6 +262,78 @@
       "norm_label": "load_candidate_profile()",
       "source_file": "config.py",
       "source_location": "L26"
+    },
+    {
+      "id": "llm_client_get_provider",
+      "label": "get_provider()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "get_provider()",
+      "source_file": "llm_client.py",
+      "source_location": "L13"
+    },
+    {
+      "id": "llm_client_parse_json_from_llm",
+      "label": "parse_json_from_llm()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "parse_json_from_llm()",
+      "source_file": "llm_client.py",
+      "source_location": "L28"
+    },
+    {
+      "id": "llm_client_query_gemini",
+      "label": "_query_gemini()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "_query_gemini()",
+      "source_file": "llm_client.py",
+      "source_location": "L73"
+    },
+    {
+      "id": "llm_client_query_llm",
+      "label": "query_llm()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "query_llm()",
+      "source_file": "llm_client.py",
+      "source_location": "L19"
+    },
+    {
+      "id": "llm_client_query_ollama",
+      "label": "_query_ollama()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "_query_ollama()",
+      "source_file": "llm_client.py",
+      "source_location": "L41"
+    },
+    {
+      "id": "scraper_fetch_greenhouse_description",
+      "label": "fetch_greenhouse_description()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "fetch_greenhouse_description()",
+      "source_file": "scraper.py",
+      "source_location": "L215"
     },
     {
       "id": "tailor_build_resume_context",
@@ -369,7 +393,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tailor.py",
-      "source_location": "L627"
+      "source_location": "L636"
     },
     {
       "id": "tailor_now_iso",
@@ -429,7 +453,7 @@
       "file_type": "code",
       "norm_label": "run_batch_tailoring()",
       "source_file": "tailor.py",
-      "source_location": "L551"
+      "source_location": "L560"
     },
     {
       "id": "tailor_select_target_headline",
@@ -466,30 +490,6 @@
       "norm_label": "validate_factual_provenance()",
       "source_file": "tailor.py",
       "source_location": "L99"
-    },
-    {
-      "id": "tailor_verify_pdf_ats_extractability",
-      "label": "verify_pdf_ats_extractability()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "tailor.py",
-      "file_type": "code",
-      "norm_label": "verify_pdf_ats_extractability()",
-      "source_file": "tailor.py",
-      "source_location": "L522"
-    },
-    {
-      "id": "config_auto_populate_config",
-      "label": "auto_populate_config()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "run_pipeline.py",
-      "file_type": "code",
-      "norm_label": "auto_populate_config()",
-      "source_file": "config.py",
-      "source_location": "L62"
     },
     {
       "id": "config_load_config",
@@ -597,7 +597,19 @@
       "file_type": "code",
       "norm_label": "normalize_jobs()",
       "source_file": "normalizer.py",
-      "source_location": "L356"
+      "source_location": "L380"
+    },
+    {
+      "id": "run_pipeline_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "run_pipeline.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "run_pipeline.py",
+      "source_location": "L106"
     },
     {
       "id": "run_pipeline_run_pipeline",
@@ -612,6 +624,18 @@
       "source_location": "L29"
     },
     {
+      "id": "scraper_run_all_fetchers",
+      "label": "run_all_fetchers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "run_pipeline.py",
+      "file_type": "code",
+      "norm_label": "run_all_fetchers()",
+      "source_file": "scraper.py",
+      "source_location": "L809"
+    },
+    {
       "id": "normalizer_build_search_text",
       "label": "build_search_text()",
       "_callable": true,
@@ -621,7 +645,7 @@
       "file_type": "code",
       "norm_label": "build_search_text()",
       "source_file": "normalizer.py",
-      "source_location": "L279"
+      "source_location": "L300"
     },
     {
       "id": "normalizer_classify_domain",
@@ -633,7 +657,7 @@
       "file_type": "code",
       "norm_label": "classify_domain()",
       "source_file": "normalizer.py",
-      "source_location": "L232"
+      "source_location": "L253"
     },
     {
       "id": "normalizer_classify_role_family",
@@ -645,7 +669,7 @@
       "file_type": "code",
       "norm_label": "classify_role_family()",
       "source_file": "normalizer.py",
-      "source_location": "L215"
+      "source_location": "L236"
     },
     {
       "id": "normalizer_determine_remote_type",
@@ -657,7 +681,7 @@
       "file_type": "code",
       "norm_label": "determine_remote_type()",
       "source_file": "normalizer.py",
-      "source_location": "L249"
+      "source_location": "L270"
     },
     {
       "id": "normalizer_extract_experience",
@@ -670,6 +694,18 @@
       "norm_label": "extract_experience()",
       "source_file": "normalizer.py",
       "source_location": "L175"
+    },
+    {
+      "id": "normalizer_extract_salary",
+      "label": "extract_salary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "normalizer.py",
+      "file_type": "code",
+      "norm_label": "extract_salary()",
+      "source_file": "normalizer.py",
+      "source_location": "L215"
     },
     {
       "id": "normalizer_extract_skills_from_text",
@@ -693,7 +729,7 @@
       "file_type": "code",
       "norm_label": "normalize_job_record()",
       "source_file": "normalizer.py",
-      "source_location": "L311"
+      "source_location": "L332"
     },
     {
       "id": "normalizer_now_iso",
@@ -717,7 +753,19 @@
       "file_type": "code",
       "norm_label": "split_required_and_preferred()",
       "source_file": "normalizer.py",
-      "source_location": "L259"
+      "source_location": "L280"
+    },
+    {
+      "id": "test_remediation_suite_testauditremediation_test_extract_salary",
+      "label": ".test_extract_salary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "normalizer.py",
+      "file_type": "code",
+      "norm_label": ".test_extract_salary()",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L155"
     },
     {
       "id": "db_get_connection",
@@ -864,144 +912,12 @@
       "source_location": "L264"
     },
     {
-      "id": "reranker_apply_mmr_diversification",
-      "label": "apply_mmr_diversification()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "code",
-      "norm_label": "apply_mmr_diversification()",
-      "source_file": "reranker.py",
-      "source_location": "L67"
-    },
-    {
-      "id": "reranker_compute_cross_encoder_scores",
-      "label": "compute_cross_encoder_scores()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "code",
-      "norm_label": "compute_cross_encoder_scores()",
-      "source_file": "reranker.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "reranker_get_cross_encoder",
-      "label": "get_cross_encoder()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "code",
-      "norm_label": "get_cross_encoder()",
-      "source_file": "reranker.py",
-      "source_location": "L33"
-    },
-    {
-      "id": "reranker_now_iso",
-      "label": "now_iso()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "code",
-      "norm_label": "now_iso()",
-      "source_file": "reranker.py",
-      "source_location": "L29"
-    },
-    {
-      "id": "reranker_rerank_jobs",
-      "label": "rerank_jobs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "code",
-      "norm_label": "rerank_jobs()",
-      "source_file": "reranker.py",
-      "source_location": "L137"
-    },
-    {
-      "id": "retriever_build_candidate_search_text",
-      "label": "build_candidate_search_text()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "code",
-      "norm_label": "build_candidate_search_text()",
-      "source_file": "retriever.py",
-      "source_location": "L38"
-    },
-    {
-      "id": "llm_client_get_provider",
-      "label": "get_provider()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "code",
-      "norm_label": "get_provider()",
-      "source_file": "llm_client.py",
-      "source_location": "L13"
-    },
-    {
-      "id": "llm_client_parse_json_from_llm",
-      "label": "parse_json_from_llm()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "code",
-      "norm_label": "parse_json_from_llm()",
-      "source_file": "llm_client.py",
-      "source_location": "L28"
-    },
-    {
-      "id": "llm_client_query_gemini",
-      "label": "_query_gemini()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "code",
-      "norm_label": "_query_gemini()",
-      "source_file": "llm_client.py",
-      "source_location": "L73"
-    },
-    {
-      "id": "llm_client_query_llm",
-      "label": "query_llm()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "code",
-      "norm_label": "query_llm()",
-      "source_file": "llm_client.py",
-      "source_location": "L19"
-    },
-    {
-      "id": "llm_client_query_ollama",
-      "label": "_query_ollama()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "code",
-      "norm_label": "_query_ollama()",
-      "source_file": "llm_client.py",
-      "source_location": "L41"
-    },
-    {
       "id": "scorer_compute_eval_cache_key",
       "label": "compute_eval_cache_key()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
+      "community": 5,
+      "community_name": "get_connection",
       "file_type": "code",
       "norm_label": "compute_eval_cache_key()",
       "source_file": "scorer.py",
@@ -1012,8 +928,8 @@
       "label": "now_iso()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
+      "community": 5,
+      "community_name": "get_connection",
       "file_type": "code",
       "norm_label": "now_iso()",
       "source_file": "scorer.py",
@@ -1024,8 +940,8 @@
       "label": "query_scoring_llm()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
+      "community": 5,
+      "community_name": "get_connection",
       "file_type": "code",
       "norm_label": "query_scoring_llm()",
       "source_file": "scorer.py",
@@ -1036,12 +952,108 @@
       "label": "score_jobs()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
+      "community": 5,
+      "community_name": "get_connection",
       "file_type": "code",
       "norm_label": "score_jobs()",
       "source_file": "scorer.py",
       "source_location": "L97"
+    },
+    {
+      "id": "reranker_apply_mmr_diversification",
+      "label": "apply_mmr_diversification()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": "apply_mmr_diversification()",
+      "source_file": "reranker.py",
+      "source_location": "L67"
+    },
+    {
+      "id": "reranker_compute_cross_encoder_scores",
+      "label": "compute_cross_encoder_scores()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": "compute_cross_encoder_scores()",
+      "source_file": "reranker.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "reranker_get_cross_encoder",
+      "label": "get_cross_encoder()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": "get_cross_encoder()",
+      "source_file": "reranker.py",
+      "source_location": "L33"
+    },
+    {
+      "id": "reranker_now_iso",
+      "label": "now_iso()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": "now_iso()",
+      "source_file": "reranker.py",
+      "source_location": "L29"
+    },
+    {
+      "id": "reranker_rerank_jobs",
+      "label": "rerank_jobs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": "rerank_jobs()",
+      "source_file": "reranker.py",
+      "source_location": "L138"
+    },
+    {
+      "id": "retriever_build_candidate_search_text",
+      "label": "build_candidate_search_text()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": "build_candidate_search_text()",
+      "source_file": "retriever.py",
+      "source_location": "L38"
+    },
+    {
+      "id": "test_remediation_suite_testauditremediation_test_dynamic_company_cap",
+      "label": ".test_dynamic_company_cap()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "reranker.py",
+      "file_type": "code",
+      "norm_label": ".test_dynamic_company_cap()",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L183"
+    },
+    {
+      "id": "db_compute_job_fingerprint",
+      "label": "compute_job_fingerprint()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "code",
+      "norm_label": "compute_job_fingerprint()",
+      "source_file": "db.py",
+      "source_location": "L173"
     },
     {
       "id": "indexer_tokenize_for_bm25",
@@ -1077,7 +1089,7 @@
       "file_type": "code",
       "norm_label": "compute_domain_score()",
       "source_file": "retriever.py",
-      "source_location": "L128"
+      "source_location": "L136"
     },
     {
       "id": "retriever_compute_experience_score",
@@ -1089,7 +1101,7 @@
       "file_type": "code",
       "norm_label": "compute_experience_score()",
       "source_file": "retriever.py",
-      "source_location": "L140"
+      "source_location": "L148"
     },
     {
       "id": "retriever_compute_role_score",
@@ -1101,7 +1113,7 @@
       "file_type": "code",
       "norm_label": "compute_role_score()",
       "source_file": "retriever.py",
-      "source_location": "L111"
+      "source_location": "L119"
     },
     {
       "id": "retriever_compute_skill_overlap",
@@ -1113,7 +1125,7 @@
       "file_type": "code",
       "norm_label": "compute_skill_overlap()",
       "source_file": "retriever.py",
-      "source_location": "L97"
+      "source_location": "L105"
     },
     {
       "id": "retriever_now_iso",
@@ -1137,7 +1149,31 @@
       "file_type": "code",
       "norm_label": "retrieve_jobs()",
       "source_file": "retriever.py",
-      "source_location": "L157"
+      "source_location": "L165"
+    },
+    {
+      "id": "scraper_upsert_jobs",
+      "label": "upsert_jobs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "code",
+      "norm_label": "upsert_jobs()",
+      "source_file": "scraper.py",
+      "source_location": "L752"
+    },
+    {
+      "id": "tailor_verify_pdf_ats_extractability",
+      "label": "verify_pdf_ats_extractability()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "code",
+      "norm_label": "verify_pdf_ats_extractability()",
+      "source_file": "tailor.py",
+      "source_location": "L531"
     },
     {
       "id": "test_remediation_suite_testauditremediation_test_ats_pdf_validation",
@@ -1200,6 +1236,30 @@
       "source_location": "L18"
     },
     {
+      "id": "test_remediation_suite_testauditremediation_test_foreign_remote_rejection",
+      "label": ".test_foreign_remote_rejection()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "code",
+      "norm_label": ".test_foreign_remote_rejection()",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L168"
+    },
+    {
+      "id": "test_remediation_suite_testauditremediation_test_upsert_jobs_rejects_empty_description_and_duplicates",
+      "label": ".test_upsert_jobs_rejects_empty_description_and_duplicates()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "code",
+      "norm_label": ".test_upsert_jobs_rejects_empty_description_and_duplicates()",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L96"
+    },
+    {
       "id": "scraper",
       "label": "scraper.py",
       "_origin": "ast",
@@ -1222,15 +1282,15 @@
       "source_location": "L54"
     },
     {
-      "id": "db_rationale_174",
-      "label": "Generate SHA-256 fingerprint from normalized (company, title, location) to\u2026",
+      "id": "config_rationale_63",
+      "label": "Auto-populate config with boards from company_ats_mapping.toml.",
       "_origin": "ast",
       "community": 1,
       "community_name": "scraper.py",
       "file_type": "rationale",
-      "norm_label": "generate sha-256 fingerprint from normalized (company, title, location) to...",
-      "source_file": "db.py",
-      "source_location": "L174"
+      "norm_label": "auto-populate config with boards from company_ats_mapping.toml.",
+      "source_file": "config.py",
+      "source_location": "L63"
     },
     {
       "id": "scraper_rationale_1",
@@ -1264,17 +1324,6 @@
       "norm_label": "fetch jobs from greenhouse public board api.",
       "source_file": "scraper.py",
       "source_location": "L144"
-    },
-    {
-      "id": "scraper_rationale_216",
-      "label": "Fetch full job description from Greenhouse detail endpoint on demand.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "rationale",
-      "norm_label": "fetch full job description from greenhouse detail endpoint on demand.",
-      "source_file": "scraper.py",
-      "source_location": "L216"
     },
     {
       "id": "scraper_rationale_229",
@@ -1398,28 +1447,6 @@
       "source_location": "L672"
     },
     {
-      "id": "scraper_rationale_753",
-      "label": "Insert jobs into the database, skipping duplicates and empty descriptions.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "rationale",
-      "norm_label": "insert jobs into the database, skipping duplicates and empty descriptions.",
-      "source_file": "scraper.py",
-      "source_location": "L753"
-    },
-    {
-      "id": "scraper_rationale_810",
-      "label": "Run all (or selected) fetchers and upsert results.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "rationale",
-      "norm_label": "run all (or selected) fetchers and upsert results.",
-      "source_file": "scraper.py",
-      "source_location": "L810"
-    },
-    {
       "id": "scraper_rationale_89",
       "label": "Filter role titles matching Data & AI Engineer profile.",
       "_origin": "ast",
@@ -1431,15 +1458,15 @@
       "source_location": "L89"
     },
     {
-      "id": "test_remediation_suite_rationale_97",
-      "label": "upsert_jobs must reject jobs with description < 50 chars and cross-source\u2026",
+      "id": "llm_client",
+      "label": "llm_client.py",
       "_origin": "ast",
-      "community": 1,
-      "community_name": "scraper.py",
-      "file_type": "rationale",
-      "norm_label": "upsert_jobs must reject jobs with description < 50 chars and cross-source...",
-      "source_file": "test_remediation_suite.py",
-      "source_location": "L97"
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "code",
+      "norm_label": "llm_client.py",
+      "source_file": "llm_client.py",
+      "source_location": "L1"
     },
     {
       "id": "tailor",
@@ -1462,6 +1489,83 @@
       "norm_label": "load candidate profile from sourav_ray_updated_profile.yaml.",
       "source_file": "config.py",
       "source_location": "L27"
+    },
+    {
+      "id": "llm_client_rationale_1",
+      "label": "llm_client.py \u2014 Unified LLM abstraction layer (Ollama local & Google Gemini\u2026",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "llm_client.py \u2014 unified llm abstraction layer (ollama local & google gemini...",
+      "source_file": "llm_client.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_client_rationale_14",
+      "label": "Determine which LLM provider to use.",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "determine which llm provider to use.",
+      "source_file": "llm_client.py",
+      "source_location": "L14"
+    },
+    {
+      "id": "llm_client_rationale_21",
+      "label": "Send a prompt to the configured LLM provider and return raw text response.",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "send a prompt to the configured llm provider and return raw text response.",
+      "source_file": "llm_client.py",
+      "source_location": "L21"
+    },
+    {
+      "id": "llm_client_rationale_29",
+      "label": "Centralized extraction and parsing of JSON objects from LLM responses.",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "centralized extraction and parsing of json objects from llm responses.",
+      "source_file": "llm_client.py",
+      "source_location": "L29"
+    },
+    {
+      "id": "llm_client_rationale_43",
+      "label": "Query local Ollama instance.",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "query local ollama instance.",
+      "source_file": "llm_client.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "llm_client_rationale_75",
+      "label": "Query Google Gemini API with standard exponential backoff.",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "query google gemini api with standard exponential backoff.",
+      "source_file": "llm_client.py",
+      "source_location": "L75"
+    },
+    {
+      "id": "scraper_rationale_216",
+      "label": "Fetch full job description from Greenhouse detail endpoint on demand.",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "tailor.py",
+      "file_type": "rationale",
+      "norm_label": "fetch full job description from greenhouse detail endpoint on demand.",
+      "source_file": "scraper.py",
+      "source_location": "L216"
     },
     {
       "id": "tailor_rationale_1",
@@ -1552,18 +1656,7 @@
       "source_location": "L408"
     },
     {
-      "id": "tailor_rationale_523",
-      "label": "Automated ATS text-extraction validation using pypdf: 1. Asserts non-zero byte\u2026",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "tailor.py",
-      "file_type": "rationale",
-      "norm_label": "automated ats text-extraction validation using pypdf: 1. asserts non-zero byte...",
-      "source_file": "tailor.py",
-      "source_location": "L523"
-    },
-    {
-      "id": "tailor_rationale_552",
+      "id": "tailor_rationale_561",
       "label": "Batch generate tailored summaries, cover letters, and PDFs for top\u2026",
       "_origin": "ast",
       "community": 2,
@@ -1571,7 +1664,7 @@
       "file_type": "rationale",
       "norm_label": "batch generate tailored summaries, cover letters, and pdfs for top...",
       "source_file": "tailor.py",
-      "source_location": "L552"
+      "source_location": "L561"
     },
     {
       "id": "tailor_rationale_58",
@@ -1684,17 +1777,6 @@
       "source_location": "L19"
     },
     {
-      "id": "config_rationale_63",
-      "label": "Auto-populate config with boards from company_ats_mapping.toml.",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "run_pipeline.py",
-      "file_type": "rationale",
-      "norm_label": "auto-populate config with boards from company_ats_mapping.toml.",
-      "source_file": "config.py",
-      "source_location": "L63"
-    },
-    {
       "id": "email_notifier_rationale_1",
       "label": "email_notifier.py \u2014 Send daily job digest and attached tailored PDF resumes via\u2026",
       "_origin": "ast",
@@ -1761,7 +1843,7 @@
       "source_location": "L88"
     },
     {
-      "id": "normalizer_rationale_357",
+      "id": "normalizer_rationale_381",
       "label": "Batch normalize all unscored/un-normalized jobs in SQLite.",
       "_origin": "ast",
       "community": 3,
@@ -1769,7 +1851,7 @@
       "file_type": "rationale",
       "norm_label": "batch normalize all unscored/un-normalized jobs in sqlite.",
       "source_file": "normalizer.py",
-      "source_location": "L357"
+      "source_location": "L381"
     },
     {
       "id": "run_pipeline_rationale_1",
@@ -1781,6 +1863,17 @@
       "norm_label": "run_pipeline.py \u2014 master orchestrator for the retrieval-first job discovery...",
       "source_file": "run_pipeline.py",
       "source_location": "L1"
+    },
+    {
+      "id": "scraper_rationale_810",
+      "label": "Run all (or selected) fetchers and upsert results.",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "run_pipeline.py",
+      "file_type": "rationale",
+      "norm_label": "run all (or selected) fetchers and upsert results.",
+      "source_file": "scraper.py",
+      "source_location": "L810"
     },
     {
       "id": "normalizer",
@@ -1828,6 +1921,17 @@
     },
     {
       "id": "normalizer_rationale_216",
+      "label": "Extract salary compensation string from description text if present.",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "normalizer.py",
+      "file_type": "rationale",
+      "norm_label": "extract salary compensation string from description text if present.",
+      "source_file": "normalizer.py",
+      "source_location": "L216"
+    },
+    {
+      "id": "normalizer_rationale_237",
       "label": "Classify job into standard role families.",
       "_origin": "ast",
       "community": 4,
@@ -1835,10 +1939,10 @@
       "file_type": "rationale",
       "norm_label": "classify job into standard role families.",
       "source_file": "normalizer.py",
-      "source_location": "L216"
+      "source_location": "L237"
     },
     {
-      "id": "normalizer_rationale_233",
+      "id": "normalizer_rationale_254",
       "label": "Determine domain context for high-signal retrieval.",
       "_origin": "ast",
       "community": 4,
@@ -1846,10 +1950,10 @@
       "file_type": "rationale",
       "norm_label": "determine domain context for high-signal retrieval.",
       "source_file": "normalizer.py",
-      "source_location": "L233"
+      "source_location": "L254"
     },
     {
-      "id": "normalizer_rationale_250",
+      "id": "normalizer_rationale_271",
       "label": "Determine remote classification.",
       "_origin": "ast",
       "community": 4,
@@ -1857,10 +1961,10 @@
       "file_type": "rationale",
       "norm_label": "determine remote classification.",
       "source_file": "normalizer.py",
-      "source_location": "L250"
+      "source_location": "L271"
     },
     {
-      "id": "normalizer_rationale_260",
+      "id": "normalizer_rationale_281",
       "label": "Segment description into Required vs Preferred skill sets.",
       "_origin": "ast",
       "community": 4,
@@ -1868,10 +1972,10 @@
       "file_type": "rationale",
       "norm_label": "segment description into required vs preferred skill sets.",
       "source_file": "normalizer.py",
-      "source_location": "L260"
+      "source_location": "L281"
     },
     {
-      "id": "normalizer_rationale_291",
+      "id": "normalizer_rationale_312",
       "label": "Create a high-signal search document for embedding and BM25 indexing.",
       "_origin": "ast",
       "community": 4,
@@ -1879,10 +1983,10 @@
       "file_type": "rationale",
       "norm_label": "create a high-signal search document for embedding and bm25 indexing.",
       "source_file": "normalizer.py",
-      "source_location": "L291"
+      "source_location": "L312"
     },
     {
-      "id": "normalizer_rationale_312",
+      "id": "normalizer_rationale_333",
       "label": "Transform raw job row into structured normalized metadata.",
       "_origin": "ast",
       "community": 4,
@@ -1890,7 +1994,18 @@
       "file_type": "rationale",
       "norm_label": "transform raw job row into structured normalized metadata.",
       "source_file": "normalizer.py",
-      "source_location": "L312"
+      "source_location": "L333"
+    },
+    {
+      "id": "test_remediation_suite_rationale_156",
+      "label": "extract_salary must cleanly parse USD and INR salary formats.",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "normalizer.py",
+      "file_type": "rationale",
+      "norm_label": "extract_salary must cleanly parse usd and inr salary formats.",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L156"
     },
     {
       "id": "connection",
@@ -1926,14 +2041,14 @@
       "source_location": "L1"
     },
     {
-      "id": "reranker",
-      "label": "reranker.py",
+      "id": "scorer",
+      "label": "scorer.py",
       "_origin": "ast",
       "community": 5,
       "community_name": "get_connection",
       "file_type": "code",
-      "norm_label": "reranker.py",
-      "source_file": "reranker.py",
+      "norm_label": "scorer.py",
+      "source_file": "scorer.py",
       "source_location": "L1"
     },
     {
@@ -2080,70 +2195,48 @@
       "source_location": "L78"
     },
     {
-      "id": "reranker_rationale_1",
-      "label": "reranker.py \u2014 Deep Cross-Encoder reranker and MMR diversification engine.\u2026",
+      "id": "scorer_rationale_1",
+      "label": "scorer.py \u2014 Deep qualitative AI review & reasoning on final Top 10-20\u2026",
       "_origin": "ast",
       "community": 5,
       "community_name": "get_connection",
       "file_type": "rationale",
-      "norm_label": "reranker.py \u2014 deep cross-encoder reranker and mmr diversification engine....",
-      "source_file": "reranker.py",
+      "norm_label": "scorer.py \u2014 deep qualitative ai review & reasoning on final top 10-20...",
+      "source_file": "scorer.py",
       "source_location": "L1"
     },
     {
-      "id": "reranker_rationale_138",
-      "label": "Rerank retrieved candidates with Cross-Encoder and apply MMR diversification.",
+      "id": "scorer_rationale_52",
+      "label": "Generate deterministic hash key for caching LLM evaluations.",
       "_origin": "ast",
       "community": 5,
       "community_name": "get_connection",
       "file_type": "rationale",
-      "norm_label": "rerank retrieved candidates with cross-encoder and apply mmr diversification.",
-      "source_file": "reranker.py",
-      "source_location": "L138"
+      "norm_label": "generate deterministic hash key for caching llm evaluations.",
+      "source_file": "scorer.py",
+      "source_location": "L52"
     },
     {
-      "id": "reranker_rationale_34",
-      "label": "Lazy load CrossEncoder model for deep pairwise ranking.",
+      "id": "scorer_rationale_58",
+      "label": "Send evaluation prompt to LLM (Gemini or Ollama), parse and validate JSON.",
       "_origin": "ast",
       "community": 5,
       "community_name": "get_connection",
       "file_type": "rationale",
-      "norm_label": "lazy load crossencoder model for deep pairwise ranking.",
-      "source_file": "reranker.py",
-      "source_location": "L34"
+      "norm_label": "send evaluation prompt to llm (gemini or ollama), parse and validate json.",
+      "source_file": "scorer.py",
+      "source_location": "L58"
     },
     {
-      "id": "reranker_rationale_48",
-      "label": "Score (query, document) pairs using CrossEncoder with sigmoid normalization.",
+      "id": "scorer_rationale_98",
+      "label": "Run Gemini AI review on Top 10-20 MMR selected candidates.",
       "_origin": "ast",
       "community": 5,
       "community_name": "get_connection",
       "file_type": "rationale",
-      "norm_label": "score (query, document) pairs using crossencoder with sigmoid normalization.",
-      "source_file": "reranker.py",
-      "source_location": "L48"
-    },
-    {
-      "id": "reranker_rationale_74",
-      "label": "Maximal Marginal Relevance (MMR) Diversification. Selects top diverse subset\u2026",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "rationale",
-      "norm_label": "maximal marginal relevance (mmr) diversification. selects top diverse subset...",
-      "source_file": "reranker.py",
-      "source_location": "L74"
-    },
-    {
-      "id": "retriever_rationale_39",
-      "label": "Construct high-signal candidate query representation.",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "get_connection",
-      "file_type": "rationale",
-      "norm_label": "construct high-signal candidate query representation.",
-      "source_file": "retriever.py",
-      "source_location": "L39"
+      "norm_label": "run gemini ai review on top 10-20 mmr selected candidates.",
+      "source_file": "scorer.py",
+      "source_location": "L98"
     },
     {
       "id": "project_architecture",
@@ -2326,136 +2419,92 @@
       "source_location": "L157"
     },
     {
-      "id": "llm_client",
-      "label": "llm_client.py",
+      "id": "reranker",
+      "label": "reranker.py",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "code",
-      "norm_label": "llm_client.py",
-      "source_file": "llm_client.py",
+      "norm_label": "reranker.py",
+      "source_file": "reranker.py",
       "source_location": "L1"
     },
     {
-      "id": "scorer",
-      "label": "scorer.py",
+      "id": "reranker_rationale_1",
+      "label": "reranker.py \u2014 Deep Cross-Encoder reranker and MMR diversification engine.\u2026",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "code",
-      "norm_label": "scorer.py",
-      "source_file": "scorer.py",
+      "community_name": "reranker.py",
+      "file_type": "rationale",
+      "norm_label": "reranker.py \u2014 deep cross-encoder reranker and mmr diversification engine....",
+      "source_file": "reranker.py",
       "source_location": "L1"
     },
     {
-      "id": "llm_client_rationale_1",
-      "label": "llm_client.py \u2014 Unified LLM abstraction layer (Ollama local & Google Gemini\u2026",
+      "id": "reranker_rationale_139",
+      "label": "Rerank retrieved candidates with Cross-Encoder and apply MMR diversification.",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "rationale",
-      "norm_label": "llm_client.py \u2014 unified llm abstraction layer (ollama local & google gemini...",
-      "source_file": "llm_client.py",
-      "source_location": "L1"
+      "norm_label": "rerank retrieved candidates with cross-encoder and apply mmr diversification.",
+      "source_file": "reranker.py",
+      "source_location": "L139"
     },
     {
-      "id": "llm_client_rationale_14",
-      "label": "Determine which LLM provider to use.",
+      "id": "reranker_rationale_34",
+      "label": "Lazy load CrossEncoder model for deep pairwise ranking.",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "rationale",
-      "norm_label": "determine which llm provider to use.",
-      "source_file": "llm_client.py",
-      "source_location": "L14"
+      "norm_label": "lazy load crossencoder model for deep pairwise ranking.",
+      "source_file": "reranker.py",
+      "source_location": "L34"
     },
     {
-      "id": "llm_client_rationale_21",
-      "label": "Send a prompt to the configured LLM provider and return raw text response.",
+      "id": "reranker_rationale_48",
+      "label": "Score (query, document) pairs using CrossEncoder with sigmoid normalization.",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "rationale",
-      "norm_label": "send a prompt to the configured llm provider and return raw text response.",
-      "source_file": "llm_client.py",
-      "source_location": "L21"
+      "norm_label": "score (query, document) pairs using crossencoder with sigmoid normalization.",
+      "source_file": "reranker.py",
+      "source_location": "L48"
     },
     {
-      "id": "llm_client_rationale_29",
-      "label": "Centralized extraction and parsing of JSON objects from LLM responses.",
+      "id": "reranker_rationale_74",
+      "label": "Maximal Marginal Relevance (MMR) Diversification. Selects top diverse subset\u2026",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "rationale",
-      "norm_label": "centralized extraction and parsing of json objects from llm responses.",
-      "source_file": "llm_client.py",
-      "source_location": "L29"
+      "norm_label": "maximal marginal relevance (mmr) diversification. selects top diverse subset...",
+      "source_file": "reranker.py",
+      "source_location": "L74"
     },
     {
-      "id": "llm_client_rationale_43",
-      "label": "Query local Ollama instance.",
+      "id": "retriever_rationale_39",
+      "label": "Construct high-signal candidate query representation.",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "rationale",
-      "norm_label": "query local ollama instance.",
-      "source_file": "llm_client.py",
-      "source_location": "L43"
+      "norm_label": "construct high-signal candidate query representation.",
+      "source_file": "retriever.py",
+      "source_location": "L39"
     },
     {
-      "id": "llm_client_rationale_75",
-      "label": "Query Google Gemini API with standard exponential backoff.",
+      "id": "test_remediation_suite_rationale_184",
+      "label": "MMR should dynamically allow 3rd role for top-tier matching company.",
       "_origin": "ast",
       "community": 7,
-      "community_name": "scorer.py",
+      "community_name": "reranker.py",
       "file_type": "rationale",
-      "norm_label": "query google gemini api with standard exponential backoff.",
-      "source_file": "llm_client.py",
-      "source_location": "L75"
-    },
-    {
-      "id": "scorer_rationale_1",
-      "label": "scorer.py \u2014 Deep qualitative AI review & reasoning on final Top 10-20\u2026",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "rationale",
-      "norm_label": "scorer.py \u2014 deep qualitative ai review & reasoning on final top 10-20...",
-      "source_file": "scorer.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "scorer_rationale_52",
-      "label": "Generate deterministic hash key for caching LLM evaluations.",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "rationale",
-      "norm_label": "generate deterministic hash key for caching llm evaluations.",
-      "source_file": "scorer.py",
-      "source_location": "L52"
-    },
-    {
-      "id": "scorer_rationale_58",
-      "label": "Send evaluation prompt to LLM (Gemini or Ollama), parse and validate JSON.",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "rationale",
-      "norm_label": "send evaluation prompt to llm (gemini or ollama), parse and validate json.",
-      "source_file": "scorer.py",
-      "source_location": "L58"
-    },
-    {
-      "id": "scorer_rationale_98",
-      "label": "Run Gemini AI review on Top 10-20 MMR selected candidates.",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "scorer.py",
-      "file_type": "rationale",
-      "norm_label": "run gemini ai review on top 10-20 mmr selected candidates.",
-      "source_file": "scorer.py",
-      "source_location": "L98"
+      "norm_label": "mmr should dynamically allow 3rd role for top-tier matching company.",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L184"
     },
     {
       "id": "retriever",
@@ -2480,6 +2529,17 @@
       "source_location": "L1"
     },
     {
+      "id": "db_rationale_174",
+      "label": "Generate SHA-256 fingerprint from normalized (company, title, location) to\u2026",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "rationale",
+      "norm_label": "generate sha-256 fingerprint from normalized (company, title, location) to...",
+      "source_file": "db.py",
+      "source_location": "L174"
+    },
+    {
       "id": "indexer_rationale_76",
       "label": "Tokenize and clean text for BM25 matching.",
       "_origin": "ast",
@@ -2502,7 +2562,18 @@
       "source_location": "L1"
     },
     {
-      "id": "retriever_rationale_112",
+      "id": "retriever_rationale_106",
+      "label": "Calculate overlap percentage between job skills and candidate skills.",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "rationale",
+      "norm_label": "calculate overlap percentage between job skills and candidate skills.",
+      "source_file": "retriever.py",
+      "source_location": "L106"
+    },
+    {
+      "id": "retriever_rationale_120",
       "label": "Calculate similarity of job title and role family to target roles.",
       "_origin": "ast",
       "community": 8,
@@ -2510,10 +2581,10 @@
       "file_type": "rationale",
       "norm_label": "calculate similarity of job title and role family to target roles.",
       "source_file": "retriever.py",
-      "source_location": "L112"
+      "source_location": "L120"
     },
     {
-      "id": "retriever_rationale_129",
+      "id": "retriever_rationale_137",
       "label": "Score alignment with candidate preferred career domains.",
       "_origin": "ast",
       "community": 8,
@@ -2521,10 +2592,10 @@
       "file_type": "rationale",
       "norm_label": "score alignment with candidate preferred career domains.",
       "source_file": "retriever.py",
-      "source_location": "L129"
+      "source_location": "L137"
     },
     {
-      "id": "retriever_rationale_141",
+      "id": "retriever_rationale_149",
       "label": "Score candidate experience fit against job requirements.",
       "_origin": "ast",
       "community": 8,
@@ -2532,10 +2603,10 @@
       "file_type": "rationale",
       "norm_label": "score candidate experience fit against job requirements.",
       "source_file": "retriever.py",
-      "source_location": "L141"
+      "source_location": "L149"
     },
     {
-      "id": "retriever_rationale_158",
+      "id": "retriever_rationale_166",
       "label": "Execute hybrid retrieval over indexed jobs to produce top candidate matches.",
       "_origin": "ast",
       "community": 8,
@@ -2543,7 +2614,7 @@
       "file_type": "rationale",
       "norm_label": "execute hybrid retrieval over indexed jobs to produce top candidate matches.",
       "source_file": "retriever.py",
-      "source_location": "L158"
+      "source_location": "L166"
     },
     {
       "id": "retriever_rationale_56",
@@ -2557,15 +2628,26 @@
       "source_location": "L56"
     },
     {
-      "id": "retriever_rationale_98",
-      "label": "Calculate overlap percentage between job skills and candidate skills.",
+      "id": "scraper_rationale_753",
+      "label": "Insert jobs into the database, skipping duplicates and empty descriptions.",
       "_origin": "ast",
       "community": 8,
       "community_name": "retriever.py",
       "file_type": "rationale",
-      "norm_label": "calculate overlap percentage between job skills and candidate skills.",
-      "source_file": "retriever.py",
-      "source_location": "L98"
+      "norm_label": "insert jobs into the database, skipping duplicates and empty descriptions.",
+      "source_file": "scraper.py",
+      "source_location": "L753"
+    },
+    {
+      "id": "tailor_rationale_532",
+      "label": "Automated ATS text-extraction validation using pypdf: 1. Asserts non-zero byte\u2026",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "rationale",
+      "norm_label": "automated ats text-extraction validation using pypdf: 1. asserts non-zero byte...",
+      "source_file": "tailor.py",
+      "source_location": "L532"
     },
     {
       "id": "test_remediation_suite_rationale_1",
@@ -2577,6 +2659,17 @@
       "norm_label": "test_remediation_suite.py \u2014 comprehensive unit and integration verification for...",
       "source_file": "test_remediation_suite.py",
       "source_location": "L1"
+    },
+    {
+      "id": "test_remediation_suite_rationale_169",
+      "label": "Hard filter must reject foreign geo-restricted remote roles for India-based\u2026",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "rationale",
+      "norm_label": "hard filter must reject foreign geo-restricted remote roles for india-based...",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L169"
     },
     {
       "id": "test_remediation_suite_rationale_19",
@@ -2632,6 +2725,17 @@
       "norm_label": "compiled pdfs must be ats extractable and within 2 pages.",
       "source_file": "test_remediation_suite.py",
       "source_location": "L90"
+    },
+    {
+      "id": "test_remediation_suite_rationale_97",
+      "label": "upsert_jobs must reject jobs with description < 50 chars and cross-source\u2026",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "retriever.py",
+      "file_type": "rationale",
+      "norm_label": "upsert_jobs must reject jobs with description < 50 chars and cross-source...",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L97"
     },
     {
       "id": "_agents_skills_latex_resume_generator_skill_escape_latex",
@@ -3388,7 +3492,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L319",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -3400,7 +3504,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L320",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -3412,7 +3516,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L321",
+      "source_location": "L342",
       "weight": 1.0
     },
     {
@@ -3424,7 +3528,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L322",
+      "source_location": "L343",
       "weight": 1.0
     },
     {
@@ -3436,7 +3540,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L323",
+      "source_location": "L344",
       "weight": 1.0
     },
     {
@@ -3448,7 +3552,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L325",
+      "source_location": "L346",
+      "weight": 1.0
+    },
+    {
+      "source": "normalizer_normalize_job_record",
+      "target": "normalizer_extract_salary",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "normalizer.py",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -3460,7 +3576,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L352",
+      "source_location": "L376",
       "weight": 1.0
     },
     {
@@ -3472,7 +3588,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L358",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -3484,7 +3600,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L359",
+      "source_location": "L383",
       "weight": 1.0
     },
     {
@@ -3496,7 +3612,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L389",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -3508,7 +3624,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L392",
+      "source_location": "L416",
       "weight": 1.0
     },
     {
@@ -3520,7 +3636,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L398",
+      "source_location": "L422",
       "weight": 1.0
     },
     {
@@ -3532,7 +3648,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "normalizer.py",
-      "source_location": "L270",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -3556,24 +3672,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "reranker.py",
-      "source_location": "L139",
-      "weight": 1.0
-    },
-    {
-      "source": "reranker_rerank_jobs",
-      "target": "config_load_candidate_profile",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "reranker.py",
       "source_location": "L140",
       "weight": 1.0
     },
     {
       "source": "reranker_rerank_jobs",
-      "target": "retriever_build_candidate_search_text",
+      "target": "config_load_candidate_profile",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -3585,6 +3689,18 @@
     },
     {
       "source": "reranker_rerank_jobs",
+      "target": "retriever_build_candidate_search_text",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "reranker.py",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "reranker_rerank_jobs",
       "target": "db_get_connection",
       "relation": "calls",
       "_origin": "ast",
@@ -3592,7 +3708,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "reranker.py",
-      "source_location": "L144",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -3604,7 +3720,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "reranker.py",
-      "source_location": "L167",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
@@ -3616,7 +3732,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "reranker.py",
-      "source_location": "L192",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -3628,7 +3744,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "reranker.py",
-      "source_location": "L205",
+      "source_location": "L206",
       "weight": 1.0
     },
     {
@@ -3640,7 +3756,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L159",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -3652,7 +3768,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L160",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
@@ -3664,7 +3780,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L173",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -3676,7 +3792,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L194",
+      "source_location": "L202",
       "weight": 1.0
     },
     {
@@ -3688,7 +3804,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L206",
+      "source_location": "L214",
       "weight": 1.0
     },
     {
@@ -3700,7 +3816,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L207",
+      "source_location": "L215",
       "weight": 1.0
     },
     {
@@ -3712,7 +3828,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L242",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -3724,7 +3840,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L278",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -3736,7 +3852,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L280",
+      "source_location": "L290",
       "weight": 1.0
     },
     {
@@ -3748,7 +3864,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L281",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -3760,7 +3876,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L282",
+      "source_location": "L292",
       "weight": 1.0
     },
     {
@@ -3772,7 +3888,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "retriever.py",
-      "source_location": "L323",
+      "source_location": "L332",
+      "weight": 1.0
+    },
+    {
+      "source": "run_pipeline_main",
+      "target": "run_pipeline_run_pipeline",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "run_pipeline.py",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -3808,7 +3936,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -3820,7 +3948,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L44",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -3832,7 +3960,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L48",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -3844,7 +3972,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L52",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -3856,7 +3984,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L56",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -3868,7 +3996,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L60",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -3880,7 +4008,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L64",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -3892,7 +4020,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "run_pipeline.py",
-      "source_location": "L69",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -4624,7 +4752,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L512",
+      "source_location": "L521",
       "weight": 1.0
     },
     {
@@ -4636,7 +4764,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L636",
+      "source_location": "L645",
       "weight": 1.0
     },
     {
@@ -4648,7 +4776,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L638",
+      "source_location": "L647",
       "weight": 1.0
     },
     {
@@ -4660,7 +4788,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L639",
+      "source_location": "L648",
       "weight": 1.0
     },
     {
@@ -4672,7 +4800,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L640",
+      "source_location": "L649",
       "weight": 1.0
     },
     {
@@ -4684,7 +4812,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L642",
+      "source_location": "L651",
       "weight": 1.0
     },
     {
@@ -4756,7 +4884,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L553",
+      "source_location": "L562",
       "weight": 1.0
     },
     {
@@ -4768,7 +4896,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L554",
+      "source_location": "L563",
       "weight": 1.0
     },
     {
@@ -4780,7 +4908,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L555",
+      "source_location": "L564",
       "weight": 1.0
     },
     {
@@ -4792,7 +4920,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L561",
+      "source_location": "L570",
       "weight": 1.0
     },
     {
@@ -4804,7 +4932,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L580",
+      "source_location": "L589",
       "weight": 1.0
     },
     {
@@ -4816,7 +4944,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L615",
+      "source_location": "L624",
       "weight": 1.0
     },
     {
@@ -4828,7 +4956,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tailor.py",
-      "source_location": "L620",
+      "source_location": "L629",
       "weight": 1.0
     },
     {
@@ -4916,6 +5044,18 @@
       "weight": 1.0
     },
     {
+      "source": "test_remediation_suite_testauditremediation_test_dynamic_company_cap",
+      "target": "reranker_apply_mmr_diversification",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
       "source": "test_remediation_suite_testauditremediation_test_empty_skill_overlap_zero_score",
       "target": "retriever_compute_skill_overlap",
       "relation": "calls",
@@ -4952,6 +5092,18 @@
       "weight": 1.0
     },
     {
+      "source": "test_remediation_suite_testauditremediation_test_extract_salary",
+      "target": "normalizer_extract_salary",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
       "source": "test_remediation_suite_testauditremediation_test_factual_provenance_validation",
       "target": "tailor_validate_factual_provenance",
       "relation": "calls",
@@ -4973,6 +5125,18 @@
       "context": "call",
       "source_file": "test_remediation_suite.py",
       "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_testauditremediation_test_foreign_remote_rejection",
+      "target": "retriever_check_hard_filters",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -5668,7 +5832,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tailor.py",
-      "source_location": "L579",
+      "source_location": "L588",
       "weight": 1.0
     },
     {
@@ -5765,6 +5929,30 @@
       "context": "import",
       "source_file": "test_remediation_suite.py",
       "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite",
+      "target": "normalizer_extract_salary",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite",
+      "target": "reranker_apply_mmr_diversification",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L185",
       "weight": 1.0
     },
     {
@@ -6661,7 +6849,7 @@
     },
     {
       "source": "normalizer",
-      "target": "normalizer_classify_role_family",
+      "target": "normalizer_extract_salary",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6683,13 +6871,24 @@
     },
     {
       "source": "normalizer",
+      "target": "normalizer_classify_role_family",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "normalizer.py",
+      "source_location": "L236",
+      "weight": 1.0
+    },
+    {
+      "source": "normalizer",
       "target": "normalizer_classify_domain",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L232",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -6700,7 +6899,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L249",
+      "source_location": "L270",
       "weight": 1.0
     },
     {
@@ -6711,7 +6910,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L259",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -6722,7 +6921,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L279",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -6733,7 +6932,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L311",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -6744,7 +6943,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L356",
+      "source_location": "L380",
       "weight": 1.0
     },
     {
@@ -6909,7 +7108,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "reranker.py",
-      "source_location": "L137",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -6958,13 +7157,24 @@
     },
     {
       "source": "retriever",
+      "target": "retriever_compute_skill_overlap",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "retriever.py",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "retriever",
       "target": "retriever_compute_role_score",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L111",
+      "source_location": "L119",
       "weight": 1.0
     },
     {
@@ -6975,7 +7185,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L128",
+      "source_location": "L136",
       "weight": 1.0
     },
     {
@@ -6986,7 +7196,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L140",
+      "source_location": "L148",
       "weight": 1.0
     },
     {
@@ -6997,7 +7207,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L157",
+      "source_location": "L165",
       "weight": 1.0
     },
     {
@@ -7034,14 +7244,14 @@
       "weight": 1.0
     },
     {
-      "source": "retriever",
-      "target": "retriever_compute_skill_overlap",
+      "source": "run_pipeline",
+      "target": "run_pipeline_main",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "retriever.py",
-      "source_location": "L97",
+      "source_file": "run_pipeline.py",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -7288,17 +7498,6 @@
     },
     {
       "source": "tailor",
-      "target": "tailor_verify_pdf_ats_extractability",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tailor.py",
-      "source_location": "L522",
-      "weight": 1.0
-    },
-    {
-      "source": "tailor",
       "target": "tailor_now_iso",
       "relation": "contains",
       "_origin": "ast",
@@ -7310,13 +7509,24 @@
     },
     {
       "source": "tailor",
+      "target": "tailor_verify_pdf_ats_extractability",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tailor.py",
+      "source_location": "L531",
+      "weight": 1.0
+    },
+    {
+      "source": "tailor",
       "target": "tailor_run_batch_tailoring",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tailor.py",
-      "source_location": "L551",
+      "source_location": "L560",
       "weight": 1.0
     },
     {
@@ -7338,7 +7548,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tailor.py",
-      "source_location": "L627",
+      "source_location": "L636",
       "weight": 1.0
     },
     {
@@ -7387,6 +7597,28 @@
     },
     {
       "source": "test_remediation_suite_testauditremediation",
+      "target": "test_remediation_suite_testauditremediation_test_extract_salary",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L155",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_testauditremediation",
+      "target": "test_remediation_suite_testauditremediation_test_foreign_remote_rejection",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L168",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_testauditremediation",
       "target": "test_remediation_suite_testauditremediation_test_fingerprint_deduplication",
       "relation": "method",
       "_origin": "ast",
@@ -7394,6 +7626,17 @@
       "confidence_score": 1.0,
       "source_file": "test_remediation_suite.py",
       "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_testauditremediation",
+      "target": "test_remediation_suite_testauditremediation_test_dynamic_company_cap",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -7838,7 +8081,7 @@
     },
     {
       "source": "normalizer_rationale_216",
-      "target": "normalizer_classify_role_family",
+      "target": "normalizer_extract_salary",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -7848,52 +8091,52 @@
       "weight": 1.0
     },
     {
-      "source": "normalizer_rationale_233",
+      "source": "normalizer_rationale_237",
+      "target": "normalizer_classify_role_family",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "normalizer.py",
+      "source_location": "L237",
+      "weight": 1.0
+    },
+    {
+      "source": "normalizer_rationale_254",
       "target": "normalizer_classify_domain",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L233",
+      "source_location": "L254",
       "weight": 1.0
     },
     {
-      "source": "normalizer_rationale_250",
+      "source": "normalizer_rationale_271",
       "target": "normalizer_determine_remote_type",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L250",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
-      "source": "normalizer_rationale_260",
+      "source": "normalizer_rationale_281",
       "target": "normalizer_split_required_and_preferred",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L260",
-      "weight": 1.0
-    },
-    {
-      "source": "normalizer_rationale_291",
-      "target": "normalizer_build_search_text",
-      "relation": "rationale_for",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "normalizer.py",
-      "source_location": "L291",
+      "source_location": "L281",
       "weight": 1.0
     },
     {
       "source": "normalizer_rationale_312",
-      "target": "normalizer_normalize_job_record",
+      "target": "normalizer_build_search_text",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -7903,14 +8146,25 @@
       "weight": 1.0
     },
     {
-      "source": "normalizer_rationale_357",
+      "source": "normalizer_rationale_333",
+      "target": "normalizer_normalize_job_record",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "normalizer.py",
+      "source_location": "L333",
+      "weight": 1.0
+    },
+    {
+      "source": "normalizer_rationale_381",
       "target": "normalizer_normalize_jobs",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "normalizer.py",
-      "source_location": "L357",
+      "source_location": "L381",
       "weight": 1.0
     },
     {
@@ -7925,14 +8179,14 @@
       "weight": 1.0
     },
     {
-      "source": "reranker_rationale_138",
+      "source": "reranker_rationale_139",
       "target": "reranker_rerank_jobs",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "reranker.py",
-      "source_location": "L138",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -7980,47 +8234,58 @@
       "weight": 1.0
     },
     {
-      "source": "retriever_rationale_112",
+      "source": "retriever_rationale_106",
+      "target": "retriever_compute_skill_overlap",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "retriever.py",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "retriever_rationale_120",
       "target": "retriever_compute_role_score",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L112",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
-      "source": "retriever_rationale_129",
+      "source": "retriever_rationale_137",
       "target": "retriever_compute_domain_score",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L129",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
-      "source": "retriever_rationale_141",
+      "source": "retriever_rationale_149",
       "target": "retriever_compute_experience_score",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L141",
+      "source_location": "L149",
       "weight": 1.0
     },
     {
-      "source": "retriever_rationale_158",
+      "source": "retriever_rationale_166",
       "target": "retriever_retrieve_jobs",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "retriever.py",
-      "source_location": "L158",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -8043,17 +8308,6 @@
       "confidence_score": 1.0,
       "source_file": "retriever.py",
       "source_location": "L56",
-      "weight": 1.0
-    },
-    {
-      "source": "retriever_rationale_98",
-      "target": "retriever_compute_skill_overlap",
-      "relation": "rationale_for",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "retriever.py",
-      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -8398,25 +8652,25 @@
       "weight": 1.0
     },
     {
-      "source": "tailor_rationale_523",
+      "source": "tailor_rationale_532",
       "target": "tailor_verify_pdf_ats_extractability",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tailor.py",
-      "source_location": "L523",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
-      "source": "tailor_rationale_552",
+      "source": "tailor_rationale_561",
       "target": "tailor_run_batch_tailoring",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tailor.py",
-      "source_location": "L552",
+      "source_location": "L561",
       "weight": 1.0
     },
     {
@@ -8461,6 +8715,39 @@
       "confidence_score": 1.0,
       "source_file": "test_remediation_suite.py",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_rationale_156",
+      "target": "test_remediation_suite_testauditremediation_test_extract_salary",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L156",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_rationale_169",
+      "target": "test_remediation_suite_testauditremediation_test_foreign_remote_rejection",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "test_remediation_suite_rationale_184",
+      "target": "test_remediation_suite_testauditremediation_test_dynamic_company_cap",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test_remediation_suite.py",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -8897,5 +9184,5 @@
       "source_file": "README.md"
     }
   ],
-  "built_at_commit": "910b425f8d6204967390533cd60a083fe3b309b0"
+  "built_at_commit": "6425424ea6037d11b36fe50c748246f712d18c24"
 }
