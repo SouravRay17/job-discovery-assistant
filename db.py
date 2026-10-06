@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     date_fetched TEXT,
     normalized_at TEXT,
     indexed_at TEXT,
+    fingerprint TEXT,
     PRIMARY KEY (source, id)
 );
 """
@@ -122,6 +123,7 @@ def _migrate_db(conn: sqlite3.Connection) -> None:
         "salary": "TEXT",
         "normalized_at": "TEXT",
         "indexed_at": "TEXT",
+        "fingerprint": "TEXT",
     }
 
     for col, col_type in expected_job_cols.items():
@@ -149,6 +151,11 @@ def _migrate_db(conn: sqlite3.Connection) -> None:
             except sqlite3.OperationalError:
                 pass
 
+    try:
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_fingerprint ON jobs(fingerprint);")
+    except sqlite3.OperationalError:
+        pass
+
 
 def init_db() -> None:
     """Create the database and tables if they don't exist, and migrate columns."""
@@ -161,6 +168,31 @@ def init_db() -> None:
         print(f"Database initialized at {DB_PATH}")
     finally:
         conn.close()
+
+
+def compute_job_fingerprint(company: str | None, title: str | None, location: str | None) -> str:
+    """
+    Generate SHA-256 fingerprint from normalized (company, title, location)
+    to enable cross-source deduplication across boards (e.g. Greenhouse vs LinkedIn).
+    """
+    import hashlib
+    import re
+    c = re.sub(r"[^a-z0-9]", "", (company or "").lower())
+    t = re.sub(r"[^a-z0-9]", "", (title or "").lower())
+    loc = (location or "").lower()
+    if "remote" in loc or "anywhere" in loc or "worldwide" in loc:
+        l = "remote"
+    else:
+        # Canonicalize metro cities so "Bengaluru, India" and "Bangalore" map identically
+        known_cities = ["bangalore", "bengaluru", "hyderabad", "pune", "mumbai", "delhi", "noida", "gurgaon", "chennai"]
+        found_city = None
+        for city in known_cities:
+            if city in loc:
+                found_city = "bengaluru" if city in ("bangalore", "bengaluru") else city
+                break
+        l = found_city if found_city else re.sub(r"[^a-z0-9]", "", loc)
+    token = f"{c}:{t}:{l}"
+    return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
 if __name__ == "__main__":

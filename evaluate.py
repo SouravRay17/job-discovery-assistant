@@ -91,7 +91,7 @@ def evaluate_against_database() -> dict:
 
     if not labeled_rows:
         print("[!] No user-labeled jobs found in database.")
-        print("    Label jobs in dashboard.py (Rate 1-5 stars) to generate real evaluation metrics.")
+        print("    Label jobs using 'python evaluate.py --label-top' to generate real evaluation metrics.")
         return {}
 
     # Define relevant as rating >= 4 or feedback in ('excellent', 'strong', 'applied')
@@ -138,6 +138,61 @@ def evaluate_against_database() -> dict:
     print(f"  MRR:                  {metrics['mrr']:.4f}")
     print("=" * 60 + "\n")
     return metrics
+
+
+def label_top_jobs_cli(top_n: int = 15):
+    """Interactive CLI to quickly tag top candidate jobs with relevance labels (1-5 stars)."""
+    init_db()
+    conn = get_connection()
+    try:
+        cursor = conn.execute("""
+            SELECT c.id, c.source, c.job_id, j.company, j.title, j.location,
+                   c.hybrid_retrieval_score, c.reranker_score, c.llm_score, c.user_rating
+            FROM candidate_job_scores c
+            JOIN jobs j ON c.source = j.source AND c.job_id = j.id
+            ORDER BY COALESCE(c.final_composite_score, c.llm_score/100.0, c.reranker_score, c.hybrid_retrieval_score) DESC
+            LIMIT ?
+        """, (top_n,))
+        rows = [dict(r) for r in cursor.fetchall()]
+    finally:
+        conn.close()
+
+    if not rows:
+        print("[!] No candidate jobs found in database to label.")
+        return
+
+    print(f"\n{'='*60}\nInteractive Labeling CLI -- Rate {len(rows)} Top Candidates\n{'='*60}")
+    print("Enter rating (1-5, where 4-5 is Gold Relevant, 's' to skip, 'q' to quit):\n")
+
+    conn = get_connection()
+    try:
+        now_str = datetime.now(timezone.utc).isoformat()
+        labeled = 0
+        for idx, item in enumerate(rows, 1):
+            curr_rating = item["user_rating"] or "unlabeled"
+            print(f"[{idx}/{len(rows)}] {item['company']} — {item['title']} ({item['location']})")
+            print(f"       Scores: Retrieval={item['hybrid_retrieval_score']} | Reranker={item['reranker_score']} | Current: {curr_rating}★")
+            try:
+                ans = input("       Rating (1-5, s=skip, q=quit): ").strip().lower()
+            except (EOFError, KeyboardInterrupt):
+                break
+            if ans == 'q':
+                break
+            if ans in ('s', ''):
+                continue
+            if ans.isdigit() and 1 <= int(ans) <= 5:
+                conn.execute(
+                    "UPDATE candidate_job_scores SET user_rating = ?, labeled_at = ? WHERE id = ?",
+                    (int(ans), now_str, item["id"])
+                )
+                conn.commit()
+                labeled += 1
+                print(f"       [OK] Saved rating {ans}★\n")
+            else:
+                print("       [!] Invalid input, skipped.\n")
+        print(f"\n[OK] Completed labeling. {labeled} jobs updated.\n")
+    finally:
+        conn.close()
 
 
 def generate_synthetic_benchmark_dataset():
@@ -209,10 +264,14 @@ def generate_synthetic_benchmark_dataset():
 def main():
     parser = argparse.ArgumentParser(description="Evaluate retrieval and ranking metrics")
     parser.add_argument("--create-benchmark", action="store_true", help="Create synthetic benchmark dataset")
+    parser.add_argument("--label-top", action="store_true", help="Interactively label top retrieved candidates")
+    parser.add_argument("--top", type=int, default=15, help="Number of top candidates to label")
     args = parser.parse_args()
 
     if args.create_benchmark:
         generate_synthetic_benchmark_dataset()
+    elif args.label_top:
+        label_top_jobs_cli(top_n=args.top)
     else:
         evaluate_against_database()
 

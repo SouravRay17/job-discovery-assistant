@@ -62,11 +62,12 @@ def check_hard_filters(job: dict, profile: dict) -> tuple[bool, str | None]:
     exp_min = job.get("experience_min")
     candidate_exp = profile.get("experience_years", 3)
 
-    # 1. Experience Ceiling Filter: Hard cap at 0 to 5 years (reject > 5.0 years)
-    if exp_min is not None and exp_min > 5.0:
-        return False, f"Requires {int(exp_min)}+ yrs (exceeds 0-5 yr ceiling)"
+    # 1. Experience Ceiling Filter: Hard cap at 0 to 7 years (reject > 7.0 years)
+    # Allows flexible 5-7 year mid-level requirements to enter scoring pool with soft penalty
+    if exp_min is not None and exp_min > 7.0:
+        return False, f"Requires {int(exp_min)}+ yrs (exceeds 0-7 yr ceiling)"
 
-    # Also eliminate executive and senior leadership titles exceeding 0-5 yr range
+    # Also eliminate executive and senior leadership titles exceeding mid-level range
     if any(bad in title for bad in ["director", "vp ", "vice president", "principal", "head of", "architect", "chief"]):
         return False, "Executive/leadership title (exceeds mid-level target)"
 
@@ -96,7 +97,7 @@ def check_hard_filters(job: dict, profile: dict) -> tuple[bool, str | None]:
 def compute_skill_overlap(candidate_skills_set: set[str], job_skills: list[str]) -> float:
     """Calculate overlap percentage between job skills and candidate skills."""
     if not job_skills:
-        return 0.8  # Neutral score if no specific skills specified
+        return 0.0  # Zero score if no skills specified/unparsed
 
     matched = 0
     for js in job_skills:
@@ -153,7 +154,7 @@ def compute_experience_score(exp_min: float | None, exp_max: float | None, candi
         return max(0.0, 1.0 - (diff * 0.25))
 
 
-def retrieve_jobs(top_k: int = 100) -> list[dict]:
+def retrieve_jobs(top_k: int = 150) -> list[dict]:
     """Execute hybrid retrieval over indexed jobs to produce top candidate matches."""
     init_db()
     profile = load_candidate_profile()

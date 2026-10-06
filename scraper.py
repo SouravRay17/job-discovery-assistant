@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 import requests
 
 from config import load_config, load_ats_mapping, auto_populate_config
-from db import get_connection, init_db
+from db import get_connection, init_db, compute_job_fingerprint
 
 HEADERS = {
     "User-Agent": "JobDiscoveryAssistant/1.0 (local; +https://github.com)",
@@ -148,7 +148,7 @@ def fetch_greenhouse(config: dict) -> list[dict]:
 
     for board in boards:
         print(f"  >> Greenhouse: fetching board '{board}'...")
-        url = f"https://boards-api.greenhouse.io/v1/boards/{board}/jobs"
+        url = f"https://boards-api.greenhouse.io/v1/boards/{board}/jobs?content=true"
         try:
             resp = requests.get(url, headers=HEADERS, timeout=60)
             if resp.status_code != 200:
@@ -186,6 +186,13 @@ def fetch_greenhouse(config: dict) -> list[dict]:
                 except Exception:
                     pass
 
+            # Eagerly hydrate description
+            raw_html = job.get("content")
+            desc = strip_html(raw_html) if raw_html else fetch_greenhouse_description(board, str(job.get("id", "")))
+            if not desc or len(desc.strip()) < 50:
+                filtered += 1
+                continue
+
             remote = bool(re.search(r"\bremote\b", location_name, re.IGNORECASE))
             all_jobs.append(normalize_job(
                 source=f"greenhouse:{board}",
@@ -195,7 +202,7 @@ def fetch_greenhouse(config: dict) -> list[dict]:
                 location=location_name,
                 remote=remote,
                 url=job.get("absolute_url", ""),
-                description_raw=None,
+                description_raw=desc,
                 date_posted=job.get("first_published") or job.get("updated_at"),
             ))
             fetched += 1
@@ -261,6 +268,11 @@ def fetch_lever(config: dict) -> list[dict]:
                 if lt or lc:
                     description += f"\n\n{lt}\n{strip_html(lc)}"
 
+            desc = description.strip()
+            if not desc or len(desc) < 50:
+                filtered += 1
+                continue
+
             epoch_ms = job.get("createdAt")
             date_posted = datetime.fromtimestamp(epoch_ms / 1000, tz=timezone.utc).isoformat() if epoch_ms else None
 
@@ -272,7 +284,7 @@ def fetch_lever(config: dict) -> list[dict]:
                 location=location,
                 remote=remote,
                 url=job.get("hostedUrl", ""),
-                description_raw=description.strip() or None,
+                description_raw=desc,
                 date_posted=date_posted,
             ))
             fetched += 1
@@ -321,6 +333,10 @@ def fetch_remoteok(config: dict) -> list[dict]:
                 continue
 
             description = strip_html(job.get("description", ""))
+            if not description or len(description.strip()) < 50:
+                filtered += 1
+                continue
+
             company = job.get("company", "")
             text = f"{title} {description[:500]}".lower()
 
@@ -341,7 +357,7 @@ def fetch_remoteok(config: dict) -> list[dict]:
                 location=location,
                 remote=True,
                 url=job.get("url") or job.get("apply_url", ""),
-                description_raw=description or None,
+                description_raw=description.strip(),
                 date_posted=job.get("date"),
             ))
             fetched += 1
@@ -423,15 +439,21 @@ def fetch_workday(config: dict) -> list[dict]:
                     apply_url = f"{domain}/{site_path}{ext_path}" if ext_path else ""
                     remote = bool(re.search(r"\bremote\b", location, re.IGNORECASE))
 
+                    # Eagerly fetch full description
+                    company_slug = company_name.lower().replace(" ", "_")
+                    desc = fetch_workday_description(company_slug, job_id)
+                    if not desc or len(desc.strip()) < 50:
+                        continue
+
                     all_jobs.append(normalize_job(
-                        source=f"workday:{company_name.lower().replace(' ', '_')}",
+                        source=f"workday:{company_slug}",
                         job_id=job_id,
                         company=company_name,
                         title=title,
                         location=location,
                         remote=remote,
                         url=apply_url,
-                        description_raw=None,
+                        description_raw=desc.strip(),
                         date_posted=job.get("postedOn") or now_iso(),
                     ))
 
@@ -521,6 +543,10 @@ def fetch_naukri(config: dict) -> list[dict]:
             if not is_location_suitable(job_location or "India", target_locations):
                 continue
 
+            desc = strip_html(job.get("jobDescription", ""))
+            if not desc or len(desc.strip()) < 50:
+                continue
+
             remote = bool(re.search(r"\bremote\b", (job_location or ""), re.IGNORECASE))
             apply_url = f"https://www.naukri.com{job.get('jdURL', '')}" if job.get("jdURL") else ""
 
@@ -532,13 +558,35 @@ def fetch_naukri(config: dict) -> list[dict]:
                 location=job_location or "India",
                 remote=remote,
                 url=apply_url,
-                description_raw=strip_html(job.get("jobDescription", "")) or None,
+                description_raw=desc.strip(),
                 date_posted=job.get("createdDate"),
             ))
 
         time.sleep(REQUEST_DELAY * 2)
 
     return all_jobs
+
+
+def fetch_linkedin_description(job_id: str) -> str | None:
+    """Fetch full job description from LinkedIn guest API."""
+    url = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
+    try:
+        resp = requests.get(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Accept": "text/html,application/xhtml+xml",
+            },
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            match = re.search(r'<div class="show-more-less-html__markup[^>]*>(.*?)</div>', resp.text, re.DOTALL)
+            if match:
+                return strip_html(match.group(1))
+            return strip_html(resp.text)
+    except Exception:
+        pass
+    return None
 
 
 def fetch_linkedin(config: dict) -> list[dict]:
@@ -597,6 +645,11 @@ def fetch_linkedin(config: dict) -> list[dict]:
 
             seen_ids.add(job_id)
 
+            # Eagerly fetch description
+            desc = fetch_linkedin_description(job_id)
+            if not desc or len(desc.strip()) < 50:
+                continue
+
             remote = bool(re.search(r"\bremote\b", job_location, re.IGNORECASE))
             all_jobs.append(normalize_job(
                 source="linkedin",
@@ -606,7 +659,7 @@ def fetch_linkedin(config: dict) -> list[dict]:
                 location=job_location,
                 remote=remote,
                 url=f"https://www.linkedin.com/jobs/view/{job_id}/",
-                description_raw=None,
+                description_raw=desc.strip(),
                 date_posted=now_iso(),
             ))
 
@@ -663,6 +716,9 @@ def fetch_ashby(config: dict) -> list[dict]:
                     pass
 
             desc_raw = strip_html(job.get("descriptionHtml", "")) if job.get("descriptionHtml") else None
+            if not desc_raw or len(desc_raw.strip()) < 50:
+                filtered += 1
+                continue
 
             all_jobs.append(normalize_job(
                 source=f"ashby:{board}",
@@ -672,7 +728,7 @@ def fetch_ashby(config: dict) -> list[dict]:
                 location=location_name,
                 remote=is_remote,
                 url=job.get("jobUrl") or f"https://jobs.ashbyhq.com/{board}/{job.get('id')}",
-                description_raw=desc_raw,
+                description_raw=desc_raw.strip(),
                 date_posted=pub_date or now_iso(),
             ))
             fetched += 1
@@ -694,28 +750,50 @@ FETCHER_MAP = {
 
 
 def upsert_jobs(jobs: list[dict]) -> tuple[int, int]:
-    """Insert jobs into the database, skipping duplicates."""
+    """Insert jobs into the database, skipping duplicates and empty descriptions."""
     if not jobs:
         return 0, 0
 
     conn = get_connection()
     inserted, skipped = 0, 0
     try:
+        # Pre-fetch existing fingerprints for cross-source deduplication
+        cursor = conn.execute("SELECT fingerprint FROM jobs WHERE fingerprint IS NOT NULL")
+        existing_fingerprints = {row["fingerprint"] for row in cursor.fetchall()}
+
         for job in jobs:
+            desc = (job.get("description_raw") or "").strip()
+            if len(desc) < 50:
+                skipped += 1
+                continue
+
+            fp = compute_job_fingerprint(
+                job.get("company", ""),
+                job.get("title", ""),
+                job.get("location", "")
+            )
+            job["fingerprint"] = fp
+
+            if fp in existing_fingerprints:
+                # Cross-source duplicate (e.g. Greenhouse vs LinkedIn)
+                skipped += 1
+                continue
+
             try:
                 cursor = conn.execute(
                     """INSERT OR IGNORE INTO jobs
                        (id, source, company, title, location, remote, url,
-                        description_raw, date_posted, date_fetched)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                        description_raw, date_posted, date_fetched, fingerprint)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                     (
                         job["id"], job["source"], job["company"], job["title"],
                         job["location"], job["remote"], job["url"], job["description_raw"],
-                        job["date_posted"], job["date_fetched"]
+                        job["date_posted"], job["date_fetched"], job["fingerprint"]
                     ),
                 )
                 if cursor.rowcount > 0:
                     inserted += 1
+                    existing_fingerprints.add(fp)
                 else:
                     skipped += 1
             except sqlite3.Error as e:

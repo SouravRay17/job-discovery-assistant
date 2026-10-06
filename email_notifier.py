@@ -82,29 +82,33 @@ def send_email_digest(top_n: int = 10):
         if not os.path.exists(pdf_path):
             pdf_path = tailor.compile_pdf_resume(source, job_id) or pdf_path
 
-        if pdf_path and os.path.exists(pdf_path):
-            try:
-                with open(pdf_path, "rb") as f:
-                    part = MIMEApplication(f.read(), Name=pdf_name)
-                    part['Content-Disposition'] = f'attachment; filename="{pdf_name}"'
-                    msg.attach(part)
-                    print(f"  [+] Attached PDF resume: {pdf_name} ({os.path.getsize(pdf_path)} bytes)")
-            except Exception as e:
-                print(f"  [!] Failed to attach {pdf_name}: {e}")
-        else:
-            print(f"  [!] PDF resume not found for attachment: {pdf_name}")
+        # Cap attachments to Top 3 Prime Matches to guarantee payload is well under Gmail 25MB ceiling
+        if idx <= 3:
+            if pdf_path and os.path.exists(pdf_path):
+                try:
+                    with open(pdf_path, "rb") as f:
+                        part = MIMEApplication(f.read(), Name=pdf_name)
+                        part['Content-Disposition'] = f'attachment; filename="{pdf_name}"'
+                        msg.attach(part)
+                        print(f"  [+] Attached Prime #{idx} PDF resume: {pdf_name} ({os.path.getsize(pdf_path)} bytes)")
+                except Exception as e:
+                    print(f"  [!] Failed to attach {pdf_name}: {e}")
+            else:
+                print(f"  [!] PDF resume not found for attachment: {pdf_name}")
 
-        cl_name = f"Sourav_Cover_Letter_{clean_co}_{job_id}.pdf"
-        cl_path = os.path.join(exports_dir, cl_name)
-        if os.path.exists(cl_path):
-            try:
-                with open(cl_path, "rb") as f:
-                    part_cl = MIMEApplication(f.read(), Name=cl_name)
-                    part_cl['Content-Disposition'] = f'attachment; filename="{cl_name}"'
-                    msg.attach(part_cl)
-                    print(f"  [+] Attached PDF cover letter: {cl_name} ({os.path.getsize(cl_path)} bytes)")
-            except Exception as e:
-                print(f"  [!] Failed to attach {cl_name}: {e}")
+            cl_name = f"Sourav_Cover_Letter_{clean_co}_{job_id}.pdf"
+            cl_path = os.path.join(exports_dir, cl_name)
+            if os.path.exists(cl_path):
+                try:
+                    with open(cl_path, "rb") as f:
+                        part_cl = MIMEApplication(f.read(), Name=cl_name)
+                        part_cl['Content-Disposition'] = f'attachment; filename="{cl_name}"'
+                        msg.attach(part_cl)
+                        print(f"  [+] Attached Prime #{idx} PDF cover letter: {cl_name} ({os.path.getsize(cl_path)} bytes)")
+                except Exception as e:
+                    print(f"  [!] Failed to attach {cl_name}: {e}")
+        else:
+            print(f"  [-] Role #{idx} compiled in artifacts; omitted from email attachments to keep payload < 5MB")
 
         badge_color = "#22c55e" if rec == "APPLY" else "#eab308"
         strengths_html = "".join(f"<span style='background:#334155;color:#38bdf8;padding:2px 6px;margin-right:4px;border-radius:3px;font-size:11px;'>{s}</span>" for s in strengths[:4])

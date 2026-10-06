@@ -48,8 +48,8 @@ def run_pipeline():
     index_jobs()
 
     # 5. Step 4: Hybrid Retrieval
-    print("\n--- STEP 4: HYBRID RETRIEVAL (HARD FILTERS + VECTOR + BM25 + RRF) -> TOP 100 ---")
-    retrieve_jobs(top_k=100)
+    print("\n--- STEP 4: HYBRID RETRIEVAL (HARD FILTERS + VECTOR + BM25 + RRF) -> TOP 150 ---")
+    retrieve_jobs(top_k=150)
 
     # 6. Step 5: Cross-Encoder Reranking & MMR
     print("\n--- STEP 5: CROSS-ENCODER RERANKING & MMR DIVERSIFICATION -> TOP 10-20 ---")

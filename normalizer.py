@@ -177,8 +177,19 @@ def extract_experience(text: str) -> tuple[float | None, float | None]:
     if not text:
         return None, None
 
-    # Pattern: 3-5 years, 3 to 5 years, 3 - 5 yrs
-    range_match = re.search(r"(\d+)\s*(?:-|to)\s*(\d+)\s*(?:years?|yrs?)", text, re.IGNORECASE)
+    # Pattern: between 3 and 6 years / yrs
+    between_match = re.search(r"between\s+(\d+)\s+and\s+(\d+)\s*(?:years?|yrs?)", text, re.IGNORECASE)
+    if between_match:
+        try:
+            min_yr = float(between_match.group(1))
+            max_yr = float(between_match.group(2))
+            if 0 <= min_yr <= 30 and 0 <= max_yr <= 30:
+                return min_yr, max_yr
+        except ValueError:
+            pass
+
+    # Pattern: 3-5 years, 3 to 5 years, 3 - 5 yrs, 3 yrs to 5 yrs
+    range_match = re.search(r"(\d+)\s*(?:years?|yrs?)?\s*(?:-|to)\s*(\d+)\s*(?:years?|yrs?)", text, re.IGNORECASE)
     if range_match:
         try:
             min_yr = float(range_match.group(1))
@@ -188,8 +199,8 @@ def extract_experience(text: str) -> tuple[float | None, float | None]:
         except ValueError:
             pass
 
-    # Pattern: 3+ years, 3+ yrs, minimum 3 years, at least 3 years
-    min_match = re.search(r"(?:minimum|at least|\b)(\d+)\s*(?:\+|plus)?\s*(?:years?|yrs?)(?:\s+of)?(?:\s+experience|\s+exp)?", text, re.IGNORECASE)
+    # Pattern: minimum of 4 years, minimum 3 years, at least 3 years, 3+ years
+    min_match = re.search(r"(?:minimum(?:\s+of)?|at\s+least|requires?|with|\b)(\d+)\s*(?:\+|plus)?\s*(?:years?|yrs?)(?:\s+of)?(?:\s+experience|\s+exp)?", text, re.IGNORECASE)
     if min_match:
         try:
             min_yr = float(min_match.group(1))
