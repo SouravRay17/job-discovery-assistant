@@ -72,14 +72,22 @@ def _query_ollama(prompt: str, config: dict, temperature: float,
 
 def _query_gemini(prompt: str, config: dict, temperature: float,
                   max_tokens: int, json_mode: bool) -> str | None:
-    """Query Google Gemini API with standard exponential backoff."""
+    """Query Google Gemini API with standard exponential backoff and model fallback."""
     api_key = os.getenv("GEMINI_API_KEY") or config.get("gemini", {}).get("api_key", "")
     if not api_key:
         print("    [!] GEMINI_API_KEY not set. Cannot use Gemini provider.")
         return None
 
-    model = config.get("gemini", {}).get("model", "gemini-2.5-flash")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+    primary_model = config.get("gemini", {}).get("model", "gemini-2.5-flash")
+    if "3.6" in primary_model:
+        primary_model = "gemini-2.5-flash"
+
+    candidate_models = [primary_model, "gemini-1.5-flash"]
+    models_to_try = []
+    for m in candidate_models:
+        if m not in models_to_try:
+            models_to_try.append(m)
+
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
@@ -90,26 +98,31 @@ def _query_gemini(prompt: str, config: dict, temperature: float,
     if json_mode:
         payload["generationConfig"]["responseMimeType"] = "application/json"
 
-    backoff = 3
-    for attempt in range(1, 4):
-        try:
-            resp = requests.post(url, json=payload, timeout=60)
-            if resp.status_code == 429:
-                print(f"    [!] Gemini 429 rate limit. Retrying in {backoff}s...")
+    for model in models_to_try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        backoff = 3
+        for attempt in range(1, 4):
+            try:
+                resp = requests.post(url, json=payload, timeout=60)
+                if resp.status_code == 429:
+                    print(f"    [!] Gemini 429 rate limit on {model}. Retrying in {backoff}s...")
+                    time.sleep(backoff)
+                    backoff *= 2
+                    continue
+                if resp.status_code in (404, 503):
+                    print(f"    [!] Gemini {resp.status_code} on {model}. Trying fallback...")
+                    break
+                resp.raise_for_status()
+                candidates = resp.json().get("candidates", [])
+                if candidates:
+                    parts = candidates[0].get("content", {}).get("parts", [])
+                    if parts:
+                        return parts[0].get("text", "")
+                return None
+            except Exception as e:
+                if attempt == 3:
+                    print(f"    [!] Gemini API call failed for {model}: {e}")
                 time.sleep(backoff)
                 backoff *= 2
-                continue
-            resp.raise_for_status()
-            candidates = resp.json().get("candidates", [])
-            if candidates:
-                parts = candidates[0].get("content", {}).get("parts", [])
-                if parts:
-                    return parts[0].get("text", "")
-            return None
-        except Exception as e:
-            if attempt == 3:
-                print(f"    [!] Gemini API call failed: {e}")
-            time.sleep(backoff)
-            backoff *= 2
 
     return None

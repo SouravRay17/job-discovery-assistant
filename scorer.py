@@ -213,8 +213,8 @@ Pre-Computed Alignment Metrics:
                        SET status = 'review_failed', recommendation = 'REVIEW_FAILED',
                            match_reason = 'LLM evaluation failed or rate limited (no synthetic fallback)',
                            ai_reviewed_at = ?
-                       WHERE id = ?""",
-                    (now_iso(), item["score_id"])
+                       WHERE source = ? AND job_id = ?""",
+                    (now_iso(), source, job_id)
                 )
                 conn.commit()
             finally:
